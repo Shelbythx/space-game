@@ -1,24 +1,23 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
+import { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { PixelButton } from '../menu/PixelControls'
+import { useMenuKeys } from '../menu/useMenuKeys'
 
 export function NotFoundPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const root = useRef<HTMLDivElement>(null)
+  const back = useCallback(() => navigate('/'), [navigate])
+  useMenuKeys(root, back)
+
   return (
-    <Box component="main" sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center', px: 2 }}>
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="h2" sx={{ fontSize: '1.6rem' }}>
-          {t('notFound.title')}
-        </Typography>
-        <Typography color="text.secondary" sx={{ my: 2 }}>
-          {t('notFound.body')}
-        </Typography>
-        <Button component={Link} to="/">
-          {t('notFound.back')}
-        </Button>
-      </Box>
-    </Box>
+    <div className="mm-screen" ref={root}>
+      <h2 className="mm-heading">{t('notFound.title')}</h2>
+      <p className="mm-tagline">{t('notFound.body')}</p>
+      <div className="mm-stack">
+        <PixelButton onClick={back}>{t('notFound.back')}</PixelButton>
+      </div>
+    </div>
   )
 }

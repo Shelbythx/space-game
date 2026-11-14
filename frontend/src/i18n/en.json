@@ -4,17 +4,47 @@
     "tagline": "Design a mission, launch it, and see exactly why it worked or failed."
   },
   "menu": {
-    "start": "Start",
-    "coop": "Co-op",
+    "label": "Main menu",
+    "scienceMode": "Science mode",
+    "arcadeMode": "Arcade mode",
+    "solo": "Start · Solo",
+    "coop": "Co-op · Multiplayer",
     "arcade": "Arcade",
     "settings": "Settings",
     "language": "Language",
-    "comingSoon": "Coming soon"
+    "soon": {
+      "solo": "Solo mission design is under construction — coming soon.",
+      "coop": "Co-op for 2–4 players comes after the solo mode.",
+      "arcade": "Arcade comes after the science mode."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "sound": "Sound: {{state}}",
+    "volume": "Volume: {{value}}%",
+    "volumeLabel": "Volume",
+    "sky": "Sky motion: {{state}}",
+    "fullscreen": "Fullscreen: {{state}}",
+    "fullscreenIos": "Fullscreen on iPhone: Share → Add to Home Screen",
+    "fullscreenNone": "This browser has no fullscreen mode",
+    "on": "On",
+    "off": "Off",
+    "keys": "Arrows or W S — move · Enter or E — select · Esc — back · M — sound · F — fullscreen",
+    "done": "Done"
+  },
+  "languageScreen": {
+    "title": "Language",
+    "note": "The game is in English and Ukrainian."
   },
   "server": {
     "waking": "Waking up the mission server — this can take up to a minute…",
     "ready": "Mission server online",
-    "unreachable": "Mission server is not responding. Try reloading the page later."
+    "unreachable": "Mission server is not responding. Try reloading the page later.",
+    "short": {
+      "waking": "Server: waking up…",
+      "ready": "Server: online",
+      "unreachable": "Server: offline"
+    }
   },
   "notFound": {
     "title": "Off course",

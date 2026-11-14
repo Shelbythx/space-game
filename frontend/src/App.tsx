@@ -1,17 +1,25 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
-import { useServerWake } from './api/useServerWake'
-import { MenuPage } from './pages/MenuPage'
+import { LanguageScreen } from './menu/LanguageScreen'
+import { MainMenu } from './menu/MainMenu'
+import { MenuLayout } from './menu/MenuLayout'
+import { SettingsScreen } from './menu/SettingsScreen'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { SettingsProvider } from './settings/SettingsProvider'
 
-// HashRouter: GitHub Pages has no rewrites, so deep links must live after "#" (D61).
+// HashRouter: deep links live after "#", so the build runs from any static path.
 export default function App() {
-  const server = useServerWake()
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<MenuPage server={server} />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </HashRouter>
+    <SettingsProvider>
+      <HashRouter>
+        <Routes>
+          <Route element={<MenuLayout />}>
+            <Route index element={<MainMenu />} />
+            <Route path="settings" element={<SettingsScreen />} />
+            <Route path="language" element={<LanguageScreen />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </HashRouter>
+    </SettingsProvider>
   )
 }
