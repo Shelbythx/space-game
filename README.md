@@ -20,6 +20,7 @@ by the team.
 - [`tasks/`](tasks/README.md) — development tasks, one file per task.
 - [`docs/vision.md`](docs/vision.md) — project vision.
 - [`docs/decisions.md`](docs/decisions.md) — decision log and open questions.
+- [`docs/requirements.md`](docs/requirements.md) — submission requirements and judging criteria.
 - [`docs/challenge-context.md`](docs/challenge-context.md) — challenge analysis and deadlines.
 - [`docs/official-challenge.md`](docs/official-challenge.md) — official challenge text.
 - [`docs/resources.md`](docs/resources.md) — challenge resources and takeaways.
