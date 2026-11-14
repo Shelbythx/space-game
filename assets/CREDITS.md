@@ -46,9 +46,14 @@ Gala». Це чужа комерційна музика — лише орієн�
 | Earth Fact Sheet, NSSDCA (NASA GSFC) | Константи Землі: GM, радіус, J2, період обертання, сонячна стала |
 | Drag Equation, Beginner's Guide to Aeronautics (NASA Glenn) | Формула сили опору |
 | Ideal Rocket Equation, Beginner's Guide to Aeronautics (NASA Glenn) | Рівняння Ціолковського, `Veq = Isp · g0` |
-| GMAT Mathematical Specifications (NASA GSFC, NTRS 20080031744) | Орбітальні параметри, тінь, β-кут, гравітація, густина атмосфери |
+| GMAT Mathematical Specifications (NASA GSFC, NTRS 20080031744) | Орбітальні параметри, тінь, β-кут, прискорення від опору, траса |
 | U.S. Standard Atmosphere, 1976 (NASA-TM-X-74335) | Густина атмосфери за висотою |
 | NASA-STD-8719.14C «Process for Limiting Orbital Debris» | Правило 25 років, межа ймовірності зіткнення |
 | Small Spacecraft Technology State-of-the-Art 2026 (NASA) | Деталі апарата, енергосистема |
 | NASA Systems Engineering Handbook, SP-2016-6105 Rev2 | Trade study й аналіз рішень для балу «Якість рішень» |
 | Basics of Space Flight (NASA JPL) | Пояснення переходів Гомана й запуску |
+| S. L. Rickman, Introduction to Orbital Mechanics and Spacecraft Attitudes for Thermal Engineers (NASA, NTRS 20205003902) | Прецесія вузла J2, сонячно-синхронна орбіта, β-кут, частка тіні, перехід Гомана, зміна площини |
+| GSFC-STD-1000 Rev I «Rules for the Design, Development, Verification, and Operation of Flight Systems» (Gold Rules, NASA GSFC) | Запаси маси, енергії й радіолінії за фазою проєкту (табл. 1.06-1) |
+| Guidelines on Lithium-ion Battery Use in Space Applications, NASA/TM-2009-215751 | Визначення глибини розряду батареї |
+| Near Earth Network Users' Guide, 453-NENUG Rev 5 (NASA GSFC) | Кут місця станцій (5°/10°) |
+| Approximate Positions of the Planets (NASA JPL Solar System Dynamics) | Середня довгота Землі → положення Сонця за датою |
