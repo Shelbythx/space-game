@@ -107,6 +107,9 @@ frontend/src/
 
 ### 2.0 Формула → джерело NASA
 
+Звірка кандидатів (задача 026) — `docs/physics-sources.md`: що підтверджено, з якими
+розділами й сторінками, і що досі без джерела NASA.
+
 | Модель | Формули | Джерело NASA (кандидат, звірити в 026) |
 | --- | --- | --- |
 | Орбіта | `v = √(μ/r)`, `T = 2π√(r³/μ)`, віс-віва | JPL «Basics of Space Flight», розд. «Planetary Orbits»; GMAT Mathematical Specifications |
