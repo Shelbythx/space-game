@@ -15,7 +15,10 @@ export type LanguageCode = (typeof LANGUAGES)[number]['code']
 
 const LANGUAGE_KEY = 'smdg.language'
 const stored = readStorage(LANGUAGE_KEY)
-const initial: LanguageCode = stored === 'uk' || stored === 'en' ? stored : 'en'
+// First visit: Ukrainian browsers start in Ukrainian, everyone else in English.
+const browserLanguage = typeof navigator !== 'undefined' ? navigator.language.toLowerCase() : 'en'
+const initial: LanguageCode =
+  stored === 'uk' || stored === 'en' ? stored : browserLanguage.startsWith('uk') ? 'uk' : 'en'
 
 void i18n.use(initReactI18next).init({
   resources: { en: { translation: en }, uk: { translation: uk } },
