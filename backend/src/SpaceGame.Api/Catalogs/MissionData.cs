@@ -285,7 +285,7 @@ public static class MissionData
         [
             new("cape-canaveral", "site.capeCanaveral", 28.5, -80.6, siteSource),
             new("wallops", "site.wallops", 37.8, -75.5, siteSource),
-            new("kourou", "site.kourou", 5.2, -52.8, siteSource),
+            new("kodiak", "site.kodiak", 57.4, -152.3, siteSource),
         ];
 
         Source cargoSource = Source.Estimate("Категорії — як у прес-кітах NASA Commercial Resupply; типові маси й цінність — оцінка до задачі 017");
