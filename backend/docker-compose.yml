@@ -1,0 +1,33 @@
+# Локальний запуск (D77 ще не вирішено): docker compose up — PostgreSQL + бекенд.
+# Бекенд: http://localhost:5080 (так чекає фронтенд, frontend/.env.example).
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: spacegame
+      POSTGRES_USER: spacegame
+      POSTGRES_PASSWORD: spacegame
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spacegame -d spacegame"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=spacegame;Username=spacegame;Password=spacegame"
+      Database__MigrateOnStartup: "true"
+      # NASA_API_KEY: ""   # для DONKI (задача 021); без ключа — DEMO_KEY
+    ports:
+      - "5080:8080"
+
+volumes:
+  pgdata:
