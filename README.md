@@ -17,6 +17,7 @@ by the team.
 ## Docs
 
 - [`CLAUDE.md`](CLAUDE.md) — project context and current stage for agents and teammates.
+- [`tasks/`](tasks/README.md) — development tasks, one file per task.
 - [`docs/vision.md`](docs/vision.md) — project vision.
 - [`docs/decisions.md`](docs/decisions.md) — decision log and open questions.
 - [`docs/challenge-context.md`](docs/challenge-context.md) — challenge analysis and deadlines.
