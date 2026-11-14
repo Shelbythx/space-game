@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "Space Mission Design Game",
+    "tagline": "Design a mission, launch it, and see exactly why it worked or failed."
+  },
+  "menu": {
+    "start": "Start",
+    "coop": "Co-op",
+    "arcade": "Arcade",
+    "settings": "Settings",
+    "language": "Language",
+    "comingSoon": "Coming soon"
+  },
+  "server": {
+    "waking": "Waking up the mission server — this can take up to a minute…",
+    "ready": "Mission server online",
+    "unreachable": "Mission server is not responding. Try reloading the page later."
+  },
+  "notFound": {
+    "title": "Off course",
+    "body": "This page does not exist.",
+    "back": "Back to menu"
+  }
+}
