@@ -16,8 +16,13 @@ by the team.
 
 ## Docs
 
-- [`docs/challenge-context.md`](docs/challenge-context.md) — challenge brief, deadlines,
-  judging criteria, open questions (Ukrainian).
+- [`CLAUDE.md`](CLAUDE.md) — project context and current stage for agents and teammates.
+- [`docs/vision.md`](docs/vision.md) — project vision.
+- [`docs/decisions.md`](docs/decisions.md) — decision log and open questions.
+- [`docs/challenge-context.md`](docs/challenge-context.md) — challenge analysis and deadlines.
+- [`docs/official-challenge.md`](docs/official-challenge.md) — official challenge text.
+
+Docs are in Ukrainian.
 
 ## Team
 
