@@ -21,6 +21,15 @@
 Gala». Це чужа комерційна музика — лише орієнтир звучання, використовувати її в грі не
 можна.
 
+## Шрифти
+
+Підключені як npm-пакети Fontsource у `frontend/`, файлів у `assets/` немає.
+
+| Шрифт | Автор | Де в грі | Ліцензія |
+| --- | --- | --- | --- |
+| Pixelify Sans | Stefie Justprince | Головне меню (D90) | SIL Open Font License 1.1 |
+| IBM Plex Sans, IBM Plex Mono | IBM | Тема креслення (D54) | SIL Open Font License 1.1 |
+
 ## Код
 
 Рушій гри «yourself.» (© 2026 Stiluss) можна використовувати в цьому проєкті з дозволу
