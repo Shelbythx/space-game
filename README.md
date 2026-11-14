@@ -22,6 +22,7 @@ by the team.
 - [`docs/decisions.md`](docs/decisions.md) — decision log and open questions.
 - [`docs/challenge-context.md`](docs/challenge-context.md) — challenge analysis and deadlines.
 - [`docs/official-challenge.md`](docs/official-challenge.md) — official challenge text.
+- [`docs/resources.md`](docs/resources.md) — challenge resources and takeaways.
 
 Docs are in Ukrainian.
 
