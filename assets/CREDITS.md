@@ -27,7 +27,7 @@ Gala». Це чужа комерційна музика — лише орієн�
 
 | Шрифт | Автор | Де в грі | Ліцензія |
 | --- | --- | --- | --- |
-| Pixelify Sans | Stefie Justprince | Головне меню (D90) | SIL Open Font License 1.1 |
+| Tiny5 | Stefie Justprince | Головне меню (D90) | SIL Open Font License 1.1 |
 | IBM Plex Sans, IBM Plex Mono | IBM | Тема креслення (D54) | SIL Open Font License 1.1 |
 
 ## Код

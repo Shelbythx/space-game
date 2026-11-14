@@ -2,7 +2,8 @@
    Own palette and textures — space steel instead of stone. */
 
 .mm-root {
-  --mm-font: 'Pixelify Sans', ui-monospace, monospace;
+  /* Tiny5: pixel font with full Ukrainian Cyrillic (є, і, ї, ґ); only weight 400 exists */
+  --mm-font: 'Tiny5', ui-monospace, monospace;
   --mm-ink: #f3f7ff;
   --mm-ink-dim: #a8b9d4;
   --mm-ink-shadow: #0b1424;
@@ -25,6 +26,7 @@
   min-height: 100dvh;
   color: var(--mm-ink);
   font-family: var(--mm-font);
+  font-synthesis: none;
   background: #02040b;
 }
 
@@ -63,7 +65,7 @@
 
 .mm-kicker {
   margin: 0 0 12px;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--mm-accent);
@@ -76,7 +78,7 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  font-weight: 700;
+  font-weight: 400;
   font-size: clamp(34px, 8vw, 68px);
   line-height: 0.95;
   letter-spacing: 0.03em;
@@ -97,7 +99,7 @@
 .mm-tagline {
   max-width: 34ch;
   margin: 16px auto 0;
-  font-size: 17px;
+  font-size: 19px;
   line-height: 1.35;
   color: var(--mm-ink-dim);
   text-shadow: 2px 2px 0 var(--mm-ink-shadow);
@@ -105,7 +107,7 @@
 
 .mm-heading {
   margin: 0;
-  font-weight: 700;
+  font-weight: 400;
   font-size: clamp(28px, 6vw, 40px);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -138,7 +140,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--mm-ink-dim);
@@ -162,7 +164,7 @@
   min-height: 48px;
   padding: 6px 14px;
   box-sizing: border-box;
-  font: 500 20px/1.1 var(--mm-font);
+  font: 400 22px/1.1 var(--mm-font);
   color: var(--mm-ink);
   letter-spacing: 0.02em;
   text-shadow: 2px 2px 0 var(--mm-ink-shadow);
@@ -284,7 +286,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  font: 500 20px/1 var(--mm-font);
+  font: 400 22px/1 var(--mm-font);
   text-shadow: 2px 2px 0 var(--mm-ink-shadow);
 }
 
@@ -305,7 +307,7 @@
   min-height: 48px;
   padding: 6px 12px;
   box-sizing: border-box;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.25;
   text-align: center;
   color: var(--mm-ink-dim);
@@ -315,7 +317,7 @@
 .mm-keys {
   max-width: 640px;
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   text-align: center;
   color: var(--mm-ink-dim);
@@ -334,7 +336,7 @@
   }
   .mm-btn,
   .mm-slider-label {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 
@@ -355,7 +357,7 @@
 .mm-toast {
   max-width: 440px;
   padding: 10px 16px;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.3;
   text-align: center;
   background: rgba(8, 13, 24, 0.94);
@@ -384,7 +386,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-  font-size: 13px;
+  font-size: 15px;
   color: var(--mm-ink-dim);
   text-shadow: 2px 2px 0 #000;
   pointer-events: none;
@@ -435,5 +437,28 @@
     justify-content: flex-start;
     gap: 20px;
     padding-top: 24px;
+  }
+}
+
+.mm-note {
+  max-width: 640px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--mm-ink-dim);
+  text-shadow: 2px 2px 0 var(--mm-ink-shadow);
+}
+
+.mm-nowrap {
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .mm-footer {
+    font-size: 14px;
+  }
+  .mm-footer-event {
+    display: none;
   }
 }

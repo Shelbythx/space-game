@@ -35,12 +35,12 @@ export function LanguageScreen() {
                 sfx('select')
               }}
             >
-              {current ? `▶ ${lang.label} ◀` : lang.label}
+              {current ? `> ${lang.label} <` : lang.label}
             </PixelButton>
           )
         })}
       </div>
-      <p className="mm-keys">{t('languageScreen.note')}</p>
+      <p className="mm-note">{t('languageScreen.note')}</p>
       <div className="mm-stack">
         <PixelButton onClick={back}>{t('settings.done')}</PixelButton>
       </div>
