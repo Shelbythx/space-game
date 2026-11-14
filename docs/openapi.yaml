@@ -15,9 +15,13 @@ servers:
 security: []
 tags:
   - name: system
+    description: Health check and server wake-up
   - name: missions
+    description: Missions with goals, limits and catalogs
   - name: game
+    description: Instant evaluation and simulation of a design
   - name: attempts
+    description: Saved attempts of an anonymous player
 paths:
   /api/health:
     get:
@@ -173,6 +177,11 @@ components:
     Value: { type: string, enum: [low, medium, high, highest] }
     Band: { type: string, enum: [uhf, s, x] }
     PartCategory: { type: string, enum: [bus, solar, battery, radio, computer, adcs, propulsion] }
+    BusSize: { type: string, enum: [small, medium, large], description: Bus class vs launcher fairing (D93) }
+    Side:
+      type: string
+      enum: [earth, space, sun, inside]
+      description: Side of the bus a part faces (D93)
     Params:
       type: object
       additionalProperties: { oneOf: [{ type: number }, { type: string }] }
@@ -224,7 +233,7 @@ components:
 
     Launch:
       type: object
-      required: [id, nameCode, priceK, capacityKg, fixedOrbitId, source]
+      required: [id, nameCode, priceK, capacityKg, fixedOrbitId, maxBusSize, source]
       properties:
         id: { type: string, examples: [rideshare, small, medium] }
         nameCode: { type: string }
@@ -234,6 +243,7 @@ components:
           type: object
           additionalProperties: { type: number }
         fixedOrbitId: { type: [string, 'null'] }
+        maxBusSize: { $ref: '#/components/schemas/BusSize' }
         source: { $ref: '#/components/schemas/Source' }
 
     Requirement:
@@ -249,6 +259,7 @@ components:
         maxMassKg: { type: number }
         slots: { type: integer }
         dragAreaM2: { type: number }
+        busSize: { $ref: '#/components/schemas/BusSize' }
         powerW: { type: number, description: 'solar: generation; propulsion: consumption while firing' }
         capacityWh: { type: number }
         rateKbps: { type: number, description: Rated rate at the 1000 km reference distance (D80) }
@@ -257,7 +268,7 @@ components:
         accuracyDeg: { type: number }
         ispS: { type: number }
         thrustN: { type: number }
-        propellantKg: { type: number, description: Propellant in the tank, on top of dry massKg }
+        propellantKg: { type: number, description: 'Propellant in the tank, on top of dry massKg' }
 
     Part:
       type: object
@@ -371,6 +382,19 @@ components:
         insertionAltitudeKm: { type: number, description: iss only }
         cargo: { type: array, items: { $ref: '#/components/schemas/CargoItem' }, description: iss only }
         relay: { type: boolean, description: 'iss only: TDRS relay instead of ground stations only' }
+        layout:
+          description: |
+            Advanced version only (D93): side per part category (except bus) or instrument id.
+            Missing keys are placed automatically. Absent or null in simple.
+          oneOf:
+            - type: object
+              additionalProperties: { $ref: '#/components/schemas/Side' }
+            - { type: 'null' }
+        massReservePct:
+          description: 'Advanced version only (D93): mass reserve; null means limits.massReserveRecommendedPct'
+          type: [number, 'null']
+          minimum: 0
+          maximum: 50
 
     Preset:
       type: object
@@ -410,8 +434,11 @@ components:
             - { $ref: '#/components/schemas/CargoGoal' }
         limits:
           type: object
-          required: [budgetK, launchDeadlineMonth]
-          properties: { budgetK: { type: number }, launchDeadlineMonth: { type: integer } }
+          required: [budgetK, launchDeadlineMonth, massReserveRecommendedPct]
+          properties:
+            budgetK: { type: number }
+            launchDeadlineMonth: { type: integer }
+            massReserveRecommendedPct: { type: number, description: NASA early-phase mass reserve (D93) }
         timing:
           type: object
           required: [buildMonths, integrationMonths, rideshareMonths, launchLeadMonths]
@@ -491,9 +518,56 @@ components:
         phasingDays: { type: number }
         planeChangeDeltaVms: { type: number }
 
+    CalcValue:
+      type: object
+      required: [name, value, unit]
+      properties:
+        name: { type: string, example: E_ecl }
+        value: { type: number }
+        unit: { type: string, description: 'Unit symbol; empty for dimensionless', example: Wh }
+
+    CalcSheet:
+      description: Calculation sheet (D94) - formula, substituted numbers, result and NASA source
+      type: object
+      required: [code, resource, formula, inputs, result, summary, source]
+      properties:
+        code: { type: string, example: calc.power.eclipseBattery }
+        resource:
+          type: string
+          enum: [mass, power, budget, data, comms, time, orbit, propellant, rendezvous]
+        formula: { type: string, example: 'E_ecl = P_ecl · T · f' }
+        inputs: { type: array, items: { $ref: '#/components/schemas/CalcValue' } }
+        result: { $ref: '#/components/schemas/CalcValue' }
+        summary: { $ref: '#/components/schemas/Message' }
+        source: { $ref: '#/components/schemas/Source' }
+
+    StripContact:
+      type: object
+      required: [stationId, startMin, endMin]
+      properties:
+        stationId: { type: string, description: 'Ground station id, or "tdrs" for the relay' }
+        startMin: { type: number }
+        endMin: { type: number }
+
+    OrbitStrip:
+      description: One orbit for the light/shadow and contacts strip (D94); worst case beta = 0
+      type: object
+      required: [periodMin, eclipse, contacts]
+      properties:
+        periodMin: { type: number }
+        eclipse:
+          oneOf:
+            - type: object
+              required: [startMin, endMin]
+              properties:
+                startMin: { type: number }
+                endMin: { type: number }
+            - { type: 'null' }
+        contacts: { type: array, items: { $ref: '#/components/schemas/StripContact' } }
+
     Evaluation:
       type: object
-      required: [orbit, resources, rendezvous, checks, comments]
+      required: [orbit, resources, rendezvous, layout, orbitStrip, calc, checks, comments]
       properties:
         orbit:
           type: object
@@ -518,6 +592,10 @@ components:
                 launchCapacityKg: { type: number }
                 slotsUsed: { type: integer }
                 slots: { type: integer }
+                reservePct: { type: number }
+                reserveKg: { type: number }
+                withReserveKg: { type: number, description: Checked against launchCapacityKg }
+                recommendedReservePct: { type: number }
             power:
               type: object
               properties:
@@ -550,6 +628,12 @@ components:
         rendezvous:
           description: iss only; null otherwise
           oneOf: [{ $ref: '#/components/schemas/RendezvousEstimate' }, { type: 'null' }]
+        layout:
+          description: Resolved side of every part and instrument after automatic placement
+          type: object
+          additionalProperties: { $ref: '#/components/schemas/Side' }
+        orbitStrip: { $ref: '#/components/schemas/OrbitStrip' }
+        calc: { type: array, items: { $ref: '#/components/schemas/CalcSheet' } }
         checks: { type: array, items: { $ref: '#/components/schemas/Check' } }
         comments: { type: array, items: { $ref: '#/components/schemas/RoleComment' } }
 
@@ -708,7 +792,7 @@ components:
       type: object
       required: [stationId, contactsPerDay, minutesPerDay, visibilityRadiusDeg]
       properties:
-        stationId: { type: string, description: Ground station id, or "tdrs" for the relay }
+        stationId: { type: string, description: 'Ground station id, or "tdrs" for the relay' }
         contactsPerDay: { type: number }
         minutesPerDay: { type: number }
         visibilityRadiusDeg: { type: [number, 'null'], description: Station zone radius at the 10 deg mask; null for tdrs }

@@ -8,8 +8,10 @@
 Що нового у версії 2 (D78–D85, `docs/development-plan.md`, розділ 5): три місії й поле
 `kind`; сьома категорія деталей `propulsion` і пам'ять комп'ютера; поля місії на МКС у
 `Design`; паливо, час життя орбіти й зближення в `evaluate`; висота, паливо, траса й сеанси
-в `simulate`; джерело подій (DONKI чи seed); формули балів і схожа місія у звіті. Перелік
-кодів повідомлень — у кінці файлу.
+в `simulate`; джерело подій (DONKI чи seed); формули балів і схожа місія у звіті. Ролі й blueprint (D92–D95): клас корпусу й
+обтічника (`busSize`, `maxBusSize`), сторони деталей (`Design.layout`), запас маси
+(`massReservePct`), розрахункові листи (`evaluate.calc`) і смужка витка
+(`evaluate.orbitStrip`), таблиця власників рішень. Перелік кодів повідомлень — у кінці файлу.
 
 ## Загальні правила
 
@@ -98,7 +100,7 @@
   "titleCode": "mission.satOrbit.title",
   "briefingCode": "mission.satOrbit.briefing",
   "goal": { "dataGb": 500, "operationMonths": 12 },
-  "limits": { "budgetK": 450, "launchDeadlineMonth": 18 },
+  "limits": { "budgetK": 450, "launchDeadlineMonth": 18, "massReserveRecommendedPct": 30 },
   "timing": {
     "buildMonths": { "basic": 3, "medium": 5, "best": 8 },
     "integrationMonths": 4,
@@ -121,6 +123,9 @@
 Числа — з `docs/catalogs.md` (D55, D56, D66), для МКС — `docs/catalogs-iss.md` (017), для
 CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `catalogs` присутні завжди;
 непотрібні місії — порожні (`launchSites` і `cargoCategories` заповнені лише для `iss`).
+
+`limits.massReserveRecommendedPct` (D93) — рекомендований запас маси для ранньої фази
+проєкту за правилами NASA; число й документ — задача 026 (у прикладі — заглушка).
 
 #### Ціль — `goal`
 
@@ -169,6 +174,7 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
   "id": "small", "nameCode": "launch.small", "priceK": 250,
   "capacityKg": { "leo": 450, "sso": 300 },
   "fixedOrbitId": null,
+  "maxBusSize": "large",
   "source": {…}
 }
 ```
@@ -177,6 +183,10 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 носій не виводить. У `rideshare` — `"fixedOrbitId": "sso"` і `capacityKg: { "sso": 200 }`.
 Для місії `iss` ключ `capacityKg` — `iss`: маса на орбіту виведення в площині МКС; вплив
 широти космодрому й висоти виведення рахує бекенд.
+
+`maxBusSize` (D93) — найбільший клас корпусу, що вміщується в обтічник носія: `small` ·
+`medium` · `large`. Попутний запуск (`rideshare`) бере лише `small` і `medium`; більший
+корпус дає перевірку `check.launch.busTooLarge`. Класи носіїв — задачі 016, 017.
 
 #### `Part`
 
@@ -194,7 +204,7 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 
 | Категорія | Ідентифікатори місії 1 | `specs` |
 | --- | --- | --- |
-| `bus` | `bus-s`, `bus-m`, `bus-l` | `maxMassKg`, `slots`, `dragAreaM2` |
+| `bus` | `bus-s`, `bus-m`, `bus-l` | `maxMassKg`, `slots`, `dragAreaM2`, `busSize` |
 | `solar` | `solar-body`, `solar-deploy`, `solar-roll` | `powerW` |
 | `battery` | `bat-s`, `bat-m`, `bat-l` | `capacityWh` |
 | `radio` | `radio-uhf`, `radio-s`, `radio-x` | `rateKbps`, `band` |
@@ -205,7 +215,10 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 - `rateKbps` — паспортна швидкість на опорній відстані 1000 км (D80); `band` — `uhf` · `s`
   · `x`.
 - `storageGb` — бортова пам'ять (розділ 2.7 плану; оцінка: простий 32, потужний 512).
-- `dragAreaM2` — площа поперечного перерізу для гальмування (розділ 2.8 плану).
+- `dragAreaM2` — площа поперечного перерізу для гальмування (розділ 2.8 плану); розкладені
+  панелі додають свою площу — це рахує бекенд (D93).
+- `busSize` — клас корпусу для перевірки обтічника (D93): `small` · `medium` · `large`
+  (`bus-s` · `bus-m` · `bus-l`).
 - Двигун (D81): `ispS` — питомий імпульс; `thrustN` — тяга; `propellantKg` — паливо в
   баку, входить у масу на старті поверх `massKg` (суха маса); `powerW` — споживання під час
   роботи (лише `prop-elec`, в інших `0`). У `prop-none` усі чотири — `0`. Числа — задача 016.
@@ -327,6 +340,57 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
   - `relay` — `true`: зв'язок через ретранслятори TDRS (Near Space Network) — безперервний,
     але платний; `false` — лише наземні станції з `groundStationIds`.
 
+#### Складніша версія: `layout` і `massReservePct` (D93)
+
+Лише у `version: "advanced"`; у `simple` обидва поля відсутні або `null` — розміщення й
+запас автоматичні (бекенд ставить кожну деталь на правильну сторону й бере
+`limits.massReserveRecommendedPct`).
+
+```json
+{
+  "missionId": "sat-orbit",
+  "version": "advanced",
+  "orbit": { "altitudeKm": 650, "inclinationDeg": 98 },
+  "launchId": "small",
+  "parts": { "bus": "bus-m", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-x",
+             "computer": "cpu-power", "adcs": "adcs-fine", "propulsion": "prop-chem" },
+  "instrumentIds": ["camera"],
+  "groundStationIds": ["fairbanks"],
+  "layout": { "camera": "earth", "radio": "earth", "adcs": "space", "solar": "sun" },
+  "massReservePct": 20
+}
+```
+
+- `layout` — сторона корпусу для деталі: ключ — категорія деталі з `parts` (крім `bus`) або
+  id інструмента з `instrumentIds`; значення — `earth` (до Землі) · `space` (у космос) ·
+  `sun` (до Сонця) · `inside` (всередині). Не вказана деталь стає на правильну сторону
+  автоматично. Не та сторона — наслідок у фізиці й перевірка `check.space.wrongSide`:
+  інструмент не знімає, антена втрачає частину сеансу, панель дає менше енергії. Правильні
+  сторони й частки втрат — задача 004 (документи NASA, D89, або позначені оцінки, D51).
+- `massReservePct` — запас маси на непередбачене, 0–50 %; `null` — рекомендований із
+  `limits`. Маса із запасом (`resources.mass.withReserveKg`) порівнюється з
+  вантажопідйомністю носія; запас нижче рекомендованого — `check.space.massReserveLow`.
+
+#### Хто власник рішення (D92)
+
+Кожне поле `Design` має рівно одного власника-роль. Фронтенд показує його в консолі цієї
+ролі, а коментар ролі (`comments[].role`) говорить про рішення свого власника або про
+ресурс, за який вона відповідає.
+
+| Поле `Design` | Роль-власник |
+| --- | --- |
+| `orbit`, `launchId`, `groundStationIds`, `launchSiteId`, `insertionAltitudeKm`, `relay` | `planner` |
+| `instrumentIds`, `cargo` | `scientist` |
+| `parts.solar`, `parts.battery`, `parts.radio`, `parts.computer`, `parts.adcs`, `parts.propulsion` | `engineer` |
+| `parts.bus`, `layout`, `massReservePct` | `designer` |
+
+| Ресурс | Відповідає |
+| --- | --- |
+| `mass` | `designer` |
+| `power` | `engineer` |
+| `budget`, `comms`, `time` | `planner` |
+| `data` | `scientist` |
+
 ---
 
 ### `POST /api/evaluate`
@@ -345,7 +409,8 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
     "lifetimeYears": 120, "disposalYears": 18
   },
   "resources": {
-    "mass":   { "usedKg": 52.2, "busMaxKg": 150, "launchCapacityKg": 300, "slotsUsed": 8, "slots": 12 },
+    "mass":   { "usedKg": 52.2, "busMaxKg": 150, "launchCapacityKg": 300, "slotsUsed": 8, "slots": 12,
+                "reservePct": 30, "reserveKg": 15.7, "withReserveKg": 67.9, "recommendedReservePct": 30 },
     "power":  { "generationW": 135, "averageGenerationW": 86.4, "averageConsumptionW": 83, "eclipseNeedWh": 49.2, "batteryWh": 150 },
     "budget": { "usedK": 541, "limitK": 450 },
     "data":   { "generatedGbPerDay": 432, "downlinkGbPerDay": 30, "storageGb": 512, "expectedTotalGb": 10950, "goalGb": 500 },
@@ -355,6 +420,27 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
     "cargo": null
   },
   "rendezvous": null,
+  "layout": { "solar": "sun", "battery": "inside", "radio": "earth", "computer": "inside",
+              "adcs": "space", "propulsion": "space", "camera": "earth" },
+  "orbitStrip": {
+    "periodMin": 98.7,
+    "eclipse": { "startMin": 31.6, "endMin": 67.1 },
+    "contacts": [ { "stationId": "fairbanks", "startMin": 70.2, "endMin": 79.6 } ]
+  },
+  "calc": [
+    {
+      "code": "calc.power.eclipseBattery", "resource": "power",
+      "formula": "E_ecl = P_ecl · T · f",
+      "inputs": [
+        { "name": "P_ecl", "value": 29.9, "unit": "W" },
+        { "name": "T", "value": 98.7, "unit": "min" },
+        { "name": "f", "value": 0.36, "unit": "" }
+      ],
+      "result": { "name": "E_ecl", "value": 49.2, "unit": "Wh" },
+      "summary": { "code": "calc.power.eclipseBattery.summary", "params": { "eclipsePct": 36, "neededWh": 49.2 } },
+      "source": { "kind": "nasa", "note": "SmallSat State-of-the-Art, Power (сторінка — задача 026)", "url": null }
+    }
+  ],
   "checks": [
     { "segment": "mission", "status": "fail", "code": "check.mission.overBudget",  "params": { "usedK": 541, "limitK": 450 } },
     { "segment": "launch",  "status": "ok",   "code": "check.launch.capacity",     "params": { "massKg": 52.2, "capacityKg": 300 } },
@@ -417,6 +503,25 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 - `severity`: `info` · `warn`.
 - `advice` є лише у версії `simple`; у `advanced` — `null` (D48).
 - Числа в прикладі округлені; точні рахує бекенд.
+- `resources.mass` (D93): `usedKg` — суха маса деталей, інструментів і палива;
+  `reservePct` — запас із `Design.massReservePct` або рекомендований; `reserveKg` і
+  `withReserveKg` — запас і маса з ним, яку перевіряють проти `launchCapacityKg`;
+  `recommendedReservePct` — з `limits`.
+- `layout` — фактичні сторони всіх деталей і інструментів після автоматичного розміщення
+  (у `simple` — повністю автоматичні). Ключі й значення — як у `Design.layout`.
+- `orbitStrip` — один виток для смужки «світло й тінь, сеанси» (D94, розділ 3 пропозиції):
+  `eclipse` — тінь у хвилинах від початку витка (найгірший випадок β = 0, як у всьому
+  `evaluate`), `null` — тіні немає; `contacts` — сеанси зі станціями на витку з найдовшим
+  зв'язком за типову добу (для `iss` з `relay` — один сеанс на весь виток, `stationId`
+  `tdrs`). Порожній — сеансів немає.
+- `calc` — розрахункові листи (D94), по одному на кожну формулу, що дала число в
+  `resources`, `orbit` чи `rendezvous`: `code` — з переліку `calc.*`; `resource` —
+  `mass` · `power` · `budget` · `data` · `comms` · `time` · `orbit` · `propellant` ·
+  `rendezvous`; `formula` — запис формули з позначеннями `inputs`; `inputs` і `result` —
+  підставлені числа з одиницями (`unit` — текст позначення, порожній для безрозмірних);
+  `summary` — один рядок пояснення для простішої версії; `source` — документ NASA з
+  розділом або сторінкою (D89). Порядок — за ресурсами, як у панелі. Фронтенд показує лист
+  повністю у складнішій версії й лише `summary` — у простішій.
 
 ### `POST /api/simulate`
 
@@ -617,12 +722,15 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 | `check.launch.overCapacity` | launch | `massKg`, `capacityKg` |
 | `check.launch.orbitUnreachable` | launch | `launchId`, `orbitId` |
 | `check.launch.siteInclination` **v2** | launch | `latitudeDeg`, `targetInclinationDeg`, `planeChangeDeltaVms` |
+| `check.launch.busTooLarge` **v2** | launch | `busSize`, `maxBusSize` |
 | `check.space.busOverMass` | space | `massKg`, `busMaxKg` |
 | `check.space.slots` | space | `slotsUsed`, `slots` |
 | `check.space.powerMargin` | space | `marginPct` |
 | `check.space.powerDeficit` | space | `marginPct` |
 | `check.space.batteryShort` | space | `neededWh`, `capacityWh` |
 | `check.space.missingRequirement` | space | `partId`, `requiredPartId` |
+| `check.space.wrongSide` **v2** | space | `partId`, `side`, `expectedSide` |
+| `check.space.massReserveLow` **v2** | space | `reservePct`, `recommendedPct` |
 | `check.space.propellantMargin` **v2** | space | `neededKg`, `capacityKg` |
 | `check.space.propellantShort` **v2** | space | `neededKg`, `capacityKg` |
 | `check.space.orbitDecay` **v2** | space | `lifetimeYears`, `operationYears` |
@@ -657,12 +765,41 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 | `comment.engineer.electricPropulsionPower` **v2** | `advice.engineer.biggerPanels` | `powerW` |
 | `comment.designer.overMass` | `advice.designer.lighterParts` | `massKg`, `limitKg` |
 | `comment.designer.noSlots` | `advice.designer.biggerBus` | `slotsUsed`, `slots` |
-| `comment.designer.storageSmall` **v2** | `advice.designer.biggerStorage` | `storageGb`, `backlogGbPerDay` |
+| `comment.engineer.storageSmall` **v2** | `advice.engineer.biggerStorage` | `storageGb`, `backlogGbPerDay` |
 | `comment.designer.propellantMass` **v2** | `advice.designer.lowerInsertion` | `propellantKg`, `capacityKg` |
+| `comment.designer.busTooLarge` **v2** | `advice.designer.smallerBusOrLaunch` | `busSize`, `maxBusSize` |
+| `comment.designer.wrongSide` **v2** | `advice.designer.turnPart` | `partId`, `side`, `expectedSide` |
+| `comment.designer.massReserveLow` **v2** | `advice.designer.raiseReserve` | `reservePct`, `recommendedPct` |
 | `comment.scientist.dataBacklog` | `advice.scientist.fasterRadioOrStations` | `generatedGbPerDay`, `downlinkGbPerDay` |
 | `comment.scientist.goalMissed` | `advice.scientist.betterInstrument` | `expectedGb`, `goalGb` |
 | `comment.scientist.scienceCargoLow` **v2** | `advice.scientist.moreScienceCargo` | `sciencePct`, `scienceMinPct` |
 | `comment.scientist.bandMismatch` **v2** | `advice.scientist.matchStationBand` | `band` |
+
+Пам'ять (`storageSmall`) — коментар Інженера: комп'ютер належить йому (D92).
+
+### Розрахункові листи — `calc.*` **v2**
+
+Кожен код має пару `<код>.summary` — рядок для простішої версії з тими самими `params`,
+що вказані тут. Формули — розділ 2 плану; джерела NASA — задача 026.
+
+| Код | `resource` | `params` у `summary` |
+| --- | --- | --- |
+| `calc.mass.total` | mass | `usedKg`, `reservePct`, `withReserveKg`, `capacityKg` |
+| `calc.power.balance` | power | `averageGenerationW`, `averageConsumptionW`, `marginPct` |
+| `calc.power.eclipseBattery` | power | `eclipsePct`, `neededWh` |
+| `calc.budget.total` | budget | `usedK`, `limitK` |
+| `calc.data.generated` | data | `generatedGbPerDay` |
+| `calc.data.downlink` | data | `rateKbps`, `distanceKm`, `downlinkGbPerDay` |
+| `calc.comms.contacts` | comms | `contactsPerDay`, `contactMinutesPerDay` |
+| `calc.time.ready` | time | `buildMonths`, `integrationMonths`, `readyMonth`, `launchMonth` |
+| `calc.orbit.period` | orbit | `altitudeKm`, `periodMin`, `speedKmS` |
+| `calc.orbit.eclipse` | orbit | `altitudeKm`, `eclipsePct` |
+| `calc.orbit.lifetime` | orbit | `altitudeKm`, `lifetimeYears` |
+| `calc.orbit.disposal` | orbit | `disposalYears`, `limitYears` |
+| `calc.propellant.rocketEquation` | propellant | `deltaVms`, `ispS`, `neededKg` |
+| `calc.rendezvous.hohmann` | rendezvous | `fromKm`, `toKm`, `deltaVms` |
+| `calc.rendezvous.phasing` | rendezvous | `degPerOrbit`, `phasingDays` |
+| `calc.rendezvous.planeChange` | rendezvous | `deltaInclinationDeg`, `deltaVms` |
 
 ### Ланцюжки — `chain.*`
 
@@ -733,3 +870,6 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 | `design.insertionAltitudeOutOfRange` **v2** | `insertionAltitudeKm` поза межами з каталогу |
 | `design.issFieldRequired` **v2** | для `iss` немає `launchSiteId`, `insertionAltitudeKm`, `cargo` чи `relay` |
 | `design.issFieldNotAllowed` **v2** | ці поля прийшли в місії іншого `kind` |
+| `design.advancedFieldNotAllowed` **v2** | `layout` чи `massReservePct` у версії `simple` |
+| `design.unknownLayoutKey` **v2** | ключ `layout` — не категорія з `parts` (крім `bus`) і не id з `instrumentIds` |
+| `design.massReserveOutOfRange` **v2** | `massReservePct` поза 0–50 |
