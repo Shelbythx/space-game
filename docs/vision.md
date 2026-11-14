@@ -137,17 +137,21 @@ CubeSat 101) як перше завдання-навчання.
 | Структура місії, сегменти, ролі | Design and Develop a Science Mission |
 | Етапи циклу | Concept Maturity Levels, Mission Design Lab |
 | Дані про планету на екрані вимог | Planetary Fact Sheets |
+| Каталог деталей блюпринту | State-of-the-Art of Small Spacecraft Technology |
 | Каталог носіїв, перевірка маси | Launch Services Program |
-| Типи орбіт | GMAT, JPL Horizons |
+| Наземні станції | Near Space Network |
+| Місія на МКС: орбіта й вантаж | ISS trajectory data, огляди Commercial Resupply |
+| Типи орбіт | Catalog of Earth Satellite Orbits, GMAT |
 | Деталі в блюпринті, сцени зльоту й космосу | NASA 3D Resources |
 | Магнітні бурі | DONKI (NASA Open APIs) |
-| Космічне сміття | Orbital Debris Program Office |
+| Космічне сміття | Orbital Debris Quarterly News |
+| Звуки зльоту й центру керування | Artemis Audio, Historical Sounds |
 | Рівень для початківців | CubeSat 101 |
 | Схожа реальна місія у звіті, фони | NASA Image and Video Library |
 | Прийом «цілі обмежують вибір» | Гра Webb: Build It Yourself |
 
-Перші три, CubeSat 101 і гра Webb — з вкладки Resources челенджу. Решта — кандидати, які
-ще треба перевірити (`resources.md`).
+Адреси й опис кожного джерела — у `resources.md`. Самі сторінки ще треба відкрити й
+перевірити вручну.
 
 ## Пріоритети розробки [агент]
 
