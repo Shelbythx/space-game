@@ -1,0 +1,522 @@
+openapi: 3.1.0
+info:
+  title: Space Mission Design Game API
+  version: 0.1.0
+  description: |
+    Machine-readable form of docs/api.md (D60). If they disagree, docs/api.md wins and this
+    file is fixed in the same task. Player-facing texts are message codes with params;
+    the frontend translates them.
+servers:
+  - url: http://localhost:5080
+    description: Local backend
+paths:
+  /api/health:
+    get:
+      operationId: getHealth
+      responses:
+        '200':
+          description: Server is up
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+  /api/missions:
+    get:
+      operationId: listMissions
+      responses:
+        '200':
+          description: Missions
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/MissionSummary' }
+  /api/missions/{id}:
+    get:
+      operationId: getMission
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string }, example: sat-orbit }
+      responses:
+        '200':
+          description: Mission with goal, limits, timing and catalogs
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Mission' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /api/evaluate:
+    post:
+      operationId: evaluateDesign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Design' }
+      responses:
+        '200':
+          description: Instant consequences of the design
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Evaluation' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+  /api/simulate:
+    post:
+      operationId: simulateMission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SimulationRequest' }
+      responses:
+        '200':
+          description: Time series, events and report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SimulationResult' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+  /api/attempts:
+    post:
+      operationId: saveAttempt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AttemptRequest' }
+      responses:
+        '201':
+          description: Saved attempt
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AttemptSummary' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+    get:
+      operationId: listAttempts
+      parameters:
+        - { name: playerId, in: query, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: Newest first, at most 20
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/AttemptSummary' }
+  /api/attempts/{id}:
+    get:
+      operationId: getAttempt
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: Attempt with full result
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Attempt' }
+        '404': { $ref: '#/components/responses/Problem' }
+
+components:
+  responses:
+    Problem:
+      description: RFC 7807 problem
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    ValidationProblem:
+      description: Invalid request; errors map field paths to message codes
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+
+  schemas:
+    Problem:
+      type: object
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        errors:
+          type: object
+          additionalProperties: { type: array, items: { type: string } }
+
+    Segment: { type: string, enum: [launch, space, ground, user] }
+    CheckSegment: { type: string, enum: [launch, space, ground, user, mission] }
+    Status: { type: string, enum: [ok, warn, fail] }
+    Role: { type: string, enum: [engineer, designer, planner, scientist] }
+    ResourceKind: { type: string, enum: [mass, power, budget, data, comms, time] }
+    Tier: { type: string, enum: [basic, medium, best] }
+    PartCategory: { type: string, enum: [bus, solar, battery, radio, computer, adcs] }
+    Params:
+      type: object
+      additionalProperties: { oneOf: [{ type: number }, { type: string }] }
+
+    Message:
+      type: object
+      required: [code, params]
+      properties:
+        code: { type: string, example: comment.engineer.powerMarginLow }
+        params: { $ref: '#/components/schemas/Params' }
+
+    Source:
+      type: object
+      required: [kind]
+      properties:
+        kind: { type: string, enum: [nasa, nasaRetold, estimate, calculated] }
+        note: { type: [string, 'null'] }
+        url: { type: [string, 'null'] }
+
+    Health:
+      type: object
+      required: [status, version]
+      properties:
+        status: { type: string, enum: [ok] }
+        version: { type: string }
+
+    MissionSummary:
+      type: object
+      required: [id, titleCode, available]
+      properties:
+        id: { type: string }
+        titleCode: { type: string }
+        available: { type: boolean }
+
+    Orbit:
+      type: object
+      required: [id, nameCode, altitudeKm, inclinationDeg, source]
+      properties:
+        id: { type: string, enum: [leo, sso, meo, geo] }
+        nameCode: { type: string }
+        altitudeKm: { type: number }
+        inclinationDeg: { type: number }
+        source: { $ref: '#/components/schemas/Source' }
+
+    Launch:
+      type: object
+      required: [id, nameCode, priceK, capacityKg, fixedOrbitId, source]
+      properties:
+        id: { type: string, enum: [rideshare, small, medium] }
+        nameCode: { type: string }
+        priceK: { type: number }
+        capacityKg: { type: object, additionalProperties: { type: number } }
+        fixedOrbitId: { type: [string, 'null'] }
+        source: { $ref: '#/components/schemas/Source' }
+
+    Requirement:
+      type: object
+      required: [category, partId]
+      properties:
+        category: { $ref: '#/components/schemas/PartCategory' }
+        partId: { type: string }
+
+    Part:
+      type: object
+      required: [id, category, tier, nameCode, massKg, priceK, consumptionW, specs, requires, source]
+      properties:
+        id: { type: string }
+        category: { $ref: '#/components/schemas/PartCategory' }
+        tier: { $ref: '#/components/schemas/Tier' }
+        nameCode: { type: string }
+        massKg: { type: number }
+        priceK: { type: number }
+        consumptionW: { type: number }
+        specs:
+          type: object
+          properties:
+            maxMassKg: { type: number }
+            slots: { type: integer }
+            powerW: { type: number }
+            capacityWh: { type: number }
+            rateKbps: { type: number }
+            accuracyDeg: { type: number }
+        requires: { type: array, items: { $ref: '#/components/schemas/Requirement' } }
+        source: { $ref: '#/components/schemas/Source' }
+
+    Instrument:
+      type: object
+      required: [id, nameCode, tier, massKg, priceK, consumptionW, dataRateKbps, value, requires, source]
+      properties:
+        id: { type: string, enum: [magnetometer, radiometer, camera, radar] }
+        nameCode: { type: string }
+        tier: { $ref: '#/components/schemas/Tier' }
+        massKg: { type: number }
+        priceK: { type: number }
+        consumptionW: { type: number }
+        dataRateKbps: { type: number }
+        value: { type: string, enum: [low, medium, high, highest] }
+        requires: { type: array, items: { $ref: '#/components/schemas/Requirement' } }
+        source: { $ref: '#/components/schemas/Source' }
+
+    GroundStation:
+      type: object
+      required: [id, nameCode, latitudeDeg, bands, priceK, source]
+      properties:
+        id: { type: string, enum: [fairbanks, white-sands, guam] }
+        nameCode: { type: string }
+        latitudeDeg: { type: number }
+        bands: { type: array, items: { type: string, enum: [uhf, s, x] } }
+        priceK: { type: number }
+        source: { $ref: '#/components/schemas/Source' }
+
+    OrbitChoice:
+      oneOf:
+        - type: object
+          required: [presetId]
+          properties: { presetId: { type: string } }
+        - type: object
+          required: [altitudeKm, inclinationDeg]
+          properties:
+            altitudeKm: { type: number }
+            inclinationDeg: { type: number }
+
+    Design:
+      type: object
+      required: [missionId, version, orbit, launchId, parts, instrumentIds, groundStationIds]
+      properties:
+        missionId: { type: string }
+        version: { type: string, enum: [simple, advanced] }
+        orbit: { $ref: '#/components/schemas/OrbitChoice' }
+        launchId: { type: string }
+        parts:
+          type: object
+          required: [bus, solar, battery, radio, computer, adcs]
+          properties:
+            bus: { type: string }
+            solar: { type: string }
+            battery: { type: string }
+            radio: { type: string }
+            computer: { type: string }
+            adcs: { type: string }
+        instrumentIds: { type: array, items: { type: string } }
+        groundStationIds: { type: array, items: { type: string } }
+
+    Preset:
+      type: object
+      required: [id, nameCode, design]
+      properties:
+        id: { type: string }
+        nameCode: { type: string }
+        design: { $ref: '#/components/schemas/Design' }
+
+    Mission:
+      type: object
+      required: [id, titleCode, briefingCode, goal, limits, timing, catalogs, presets]
+      properties:
+        id: { type: string }
+        titleCode: { type: string }
+        briefingCode: { type: string }
+        goal:
+          type: object
+          required: [dataGb, operationMonths]
+          properties: { dataGb: { type: number }, operationMonths: { type: integer } }
+        limits:
+          type: object
+          required: [budgetK, launchDeadlineMonth]
+          properties: { budgetK: { type: number }, launchDeadlineMonth: { type: integer } }
+        timing:
+          type: object
+          required: [buildMonths, integrationMonths, rideshareMonths, launchLeadMonths]
+          properties:
+            buildMonths:
+              type: object
+              properties: { basic: { type: integer }, medium: { type: integer }, best: { type: integer } }
+            integrationMonths: { type: integer }
+            rideshareMonths: { type: array, items: { type: integer } }
+            launchLeadMonths: { type: object, additionalProperties: { type: integer } }
+        catalogs:
+          type: object
+          required: [orbits, launches, parts, instruments, groundStations]
+          properties:
+            orbits: { type: array, items: { $ref: '#/components/schemas/Orbit' } }
+            launches: { type: array, items: { $ref: '#/components/schemas/Launch' } }
+            parts: { type: array, items: { $ref: '#/components/schemas/Part' } }
+            instruments: { type: array, items: { $ref: '#/components/schemas/Instrument' } }
+            groundStations: { type: array, items: { $ref: '#/components/schemas/GroundStation' } }
+        presets: { type: array, items: { $ref: '#/components/schemas/Preset' } }
+
+    Check:
+      type: object
+      required: [segment, status, code, params]
+      properties:
+        segment: { $ref: '#/components/schemas/CheckSegment' }
+        status: { $ref: '#/components/schemas/Status' }
+        code: { type: string }
+        params: { $ref: '#/components/schemas/Params' }
+
+    RoleComment:
+      type: object
+      required: [role, severity, message, advice]
+      properties:
+        role: { $ref: '#/components/schemas/Role' }
+        severity: { type: string, enum: [info, warn] }
+        message: { $ref: '#/components/schemas/Message' }
+        advice:
+          description: Only in the simple version (D48); null in advanced
+          oneOf: [{ $ref: '#/components/schemas/Message' }, { type: 'null' }]
+
+    Evaluation:
+      type: object
+      required: [orbit, resources, checks, comments]
+      properties:
+        orbit:
+          type: object
+          required: [altitudeKm, inclinationDeg, periodMin, speedKmS, eclipseFraction]
+          properties:
+            altitudeKm: { type: number }
+            inclinationDeg: { type: number }
+            periodMin: { type: number }
+            speedKmS: { type: number }
+            eclipseFraction: { type: number }
+        resources:
+          type: object
+          required: [mass, power, budget, data, comms, time]
+          properties:
+            mass:
+              type: object
+              properties:
+                usedKg: { type: number }
+                busMaxKg: { type: number }
+                launchCapacityKg: { type: number }
+                slotsUsed: { type: integer }
+                slots: { type: integer }
+            power:
+              type: object
+              properties:
+                generationW: { type: number }
+                averageGenerationW: { type: number }
+                averageConsumptionW: { type: number }
+                eclipseNeedWh: { type: number }
+                batteryWh: { type: number }
+            budget:
+              type: object
+              properties: { usedK: { type: number }, limitK: { type: number } }
+            data:
+              type: object
+              properties:
+                generatedGbPerDay: { type: number }
+                downlinkGbPerDay: { type: number }
+                expectedTotalGb: { type: number }
+                goalGb: { type: number }
+            comms:
+              type: object
+              properties:
+                contactsPerDay: { type: number }
+                contactMinutesPerDay: { type: number }
+            time:
+              type: object
+              properties:
+                readyMonth: { type: integer }
+                launchMonth: { type: integer }
+                deadlineMonth: { type: integer }
+        checks: { type: array, items: { $ref: '#/components/schemas/Check' } }
+        comments: { type: array, items: { $ref: '#/components/schemas/RoleComment' } }
+
+    SimulationRequest:
+      type: object
+      required: [design]
+      properties:
+        design: { $ref: '#/components/schemas/Design' }
+        seed: { type: integer, format: int64 }
+
+    ChainLink:
+      type: object
+      required: [kind, code, params]
+      properties:
+        kind: { type: string, enum: [decision, physics, consequence] }
+        code: { type: string }
+        params: { $ref: '#/components/schemas/Params' }
+        formula: { type: string }
+
+    Report:
+      type: object
+      required: [success, scores, limits, segments, bottleneck]
+      properties:
+        success: { type: boolean }
+        scores:
+          type: object
+          required: [missionSuccess, scienceValue, resourceEfficiency, decisionQuality]
+          properties:
+            missionSuccess: { type: integer, minimum: 0, maximum: 100 }
+            scienceValue: { type: integer, minimum: 0, maximum: 100 }
+            resourceEfficiency: { type: integer, minimum: 0, maximum: 100 }
+            decisionQuality: { type: integer, minimum: 0, maximum: 100 }
+        limits:
+          type: array
+          items:
+            type: object
+            required: [status, code, params]
+            properties:
+              status: { $ref: '#/components/schemas/Status' }
+              code: { type: string }
+              params: { $ref: '#/components/schemas/Params' }
+        segments:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: object
+            required: [segment, status, chain]
+            properties:
+              segment: { $ref: '#/components/schemas/Segment' }
+              status: { $ref: '#/components/schemas/Status' }
+              chain: { type: array, items: { $ref: '#/components/schemas/ChainLink' } }
+        bottleneck:
+          type: object
+          required: [resource, code, params]
+          properties:
+            resource: { $ref: '#/components/schemas/ResourceKind' }
+            code: { type: string }
+            params: { $ref: '#/components/schemas/Params' }
+
+    MissionEvent:
+      type: object
+      required: [day, type, segment, message]
+      properties:
+        day: { type: integer }
+        type: { type: string, enum: [solarStorm, debris, failure] }
+        segment: { $ref: '#/components/schemas/Segment' }
+        message: { $ref: '#/components/schemas/Message' }
+
+    SimulationResult:
+      type: object
+      required: [seed, evaluation, timeline, events, report]
+      properties:
+        seed: { type: integer, format: int64 }
+        evaluation: { $ref: '#/components/schemas/Evaluation' }
+        timeline:
+          type: object
+          required: [stepDays, days, batteryMinPct, dataStoredGb, dataDeliveredGb]
+          properties:
+            stepDays: { type: integer }
+            days: { type: array, items: { type: integer } }
+            batteryMinPct: { type: array, items: { type: number } }
+            dataStoredGb: { type: array, items: { type: number } }
+            dataDeliveredGb: { type: array, items: { type: number } }
+        events: { type: array, items: { $ref: '#/components/schemas/MissionEvent' } }
+        report: { $ref: '#/components/schemas/Report' }
+
+    AttemptRequest:
+      type: object
+      required: [playerId, design, seed]
+      properties:
+        playerId: { type: string, format: uuid }
+        design: { $ref: '#/components/schemas/Design' }
+        seed: { type: integer, format: int64 }
+
+    AttemptSummary:
+      type: object
+      required: [id, createdAt, seed, success, scores, bottleneck]
+      properties:
+        id: { type: string, format: uuid }
+        createdAt: { type: string, format: date-time }
+        seed: { type: integer, format: int64 }
+        success: { type: boolean }
+        scores: { $ref: '#/components/schemas/Report/properties/scores' }
+        bottleneck: { $ref: '#/components/schemas/Report/properties/bottleneck' }
+
+    Attempt:
+      type: object
+      required: [id, createdAt, playerId, design, seed, result]
+      properties:
+        id: { type: string, format: uuid }
+        createdAt: { type: string, format: date-time }
+        playerId: { type: string, format: uuid }
+        design: { $ref: '#/components/schemas/Design' }
+        seed: { type: integer, format: int64 }
+        result: { $ref: '#/components/schemas/SimulationResult' }
