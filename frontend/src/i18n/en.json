@@ -29,7 +29,7 @@
     "fullscreenNone": "This browser has no fullscreen mode",
     "on": "On",
     "off": "Off",
-    "keys": "↑ ↓ or W S — move · Enter or E — select · Esc — back · M — sound · F — fullscreen",
+    "keys": "Arrows or W S — move · Enter or E — select · Esc — back · M — sound · F — fullscreen",
     "done": "Done"
   },
   "languageScreen": {

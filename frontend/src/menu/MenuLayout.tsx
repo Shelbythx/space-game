@@ -19,8 +19,11 @@ export function MenuLayout() {
         <Outlet />
       </div>
       <footer className="mm-footer">
-        <span>v{pkg.version} · NASA Space Apps 2026</span>
-        <span className="mm-server" role="status" title={t(`server.${server}`)}>
+        <span className="mm-nowrap">
+          v{pkg.version}
+          <span className="mm-footer-event"> · NASA Space Apps 2026</span>
+        </span>
+        <span className="mm-server mm-nowrap" role="status" title={t(`server.${server}`)}>
           <i className={`mm-dot mm-dot-${server}`} aria-hidden="true" />
           {t(`server.short.${server}`)}
         </span>
