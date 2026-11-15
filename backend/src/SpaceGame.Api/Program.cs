@@ -3,6 +3,7 @@ using SpaceGame.Api.Attempts;
 using SpaceGame.Api.Catalogs;
 using SpaceGame.Api.Data;
 using SpaceGame.Api.Endpoints;
+using SpaceGame.Api.Rooms;
 using SpaceGame.Api.Simulation;
 using SpaceGame.Api.SpaceWeather;
 
@@ -21,6 +22,7 @@ builder.Services.AddCatalogs();
 var hasDatabase = !string.IsNullOrWhiteSpace(connectionString);
 builder.Services.AddSpaceWeather(hasDatabase);
 builder.Services.AddAttempts(hasDatabase);
+builder.Services.AddRooms();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
@@ -50,6 +52,7 @@ app.MapMissionEndpoints();
 app.MapEvaluateEndpoints();
 app.MapSimulateEndpoints();
 app.MapAttemptEndpoints();
+app.MapRoomEndpoints();
 
 if (app.Configuration.GetValue("Database:MigrateOnStartup", false) && !string.IsNullOrWhiteSpace(connectionString))
 {
