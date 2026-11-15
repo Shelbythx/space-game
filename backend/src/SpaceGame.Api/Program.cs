@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SpaceGame.Api.Catalogs;
 using SpaceGame.Api.Data;
 using SpaceGame.Api.Endpoints;
+using SpaceGame.Api.Simulation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,7 @@ app.UseCors();
 app.MapOpenApi(); // /openapi/v1.json — з нього фронтенд генерує типи (docs/api.md)
 app.MapHealthEndpoints();
 app.MapMissionEndpoints();
+app.MapEvaluateEndpoints();
 
 if (app.Configuration.GetValue("Database:MigrateOnStartup", false) && !string.IsNullOrWhiteSpace(connectionString))
 {
