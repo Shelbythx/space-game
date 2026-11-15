@@ -93,7 +93,11 @@ async function withDemo<T>(real: () => Promise<T>, fake: () => Promise<T>): Prom
 
 export const api = {
   health: (timeoutMs?: number) => request<Health>('/api/health', { timeoutMs }),
-  missions: () => request<MissionSummary[]>('/api/missions'),
+  missions: () =>
+    withDemo(
+      () => request<MissionSummary[]>('/api/missions', { timeoutMs: 4000 }),
+      async () => (await import('./mock/catalog')).mockMissions,
+    ),
   mission: (id: string) =>
     withDemo(
       () => request<Mission>(`/api/missions/${encodeURIComponent(id)}`, { timeoutMs: 4000 }),

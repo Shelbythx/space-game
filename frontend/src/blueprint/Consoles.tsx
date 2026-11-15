@@ -18,6 +18,8 @@ interface Props {
   role: Role
   onRole: (role: Role) => void
   highlight: string | null
+  /** Concept stage shows only the planner console (task 008). */
+  roles?: Role[]
 }
 
 function SourceBadge({ source }: { source: Source }) {
@@ -93,7 +95,7 @@ function Card({
   )
 }
 
-export function Consoles({ mission, design, evaluation, actions, role, onRole, highlight }: Props) {
+export function Consoles({ mission, design, evaluation, actions, role, onRole, highlight, roles = ROLE_ORDER }: Props) {
   const { t, name, num } = useGameText()
   const cat = mission.catalogs
   const months = (tier: Part['tier']) => mission.timing.buildMonths[tier]
@@ -130,7 +132,7 @@ export function Consoles({ mission, design, evaluation, actions, role, onRole, h
   return (
     <div className="bp-consoles">
       <div className="bp-tabs" role="tablist" aria-label={t('bp.consoles')}>
-        {ROLE_ORDER.map((r) => (
+        {roles.map((r) => (
           <button
             key={r}
             type="button"

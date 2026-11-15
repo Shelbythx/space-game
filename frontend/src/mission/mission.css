@@ -1,0 +1,308 @@
+/* Mission flow (task 008): stage pages on the blueprint paper, mission choice and credits
+   in the menu's pixel style. */
+
+.flow-stage {
+  animation: flow-fade 220ms ease-out;
+}
+
+@keyframes flow-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-stage {
+    animation: none;
+  }
+}
+
+.bp-process a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bp-process a:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.bp-process li:hover {
+  border-color: var(--bp-line);
+}
+
+.flow-page {
+  max-width: 980px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.flow-page h2 {
+  font-size: 22px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.flow-lead {
+  margin: 0 0 6px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.flow-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 800px) {
+  .flow-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.flow-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background: var(--bp-panel);
+  border: 2px solid var(--bp-line-dim);
+  border-left: 6px solid var(--bp-line);
+}
+
+.flow-tile-label {
+  font-size: 13px;
+  color: var(--bp-ink-dim);
+}
+
+.flow-tile-value {
+  font-family: var(--mm-font);
+  font-size: 22px;
+}
+
+.flow-roles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .flow-roles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.flow-role {
+  padding: 8px 10px;
+  background: #0b1c33;
+  border: 2px solid #1d3b60;
+}
+
+.flow-role p {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.flow-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.flow-nav .mm-btn {
+  width: auto;
+  font-size: 18px;
+}
+
+.flow-nav-wrap {
+  justify-content: flex-start;
+}
+
+.flow-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 14px;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .flow-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.flow-facts dt {
+  font-size: 12px;
+  color: var(--bp-ink-dim);
+}
+
+.flow-facts dd {
+  margin: 0;
+  font-family: var(--bp-mono);
+  font-size: 16px;
+}
+
+.flow-verdict {
+  margin: 8px 0;
+  font-family: var(--mm-font);
+  font-size: 18px;
+  color: var(--bp-ok);
+}
+
+.flow-verdict-fail {
+  color: var(--bp-fail);
+}
+
+.flow-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- mission choice & credits (menu style) ---------- */
+
+.mm-note {
+  max-width: 560px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--mm-ink-dim);
+  text-shadow: 2px 2px 0 var(--mm-ink-shadow);
+}
+
+.flow-missions {
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .flow-missions {
+    grid-template-columns: minmax(0, 1fr);
+    width: min(480px, 100%);
+  }
+}
+
+.flow-mission {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background: rgba(8, 13, 24, 0.88);
+  border: 3px solid #000;
+  box-shadow:
+    inset 3px 3px 0 #2c3d5c,
+    inset -3px -3px 0 #070b14;
+}
+
+.flow-mission h3 {
+  margin: 0;
+  font-weight: 400;
+  font-size: 22px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.flow-mission p {
+  flex: 1;
+  margin: 0;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--mm-ink-dim);
+}
+
+.flow-mission .mm-row {
+  margin-top: 4px;
+}
+
+.flow-mission .mm-btn {
+  font-size: 17px;
+}
+
+.flow-mission-kind {
+  align-self: flex-start;
+  padding: 1px 8px;
+  font-size: 13px;
+  color: #08111f;
+  background: var(--mm-accent);
+}
+
+.flow-credits {
+  width: min(860px, 100%);
+  display: grid;
+  gap: 14px;
+}
+
+.flow-credits section {
+  padding: 14px;
+  background: rgba(8, 13, 24, 0.88);
+  border: 3px solid #000;
+}
+
+.flow-credits h3 {
+  margin: 0 0 8px;
+  font-weight: 400;
+  font-size: 19px;
+  text-transform: uppercase;
+}
+
+.flow-credits ul {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.flow-credits li {
+  display: grid;
+  gap: 2px;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.flow-credits strong {
+  font-weight: 500;
+  color: var(--mm-ink);
+}
+
+.flow-credits span {
+  color: var(--mm-ink-dim);
+}
+
+.flow-credits .mm-note {
+  text-align: left;
+  max-width: none;
+}
+
+.mm-footer-link {
+  margin-top: 4px;
+  min-height: 40px;
+  font-size: 16px;
+}
+
+/* The stage bar is a nav landmark here; it takes the header's process row. */
+.bp-header > nav {
+  grid-area: process;
+  min-width: 0;
+}
+
+/* Long document titles must wrap inside the screen width on phones. */
+.flow-credits,
+.flow-credits ul {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.flow-credits li {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

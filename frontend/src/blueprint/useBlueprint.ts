@@ -1,25 +1,13 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { api, demoMode } from '../api/client'
 import type { Design, Evaluation, GameVersion, Mission, OrbitChoice, PartCategory, Side } from '../api/types'
-import { readStorage, writeStorage } from '../lib/storage'
+import { loadDesign, saveDesign, startVersion } from '../mission/saves'
 
-// Blueprint state: the design the player edits, the mission catalog and the latest
-// evaluation from the backend (D59 — the frontend computes nothing itself).
+// Mission state shared by all stages (tasks 008, 009): the design the player edits, the
+// mission catalog and the latest evaluation from the backend (D59 — the frontend computes
+// nothing itself). The design is autosaved per mission.
 
-const MISSION_ID = 'sat-orbit'
-const STORAGE_KEY = 'smdg.blueprint.v1'
 const EVALUATE_DELAY_MS = 300
-
-function loadSaved(): Design | null {
-  const raw = readStorage(STORAGE_KEY)
-  if (!raw) return null
-  try {
-    const d = JSON.parse(raw) as Design
-    return d.missionId === MISSION_ID && d.parts && d.parts.propulsion ? d : null
-  } catch {
-    return null
-  }
-}
 
 /** Keeps a design inside the contract rules (docs/api.md «Design»). */
 function normalize(design: Design, mission: Mission): Design {
@@ -29,12 +17,20 @@ function normalize(design: Design, mission: Mission): Design {
   if (next.version === 'simple') {
     next.layout = null
     next.massReservePct = null
-    if (next.orbit && !('presetId' in next.orbit)) next.orbit = { presetId: 'sso' }
+    if (next.orbit && !('presetId' in next.orbit)) next.orbit = { presetId: mission.catalogs.orbits[0]?.id ?? 'sso' }
   }
   return next
 }
 
-export function useBlueprint() {
+function firstDesign(mission: Mission): Design {
+  const saved = loadDesign(mission.id)
+  if (saved) return saved
+  const preset =
+    mission.presets.find((p) => p.id === 'camera-small') ?? mission.presets[mission.presets.length - 1] ?? mission.presets[0]
+  return { ...preset.design, version: startVersion(mission.id) }
+}
+
+export function useBlueprint(missionId: string) {
   const [mission, setMission] = useState<Mission | null>(null)
   const [design, setDesign] = useState<Design | null>(null)
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null)
@@ -46,24 +42,21 @@ export function useBlueprint() {
   useEffect(() => {
     let cancelled = false
     api
-      .mission(MISSION_ID)
+      .mission(missionId)
       .then((m) => {
         if (cancelled) return
         setMission(m)
-        const saved = loadSaved()
-        const preset = m.presets.find((p) => p.id === 'camera-small') ?? m.presets[0]
-        const start = saved ?? { ...preset.design, version: preset.design.version ?? 'simple' }
-        setDesign(normalize(start, m))
+        setDesign(normalize(firstDesign(m), m))
       })
       .catch(() => !cancelled && setFailed(true))
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [missionId])
 
   useEffect(() => {
     if (!design || !mission) return
-    writeStorage(STORAGE_KEY, JSON.stringify(design))
+    saveDesign(design)
     const id = ++requestId.current
     const timer = window.setTimeout(() => {
       setEvaluating(true)
@@ -116,4 +109,5 @@ export function useBlueprint() {
   return { mission, design, evaluation, evaluating, failed, demo, actions }
 }
 
-export type BlueprintActions = ReturnType<typeof useBlueprint>['actions']
+export type BlueprintState = ReturnType<typeof useBlueprint>
+export type BlueprintActions = BlueprintState['actions']

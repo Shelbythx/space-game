@@ -22,7 +22,18 @@ function Cycle({ label, value, onPrev, onNext, disabled }: { label: string; valu
   )
 }
 
-export function SimpleControls({ mission, design, actions }: { mission: Mission; design: Design; actions: BlueprintActions }) {
+export function SimpleControls({
+  mission,
+  design,
+  actions,
+  only,
+}: {
+  mission: Mission
+  design: Design
+  actions: BlueprintActions
+  /** Concept stage shows only presets and the planner's choices (task 008). */
+  only?: 'planner'
+}) {
   const { t, name, num } = useGameText()
   const cat = mission.catalogs
   const step = <T,>(list: T[], current: number, delta: number) => list[(current + delta + list.length) % list.length]
@@ -90,6 +101,8 @@ export function SimpleControls({ mission, design, actions }: { mission: Mission;
         </div>
       </section>
 
+      {only !== 'planner' && (
+        <>
       <section className="bp-group">
         <h3>
           {t('role.engineer')} · {t('role.designer')}
@@ -125,6 +138,8 @@ export function SimpleControls({ mission, design, actions }: { mission: Mission;
           ))}
         </div>
       </section>
+        </>
+      )}
     </div>
   )
 }

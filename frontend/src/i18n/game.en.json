@@ -2,8 +2,18 @@
   "bp": {
     "title": "Spacecraft blueprint",
     "back": "Menu",
-    "stage": { "goal": "Goal", "concept": "Concept", "design": "Design", "flight": "Flight", "report": "Report" },
-    "version": { "label": "Version", "simple": "Simple", "advanced": "Advanced" },
+    "stage": {
+      "goal": "Goal",
+      "concept": "Concept",
+      "design": "Design",
+      "flight": "Flight",
+      "report": "Report"
+    },
+    "version": {
+      "label": "Version",
+      "simple": "Simple",
+      "advanced": "Advanced"
+    },
     "demo": "Demo calculation — the mission server is offline",
     "demoHint": "Numbers are approximate until the backend (task 004) is connected.",
     "loading": "Loading the catalog…",
@@ -63,32 +73,130 @@
       "time": "launch month {{launch}} of {{deadline}}"
     }
   },
-  "role": { "planner": "Planner", "engineer": "Engineer", "scientist": "Scientist", "designer": "Designer" },
-  "resource": { "mass": "Mass", "power": "Power", "budget": "Budget", "data": "Data", "comms": "Comms", "time": "Time", "orbit": "Orbit", "propellant": "Propellant", "rendezvous": "Rendezvous" },
-  "side": { "earth": "to Earth", "space": "to space", "sun": "to the Sun", "inside": "inside" },
-  "busSize": { "small": "small", "medium": "medium", "large": "large" },
-  "tier": { "basic": "basic", "medium": "medium", "best": "best" },
-  "segment": { "mission": "Mission", "launch": "Launch", "space": "Space", "ground": "Ground", "user": "User" },
+  "role": {
+    "planner": "Planner",
+    "engineer": "Engineer",
+    "scientist": "Scientist",
+    "designer": "Designer"
+  },
+  "resource": {
+    "mass": "Mass",
+    "power": "Power",
+    "budget": "Budget",
+    "data": "Data",
+    "comms": "Comms",
+    "time": "Time",
+    "orbit": "Orbit",
+    "propellant": "Propellant",
+    "rendezvous": "Rendezvous"
+  },
+  "side": {
+    "earth": "to Earth",
+    "space": "to space",
+    "sun": "to the Sun",
+    "inside": "inside"
+  },
+  "busSize": {
+    "small": "small",
+    "medium": "medium",
+    "large": "large"
+  },
+  "tier": {
+    "basic": "basic",
+    "medium": "medium",
+    "best": "best"
+  },
+  "segment": {
+    "mission": "Mission",
+    "launch": "Launch",
+    "space": "Space",
+    "ground": "Ground",
+    "user": "User"
+  },
   "category": {
-    "bus": "Bus", "solar": "Solar arrays", "battery": "Battery", "radio": "Radio", "computer": "Computer",
-    "adcs": "Attitude control", "propulsion": "Propulsion", "instruments": "Instruments", "stations": "Ground stations",
-    "orbit": "Orbit", "launch": "Launch"
+    "bus": "Bus",
+    "solar": "Solar arrays",
+    "battery": "Battery",
+    "radio": "Radio",
+    "computer": "Computer",
+    "adcs": "Attitude control",
+    "propulsion": "Propulsion",
+    "instruments": "Instruments",
+    "stations": "Ground stations",
+    "orbit": "Orbit",
+    "launch": "Launch"
   },
-  "mission": { "satOrbit": { "title": "Satellite to orbit", "briefing": "Deliver 500 GB of Earth images in 12 months on a 450 k budget, launching within 18 months." } },
-  "orbit": { "leo": "Low orbit 500 km", "sso": "Sun-synchronous 705 km", "meo": "Medium orbit 20 200 km", "geo": "Geostationary 35 786 km" },
-  "launch": { "rideshare": "Rideshare", "small": "Small launcher", "medium": "Medium launcher" },
+  "mission": {
+    "satOrbit": {
+      "title": "Satellite to orbit",
+      "briefing": "Deliver 500 GB of Earth images in 12 months on a 450 k budget, launching within 18 months."
+    },
+    "cubesatLearn": {
+      "title": "First CubeSat",
+      "briefing": "Training: a small satellite released from the ISS must send 2 GB of measurements in 6 months on a 150 k budget."
+    },
+    "issCargo": {
+      "title": "Cargo to the ISS",
+      "briefing": "Deliver cargo to the International Space Station on time: launch site, insertion orbit, rendezvous and docking."
+    }
+  },
+  "orbit": {
+    "leo": "Low orbit 500 km",
+    "sso": "Sun-synchronous 705 km",
+    "meo": "Medium orbit 20 200 km",
+    "geo": "Geostationary 35 786 km",
+    "issDeploy": "Release from the ISS 415 km",
+    "iss": "ISS orbit 418 km"
+  },
+  "launch": {
+    "rideshare": "Rideshare",
+    "small": "Small launcher",
+    "medium": "Medium launcher",
+    "issDeploy": "Delivery to the ISS",
+    "heavy": "Heavy launcher"
+  },
   "part": {
-    "busS": "Small bus", "busM": "Medium bus", "busL": "Large bus",
-    "solarBody": "Body-mounted panels", "solarDeploy": "Deployable panels", "solarRoll": "Roll-out array",
-    "batS": "Small battery", "batM": "Medium battery", "batL": "Large battery",
-    "radioUhf": "UHF radio", "radioS": "S-band radio", "radioX": "X-band radio",
-    "cpuBasic": "Simple computer", "cpuPower": "Powerful computer",
-    "adcsBasic": "Basic attitude control", "adcsFine": "Fine attitude control",
-    "propNone": "No engine", "propCold": "Cold gas", "propChem": "Chemical (green monoprop)", "propElec": "Electric (ion)"
+    "busS": "Small bus",
+    "busM": "Medium bus",
+    "busL": "Large bus",
+    "solarBody": "Body-mounted panels",
+    "solarDeploy": "Deployable panels",
+    "solarRoll": "Roll-out array",
+    "batS": "Small battery",
+    "batM": "Medium battery",
+    "batL": "Large battery",
+    "radioUhf": "UHF radio",
+    "radioS": "S-band radio",
+    "radioX": "X-band radio",
+    "cpuBasic": "Simple computer",
+    "cpuPower": "Powerful computer",
+    "adcsBasic": "Basic attitude control",
+    "adcsFine": "Fine attitude control",
+    "propNone": "No engine",
+    "propCold": "Cold gas",
+    "propChem": "Chemical (green monoprop)",
+    "propElec": "Electric (ion)"
   },
-  "instrument": { "magnetometer": "Magnetometer", "radiometer": "Microwave radiometer", "camera": "Multispectral camera", "radar": "Radar" },
-  "station": { "fairbanks": "Alaska (Fairbanks)", "whiteSands": "White Sands", "guam": "Guam" },
-  "preset": { "satOrbit": { "radiometerRideshare": "Radiometer on a rideshare", "cameraSmall": "Camera on a small launcher" } },
+  "instrument": {
+    "magnetometer": "Magnetometer",
+    "radiometer": "Microwave radiometer",
+    "camera": "Multispectral camera",
+    "radar": "Radar"
+  },
+  "station": {
+    "fairbanks": "Alaska (Fairbanks)",
+    "whiteSands": "White Sands",
+    "guam": "Guam"
+  },
+  "preset": {
+    "satOrbit": {
+      "radiometerRideshare": "Radiometer on a rideshare",
+      "cameraSmall": "Camera on a small launcher"
+    },
+    "cubesatLearn": {
+      "first": "First CubeSat"
+    }
+  },
   "check": {
     "mission": {
       "overBudget": "Budget exceeded: {{usedK}} k of {{limitK}} k",
@@ -167,30 +275,192 @@
     }
   },
   "advice": {
-    "planner": { "cheaperLaunchOrParts": "Pick a cheaper launch or simpler parts.", "simplerParts": "Simpler parts are built faster.", "groundOnly": "Try ground stations only.", "lowerLatitudeSite": "Launch from a site closer to the station's inclination." },
-    "engineer": { "biggerPanels": "Take bigger solar arrays.", "biggerBattery": "Take a bigger battery.", "addPropulsion": "Add an engine.", "biggerTankOrHigherIsp": "Take an engine with more propellant or higher Isp.", "biggerStorage": "Take the computer with more memory." },
-    "designer": { "lighterParts": "Lighter parts or a bigger bus.", "biggerBus": "Take a bigger bus.", "lowerInsertion": "Lower the insertion orbit.", "smallerBusOrLaunch": "A smaller bus or a bigger launcher.", "turnPart": "Turn the part to its working side.", "raiseReserve": "Raise the mass margin." },
-    "scientist": { "fasterRadioOrStations": "A faster radio or more stations.", "betterInstrument": "A better instrument or a faster radio.", "moreScienceCargo": "Load more science cargo.", "matchStationBand": "Choose stations with the radio's band." }
+    "planner": {
+      "cheaperLaunchOrParts": "Pick a cheaper launch or simpler parts.",
+      "simplerParts": "Simpler parts are built faster.",
+      "groundOnly": "Try ground stations only.",
+      "lowerLatitudeSite": "Launch from a site closer to the station's inclination."
+    },
+    "engineer": {
+      "biggerPanels": "Take bigger solar arrays.",
+      "biggerBattery": "Take a bigger battery.",
+      "addPropulsion": "Add an engine.",
+      "biggerTankOrHigherIsp": "Take an engine with more propellant or higher Isp.",
+      "biggerStorage": "Take the computer with more memory."
+    },
+    "designer": {
+      "lighterParts": "Lighter parts or a bigger bus.",
+      "biggerBus": "Take a bigger bus.",
+      "lowerInsertion": "Lower the insertion orbit.",
+      "smallerBusOrLaunch": "A smaller bus or a bigger launcher.",
+      "turnPart": "Turn the part to its working side.",
+      "raiseReserve": "Raise the mass margin."
+    },
+    "scientist": {
+      "fasterRadioOrStations": "A faster radio or more stations.",
+      "betterInstrument": "A better instrument or a faster radio.",
+      "moreScienceCargo": "Load more science cargo.",
+      "matchStationBand": "Choose stations with the radio's band."
+    }
   },
   "calc": {
-    "mass": { "total": { "title": "Mass with margin", "summary": "{{usedKg}} kg + {{reservePct}}% margin = {{withReserveKg}} kg; the launcher lifts {{capacityKg}} kg" } },
+    "mass": {
+      "total": {
+        "title": "Mass with margin",
+        "summary": "{{usedKg}} kg + {{reservePct}}% margin = {{withReserveKg}} kg; the launcher lifts {{capacityKg}} kg"
+      }
+    },
     "power": {
-      "balance": { "title": "Power balance", "summary": "On average {{averageGenerationW}} W in, {{averageConsumptionW}} W out → margin {{marginPct}}%" },
-      "eclipseBattery": { "title": "Battery for the shadow", "summary": "Shadow is {{eclipsePct}}% of the orbit → the battery must give {{neededWh}} Wh" }
+      "balance": {
+        "title": "Power balance",
+        "summary": "On average {{averageGenerationW}} W in, {{averageConsumptionW}} W out → margin {{marginPct}}%"
+      },
+      "eclipseBattery": {
+        "title": "Battery for the shadow",
+        "summary": "Shadow is {{eclipsePct}}% of the orbit → the battery must give {{neededWh}} Wh"
+      }
     },
-    "budget": { "total": { "title": "Budget", "summary": "Parts, instruments, stations and launch: {{usedK}} k of {{limitK}} k" } },
+    "budget": {
+      "total": {
+        "title": "Budget",
+        "summary": "Parts, instruments, stations and launch: {{usedK}} k of {{limitK}} k"
+      }
+    },
     "data": {
-      "generated": { "title": "Data collected", "summary": "Instruments collect {{generatedGbPerDay}} GB a day in sunlight" },
-      "downlink": { "title": "Data sent", "summary": "{{rateKbps}} kbps at {{distanceKm}} km → {{downlinkGbPerDay}} GB a day" }
+      "generated": {
+        "title": "Data collected",
+        "summary": "Instruments collect {{generatedGbPerDay}} GB a day in sunlight"
+      },
+      "downlink": {
+        "title": "Data sent",
+        "summary": "{{rateKbps}} kbps at {{distanceKm}} km → {{downlinkGbPerDay}} GB a day"
+      }
     },
-    "comms": { "contacts": { "title": "Contacts", "summary": "{{contactsPerDay}} passes a day, {{contactMinutesPerDay}} min of contact" } },
-    "time": { "ready": { "title": "Schedule", "summary": "Longest part {{buildMonths}} mo + integration {{integrationMonths}} mo = ready in month {{readyMonth}}, launch in month {{launchMonth}}" } },
+    "comms": {
+      "contacts": {
+        "title": "Contacts",
+        "summary": "{{contactsPerDay}} passes a day, {{contactMinutesPerDay}} min of contact"
+      }
+    },
+    "time": {
+      "ready": {
+        "title": "Schedule",
+        "summary": "Longest part {{buildMonths}} mo + integration {{integrationMonths}} mo = ready in month {{readyMonth}}, launch in month {{launchMonth}}"
+      }
+    },
     "orbit": {
-      "period": { "title": "Orbit period", "summary": "At {{altitudeKm}} km one orbit takes {{periodMin}} min at {{speedKmS}} km/s" },
-      "eclipse": { "title": "Earth's shadow", "summary": "At {{altitudeKm}} km shadow is {{eclipsePct}}% of the orbit" },
-      "lifetime": { "title": "Orbit lifetime", "summary": "At {{altitudeKm}} km the orbit lasts {{lifetimeYears}} yr" },
-      "disposal": { "title": "Disposal", "summary": "Leaves orbit in {{disposalYears}} yr (limit {{limitYears}})" }
+      "period": {
+        "title": "Orbit period",
+        "summary": "At {{altitudeKm}} km one orbit takes {{periodMin}} min at {{speedKmS}} km/s"
+      },
+      "eclipse": {
+        "title": "Earth's shadow",
+        "summary": "At {{altitudeKm}} km shadow is {{eclipsePct}}% of the orbit"
+      },
+      "lifetime": {
+        "title": "Orbit lifetime",
+        "summary": "At {{altitudeKm}} km the orbit lasts {{lifetimeYears}} yr"
+      },
+      "disposal": {
+        "title": "Disposal",
+        "summary": "Leaves orbit in {{disposalYears}} yr (limit {{limitYears}})"
+      }
     },
-    "propellant": { "rocketEquation": { "title": "Propellant", "summary": "Δv {{deltaVms}} m/s with Isp {{ispS}} s needs {{neededKg}} kg of propellant" } }
+    "propellant": {
+      "rocketEquation": {
+        "title": "Propellant",
+        "summary": "Δv {{deltaVms}} m/s with Isp {{ispS}} s needs {{neededKg}} kg of propellant"
+      }
+    }
+  },
+  "flow": {
+    "missions": "Missions",
+    "process": "NASA mission process",
+    "chooseMission": "Choose a mission",
+    "newGame": "New game",
+    "continue": "Continue",
+    "needsServer": "Needs the mission server — not available in the demo.",
+    "issSoon": "The cargo ship screen comes with task 024. Try the satellite mission for now.",
+    "loadFailed": "Could not load the mission. Check the server and reload.",
+    "creditsButton": "NASA sources",
+    "kind": {
+      "tutorial": "Training",
+      "orbit": "Mission 1",
+      "iss": "Mission 2"
+    },
+    "versionHint": {
+      "simple": "Simple: one screen, ready-made sets, roles give advice.",
+      "advanced": "Advanced: a console per role, every number and formula, roles state facts only."
+    },
+    "stageHint": {
+      "goal": "Stage 1 of 5 — the need, the end product and the limits.",
+      "concept": "Stage 2 of 5 — orbit, launcher and ground stations.",
+      "design": "Stage 3 of 5 — assemble the spacecraft inside the fairing.",
+      "flight": "Stage 4 of 5 — the mission in accelerated time.",
+      "report": "Stage 5 of 5 — what worked, what failed and why."
+    },
+    "goal": {
+      "title": "Goal and requirements",
+      "why": "NASA starts every mission from the end product and turns it into measurable requirements; each decision later is checked against them.",
+      "product": "End product",
+      "productValue": "{{gb}} GB in {{months}} months",
+      "budget": "Budget",
+      "deadline": "Launch no later than",
+      "deadlineValue": "month {{month}}",
+      "margin": "Mass margin (NASA)",
+      "sources": "Mass margin: GSFC-STD-1000 Gold Rules, Table 1.06-1 (Pre-Phase A).",
+      "rolesTitle": "Who decides what",
+      "conflict": "Resources are shared, so the roles pull in different directions — there is no single perfect design."
+    },
+    "roles": {
+      "planner": "Orbit, launcher and ground stations. Answers for budget, comms and schedule.",
+      "scientist": "Instruments. Answers for the data that reaches Earth.",
+      "engineer": "Solar arrays, battery, radio, computer, attitude control and engine. Answers for power.",
+      "designer": "The bus, which side each part faces and the mass margin. Answers for mass and the fit in the fairing."
+    },
+    "concept": {
+      "orbitFacts": "What this orbit means",
+      "altitude": "Altitude",
+      "inclination": "Inclination",
+      "period": "One orbit",
+      "speed": "Speed",
+      "shadow": "Shadow per orbit",
+      "lifetime": "Orbit lasts",
+      "years": "{{years}} yr",
+      "hint": "Higher orbits live longer and see stations longer, but the radio is weaker and launchers lift less."
+    },
+    "flight": {
+      "soon": "The flight on a map of the Earth comes with task 010. You can open the report already."
+    },
+    "report": {
+      "soon": "The full report with simulation, causal chains and scores comes with task 011. For now — the checks of your design.",
+      "ready": "No failed checks — the design is ready for launch.",
+      "notReady": "{{count}} checks failed:",
+      "back": "Back to any stage"
+    }
+  },
+  "credits": {
+    "title": "Credits",
+    "nasa": "NASA sources",
+    "team": "Team",
+    "music": "Music",
+    "fonts": "Fonts",
+    "ai": "AI",
+    "aiText": "Code and documents were written with Claude (Anthropic) agents under the team’s direction.",
+    "noLogo": "NASA logos and insignia are not used. Every formula and number in the game links to its NASA document.",
+    "use": {
+      "constants": "Earth constants: GM, radius, J2, rotation, solar constant",
+      "orbit": "Orbit period and speed, Hohmann transfer, plane change, J2 precession, sun-synchronous orbit, beta angle, shadow",
+      "gmat": "Orbital elements, shadow geometry, drag acceleration, ground track",
+      "glenn": "Drag force; rocket equation and specific impulse",
+      "atmosphere": "Air density by altitude",
+      "debris": "25-year disposal rule, collision probability limit",
+      "margins": "Mass, power and radio-link margins by project phase",
+      "parts": "Solar arrays, batteries, radios, computers, attitude control, engines",
+      "scores": "Mission success, trade studies and decision analysis behind the scores",
+      "stations": "Ground stations and elevation angles",
+      "battery": "Battery depth of discharge",
+      "donki": "Real geomagnetic storms during the flight"
+    }
   }
 }

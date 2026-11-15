@@ -1,4 +1,4 @@
-import type { Design, Instrument, Launch, Mission, Orbit, Part, Source } from '../types'
+import type { Design, Instrument, Launch, Mission, MissionSummary, Orbit, Part, Source } from '../types'
 
 // Demo copy of GET /api/missions/sat-orbit (contract v2), used only when the backend is
 // unreachable. Mirrors backend/src/SpaceGame.Api/Catalogs/MissionData.cs (task 003 + 029:
@@ -119,3 +119,10 @@ export const mockMission: Mission = {
     },
   ],
 }
+
+/** Demo list for GET /api/missions: without the server only the first mission can be played. */
+export const mockMissions: MissionSummary[] = [
+  { id: 'cubesat-learn', kind: 'tutorial', titleCode: 'mission.cubesatLearn.title', available: false },
+  { id: 'sat-orbit', kind: 'orbit', titleCode: 'mission.satOrbit.title', available: true },
+  { id: 'iss-cargo', kind: 'iss', titleCode: 'mission.issCargo.title', available: false },
+]

@@ -46,7 +46,7 @@ export function MainMenu() {
         <p className="mm-group" aria-hidden="true">
           {t('menu.scienceMode')}
         </p>
-        <PixelButton onClick={() => go('/blueprint')}>{t('menu.solo')}</PixelButton>
+        <PixelButton onClick={() => go('/missions')}>{t('menu.solo')}</PixelButton>
         <PixelButton onClick={() => openMode('coop')}>{t('menu.coop')}</PixelButton>
         <p className="mm-group" aria-hidden="true">
           {t('menu.arcadeMode')}
@@ -56,6 +56,9 @@ export function MainMenu() {
           <PixelButton onClick={() => go('/settings')}>{t('menu.settings')}</PixelButton>
           <PixelButton onClick={() => go('/language')}>{t('menu.language')}</PixelButton>
         </div>
+        <PixelButton className="mm-footer-link" onClick={() => go('/credits')}>
+          {t('flow.creditsButton')}
+        </PixelButton>
       </nav>
 
       <div className="mm-toast-slot" role="status" aria-live="polite">
