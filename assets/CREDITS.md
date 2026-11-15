@@ -21,6 +21,33 @@
 Gala». Це чужа комерційна музика — лише орієнтир звучання, використовувати її в грі не
 можна.
 
+## Зображення
+
+Задача 020. Усі файли — з [NASA Image and Video Library](https://images.nasa.gov/), стиснуті до
+≤ 300 КБ (довша сторона — 1600 пікселів). Умови — [NASA Images and Media Guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/):
+матеріали NASA зазвичай не захищені авторським правом у США; NASA треба вказати як джерело;
+використання не має натякати на схвалення NASA. У підписах цих фото немає позначок чужого
+авторського права. Людей на фото немає; логотипа NASA не видно (на `landsat9-atlas-v.jpg` —
+емблема ULA, на `iss-sunset.jpg` — напис на кораблі «Союз»).
+
+| Файл | Що на фото | NASA ID / джерело | Дата | Автор (credit) | Де в грі |
+| --- | --- | --- | --- | --- | --- |
+| `images/earth-blue-marble.jpg` | Blue Marble 2012 — Земля цілком | [GSFC_20171208_Archive_e001386](https://images.nasa.gov/details/GSFC_20171208_Archive_e001386) | 25.01.2012 | NASA | Брифінг, головне меню |
+| `images/earth-from-iss.jpg` | Нічна Земля з МКС | [iss045e013851](https://images.nasa.gov/details/iss045e013851) | 17.09.2015 | NASA | Фон польоту |
+| `images/iss-over-atlantic.jpg` | МКС над Атлантикою: панелі й маніпулятор | [iss073e0869068](https://images.nasa.gov/details/iss073e0869068) | 10.10.2025 | NASA | Місія на МКС |
+| `images/iss-sunset.jpg` | МКС на заході Сонця над Китаєм | [iss074e0089785](https://images.nasa.gov/details/iss074e0089785) | 25.01.2026 | NASA | Фон, звіт |
+| `images/iss-solar-arrays.jpg` | Сонячні панелі МКС у місячному світлі | [iss073e0039722](https://images.nasa.gov/details/iss073e0039722) | 23.04.2025 | NASA | Ресурс «енергія» |
+| `images/cygnus-approach.jpg` | Cygnus XL підходить до МКС | [iss073e0816140](https://images.nasa.gov/details/iss073e0816140) | 18.09.2025 | NASA | Корабель `ship-small` |
+| `images/dragon-approach.jpg` | Вантажний Dragon підходить до МКС (CRS-31) | [iss072e145206](https://images.nasa.gov/details/iss072e145206) | 05.11.2024 | NASA | Корабель `ship-pressurized` |
+| `images/antares-launch-wallops.jpg` | Старт Antares з майданчика 0A, Воллопс | [201304210010HQ](https://images.nasa.gov/details/201304210010HQ) | 21.04.2013 | NASA/Bill Ingalls | Носій `medium`, космодром Воллопс |
+| `images/falcon9-crs26-launch.jpg` | Старт Falcon 9 з Dragon (CRS-26), KSC | [KSC-20221126-PH-KLS01_0002](https://images.nasa.gov/details/KSC-20221126-PH-KLS01_0002) | 26.11.2022 | NASA/Kim Shiflett | Носій `heavy`, космодром Канаверал |
+| `images/landsat9-atlas-v.jpg` | Atlas V з Landsat 9 у башті обслуговування | [NHQ202109250005](https://images.nasa.gov/details/NHQ202109250005) | 25.09.2021 | NASA/Bill Ingalls | Місія 1, порівняння з Landsat 9 |
+| `images/cubesat-deploy.jpg` | Пускач CubeSat NanoRacks у модулі Kibo | [iss061e154749](https://images.nasa.gov/details/iss061e154749) | 04.02.2020 | NASA | Рівень CubeSat |
+| `images/aurora-from-iss.jpg` | Полярне сяйво з МКС | [iss072e159172](https://images.nasa.gov/details/iss072e159172) | 30.10.2024 | NASA | Подія «магнітна буря» (DONKI) |
+| `images/dsn-antenna.jpg` | 34-метрова антена DSS-53, Мадрид | [PIA25136](https://images.nasa.gov/details/PIA25136) | 16.03.2022 | NASA/JPL-Caltech | Наземні станції |
+
+Підпис у грі: «Photo: NASA» або «Photo: NASA/Bill Ingalls» тощо — за колонкою «Автор».
+
 ## Шрифти
 
 Підключені як npm-пакети Fontsource у `frontend/`, файлів у `assets/` немає.
