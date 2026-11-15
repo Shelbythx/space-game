@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next'
+import { useGameText } from '../blueprint/format'
+import { useReportText } from './reportText'
 import { REPORT_NS } from './i18n'
 import type { Params, PreviousAttempt, ReportData, ReportStage, ReportStatus, ScoreKey } from './types'
 import './report.css'
@@ -34,16 +36,19 @@ function scoreValue(score: number | { value: number }): number {
  */
 export function ReportView({ report, previous, onGoTo }: Props) {
   const { t, i18n } = useTranslation(REPORT_NS)
+  const { word } = useGameText()
+  // Params range from air density (~10⁻¹³ kg/m³) to thousands of GB: format them by size.
+  const { number } = useReportText()
 
   const format = (value: number) =>
     new Intl.NumberFormat(i18n.language, { maximumFractionDigits: Math.abs(value) < 10 ? 2 : 1 }).format(value)
 
-  /** Backend params with numbers in the reader's locale. */
+  /** Backend params with numbers in the reader's locale and catalog ids as names. */
   const words = (code: string, params: Params, override?: string) => {
     // `relay` comes as 0 or 1; it reads better as two sentences than as a number.
     const key = override ?? (code === 'chain.decision.relay' ? `${code}${Number(params.relay) ? 'On' : 'Off'}` : code)
     return t(key, {
-      ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, typeof v === 'number' ? format(v) : v])),
+      ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, typeof v === 'number' ? number(v) : word(k, String(v))])),
       defaultValue: code,
     })
   }
@@ -136,7 +141,8 @@ export function ReportView({ report, previous, onGoTo }: Props) {
                   <li key={`${link.code}-${index}`} className={`rp-link rp-link--${link.kind}`}>
                     <div className="rp-link__kind">{t(`kind.${link.kind}`)}</div>
                     <div className="rp-link__text">{words(link.code, link.params)}</div>
-                    {link.formula && <code className="rp-link__formula">{link.formula}</code>}
+                    {/* The backend sends «—» where a link has no formula (a plain count). */}
+                    {link.formula && link.formula !== '—' && <code className="rp-link__formula">{link.formula}</code>}
                   </li>
                 ))}
               </ol>

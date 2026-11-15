@@ -68,7 +68,7 @@
       "power": "{{use}} з {{gen}} Вт",
       "budget": "{{used}} з {{limit}} к",
       "data": "{{expected}} з {{goal}} ГБ",
-      "comms": "{{minutes}} хв/добу · {{contacts}} сеансів",
+      "comms": "{{minutes}} хв/добу · сеансів: {{contacts}}",
       "time": "старт на {{launch}}-му з {{deadline}} міс.",
       "cargo": "{{loaded}} з {{goal}} кг · наука {{science}}%",
       "commsRelay": "без перерв через TDRS"
@@ -349,7 +349,7 @@
     "comms": {
       "contacts": {
         "title": "Сеанси зв'язку",
-        "summary": "{{contactsPerDay}} сеансів на добу, {{contactMinutesPerDay}} хв зв'язку"
+        "summary": "{{contactMinutesPerDay}} хв зв'язку на добу, сеансів: {{contactsPerDay}}"
       }
     },
     "time": {
@@ -564,7 +564,7 @@
     "comms_docking": "Стикування забрало {{usedHours}} год із дозволених {{limitHours}} год."
   },
   "event": {
-    "solarStorm": "Магнітна буря, Kp {{kp}}: утрачено {{lostContacts}} сеансів зі станціями.",
+    "solarStorm": "Магнітна буря, Kp {{kp}}: утрачено сеансів зі станціями: {{lostContacts}}.",
     "solarStormComputerReset": "Буря Kp {{kp}} перезапустила комп'ютер: утрачено {{lostGb}} ГБ у пам'яті.",
     "debrisAvoidance": "Загроза сміття: маневр ухилення {{deltaVms}} м/с витратив {{propellantKg}} кг палива.",
     "debrisLoss": "Уламок космічного сміття влучив в апарат — без двигуна ухилитися не вдалося. Апарат утрачено.",
