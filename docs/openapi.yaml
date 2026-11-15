@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
   title: Space Mission Design Game API
-  version: 0.2.0
+  version: 0.2.2
   description: |
-    Machine-readable form of docs/api.md (D60), contract version 2 (task 015). If they
+    Machine-readable form of docs/api.md (D60), contract version 2.2 (task 015; co-op rooms — task 041, D109). If they
     disagree, docs/api.md wins and this file is fixed in the same task. Player-facing texts
     are message codes with params; the frontend translates them. Units are in field names.
   license:
@@ -22,6 +22,8 @@ tags:
     description: Instant evaluation and simulation of a design
   - name: attempts
     description: Saved attempts of an anonymous player
+  - name: rooms
+    description: Co-op rooms (v2.2, D109) — up to four players share one design by link
 paths:
   /api/health:
     get:
@@ -142,9 +144,145 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/Attempt' }
         '404': { $ref: '#/components/responses/Problem' }
+  /api/rooms:
+    post:
+      tags: [rooms]
+      summary: Create a room; the creator holds all four roles
+      operationId: createRoom
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateRoomRequest' }
+      responses:
+        '201': { $ref: '#/components/responses/RoomState' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /api/rooms/{code}:
+    get:
+      tags: [rooms]
+      summary: Room state; marks the player online. 204 if since equals revision
+      operationId: getRoom
+      parameters:
+        - { $ref: '#/components/parameters/RoomCode' }
+        - { name: playerId, in: query, required: false, schema: { type: string, format: uuid } }
+        - { name: since, in: query, required: false, schema: { type: integer } }
+      responses:
+        '200': { $ref: '#/components/responses/RoomState' }
+        '204': { description: Nothing changed since the given revision }
+        '404': { $ref: '#/components/responses/Problem' }
+  /api/rooms/{code}/join:
+    post:
+      tags: [rooms]
+      summary: Join, or re-join with the same playerId
+      operationId: joinRoom
+      parameters: [{ $ref: '#/components/parameters/RoomCode' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RoomPlayerRequest' }
+      responses:
+        '200': { $ref: '#/components/responses/RoomState' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /api/rooms/{code}/leave:
+    post:
+      tags: [rooms]
+      summary: Leave; the player's roles become free
+      operationId: leaveRoom
+      parameters: [{ $ref: '#/components/parameters/RoomCode' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RoomPlayerRequest' }
+      responses:
+        '200': { $ref: '#/components/responses/RoomState' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /api/rooms/{code}/roles/{role}:
+    put:
+      tags: [rooms]
+      summary: Give, free or take a role
+      operationId: assignRole
+      parameters:
+        - { $ref: '#/components/parameters/RoomCode' }
+        - { name: role, in: path, required: true, schema: { $ref: '#/components/schemas/Role' } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AssignRoleRequest' }
+      responses:
+        '200': { $ref: '#/components/responses/RoomState' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /api/rooms/{code}/design:
+    put:
+      tags: [rooms]
+      summary: Apply the fields of the player's roles from a full design
+      operationId: updateRoomDesign
+      parameters: [{ $ref: '#/components/parameters/RoomCode' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RoomDesignRequest' }
+      responses:
+        '200': { $ref: '#/components/responses/RoomState' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /api/rooms/{code}/launch:
+    post:
+      tags: [rooms]
+      summary: Launch the mission for everyone (any player, every role owned)
+      operationId: launchRoom
+      parameters: [{ $ref: '#/components/parameters/RoomCode' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RoomActionRequest' }
+      responses:
+        '200': { $ref: '#/components/responses/RoomState' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /api/rooms/{code}/reset:
+    post:
+      tags: [rooms]
+      summary: Back to design after a launch, keeping the design
+      operationId: resetRoom
+      parameters: [{ $ref: '#/components/parameters/RoomCode' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RoomActionRequest' }
+      responses:
+        '200': { $ref: '#/components/responses/RoomState' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
 
 components:
+  parameters:
+    RoomCode:
+      name: code
+      in: path
+      required: true
+      schema: { type: string, pattern: '^[A-HJ-NP-Z2-9]{5}$' }
   responses:
+    RoomState:
+      description: Room state
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/RoomState' }
     Problem:
       description: RFC 7807 problem
       content:
@@ -853,3 +991,98 @@ components:
         design: { $ref: '#/components/schemas/Design' }
         seed: { type: integer, format: int64 }
         result: { $ref: '#/components/schemas/SimulationResult' }
+
+    Role:
+      type: string
+      enum: [engineer, designer, planner, scientist]
+
+    CreateRoomRequest:
+      type: object
+      required: [playerId, design]
+      properties:
+        playerId: { type: string, format: uuid }
+        name: { type: [string, 'null'], maxLength: 24 }
+        design: { $ref: '#/components/schemas/Design' }
+
+    RoomPlayerRequest:
+      type: object
+      required: [playerId]
+      properties:
+        playerId: { type: string, format: uuid }
+        name: { type: [string, 'null'], maxLength: 24 }
+
+    AssignRoleRequest:
+      type: object
+      required: [playerId, slot]
+      properties:
+        playerId: { type: string, format: uuid }
+        slot: { type: [integer, 'null'], minimum: 1, maximum: 4, description: null frees the role }
+
+    RoomDesignRequest:
+      type: object
+      required: [playerId, design]
+      properties:
+        playerId: { type: string, format: uuid }
+        design: { $ref: '#/components/schemas/Design' }
+
+    RoomActionRequest:
+      type: object
+      required: [playerId]
+      properties:
+        playerId: { type: string, format: uuid }
+        seed: { type: [integer, 'null'], format: int64, description: launch only }
+
+    RoomPlayer:
+      type: object
+      required: [slot, name, online]
+      properties:
+        slot: { type: integer, minimum: 1, maximum: 4 }
+        name: { type: [string, 'null'] }
+        online: { type: boolean }
+
+    RoomChange:
+      type: object
+      required: [slot, kind, fields]
+      properties:
+        slot: { type: [integer, 'null'] }
+        kind: { type: string, enum: [create, join, leave, roles, design, launch, reset] }
+        fields: { type: array, items: { type: string } }
+
+    RoomLaunch:
+      type: object
+      required: [slot, seed, result]
+      properties:
+        slot: { type: integer }
+        seed: { type: integer, format: int64 }
+        result: { $ref: '#/components/schemas/SimulationResult' }
+
+    RoomState:
+      type: object
+      required: [code, revision, phase, missionId, version, you, players, roles, design, evaluation, lastChange, launch]
+      properties:
+        code: { type: string }
+        revision: { type: integer }
+        phase: { type: string, enum: [design, launched] }
+        missionId: { type: string }
+        version: { type: string, enum: [simple, advanced] }
+        you:
+          oneOf:
+            - type: object
+              required: [slot]
+              properties: { slot: { type: integer } }
+            - { type: 'null' }
+        players: { type: array, maxItems: 4, items: { $ref: '#/components/schemas/RoomPlayer' } }
+        roles:
+          type: object
+          required: [engineer, designer, planner, scientist]
+          properties:
+            engineer: { type: [integer, 'null'] }
+            designer: { type: [integer, 'null'] }
+            planner: { type: [integer, 'null'] }
+            scientist: { type: [integer, 'null'] }
+        design: { $ref: '#/components/schemas/Design' }
+        evaluation: { $ref: '#/components/schemas/Evaluation' }
+        lastChange:
+          oneOf: [{ $ref: '#/components/schemas/RoomChange' }, { type: 'null' }]
+        launch:
+          oneOf: [{ $ref: '#/components/schemas/RoomLaunch' }, { type: 'null' }]
