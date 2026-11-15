@@ -15,6 +15,15 @@
 | `audio/prostranstvo.ogg` | 3:17 | Stiluss, учасник команди | Власна робота автора, написана для його гри «yourself.» |
 | `audio/vrata.ogg` | 1:04 | Stiluss, учасник команди | Власна робота автора, написана для його гри «yourself.» |
 
+`audio/*.mp3` — ті самі сім творів того самого автора на тих самих умовах: копії `.ogg` у
+форматі MP3 для Safari (D64), зроблені з `.ogg` через ffmpeg (`libmp3lame`, VBR `-q:a 5`)
+15.11.2026. Усі права на треки — за автором, використання дозволено лише в цьому проєкті
+(D70).
+
+Де звучить у грі (задача 012, `frontend/src/audio/tracks.ts`): меню — `prostranstvo`;
+ціль і концепт — `breaktime`; проєкт — `forgtn`; політ — `vrata`; звіт — `final`
+(провал — `missilost`); `angryutro` поки не використовується (лишено для Аркади).
+
 ## Референси настрою (файлів у репозиторії немає)
 
 Саундтрек Murder Drones (AJ DiSpirito): «Eternal Dream», «Magic School Bus», «The HuMaN
