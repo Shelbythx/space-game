@@ -318,8 +318,7 @@ public static class Simulator
         var n1 = OrbitMath.MeanMotionRadS(r1);
         var n2 = OrbitMath.MeanMotionRadS(r2);
         var transferS = OrbitMath.HohmannTransferTimeS(r1, r2);
-        var leadDeg = Deg(Math.PI - n2 * transferS); // МКС має бути попереду на цей кут у мить старту переходу
-        leadDeg = ((leadDeg % 360) + 360) % 360;
+        var leadDeg = Rendezvous.TransferLeadAngleDeg(r1, r2); // МКС має бути попереду на цей кут у мить старту переходу
         var initial = rng.NextDouble() * 360;
         var (h1, h2) = OrbitMath.Hohmann(r1, r2);
         var mass = s.WetMassKg;
@@ -328,8 +327,7 @@ public static class Simulator
 
         // Зміна площини одразу після виведення (якщо космодром вище нахилу МКС).
         var site = s.Mission.Catalogs.LaunchSites.Single(x => x.Id == d.LaunchSiteId);
-        var deltaInclination = Math.Max(0, OrbitMath.MinimumInclinationDeg(site.LatitudeDeg) - s.InclinationDeg);
-        Burn(OrbitMath.PlaneChangeKmS(OrbitMath.CircularSpeedKmS(r1), deltaInclination) * 1000);
+        Burn(LaunchGeometry.PlaneChangeDeltaVms(site.LatitudeDeg, s.InclinationDeg, d.InsertionAltitudeKm!.Value));
 
         var hours = new List<double>();
         var phases = new List<double>();

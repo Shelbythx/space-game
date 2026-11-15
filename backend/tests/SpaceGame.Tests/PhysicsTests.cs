@@ -61,16 +61,16 @@ public sealed class PhysicsTests
     [Fact]
     public void EarthRotation_465AtEquator_408AtCanaveral()
     {
-        Assert.Equal(465.1, OrbitMath.EarthRotationSpeedMs(0), 1);
-        Assert.Equal(408.7, OrbitMath.EarthRotationSpeedMs(28.5), 1);
-        Assert.Equal(37.8, OrbitMath.MinimumInclinationDeg(37.8));
+        Assert.Equal(465.1, LaunchGeometry.EarthRotationSpeedMs(0), 1);
+        Assert.Equal(408.7, LaunchGeometry.EarthRotationSpeedMs(28.5), 1);
+        Assert.Equal(37.8, LaunchGeometry.MinimumInclinationDeg(37.8));
     }
 
     [Fact]
     public void Phasing200Vs418Km_About17DegPerOrbit()
     {
         // План 2.10: ~17°/виток.
-        var deg = OrbitMath.PhasingDegPerOrbit(OrbitMath.RadiusKm(200), OrbitMath.RadiusKm(418));
+        var deg = Rendezvous.PhasingDegPerOrbit(OrbitMath.RadiusKm(200), OrbitMath.RadiusKm(418));
         Assert.InRange(deg, 16, 18);
     }
 

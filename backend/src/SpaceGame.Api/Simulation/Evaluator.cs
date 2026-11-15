@@ -255,11 +255,11 @@ public static class Evaluator
             var r1 = OrbitMath.RadiusKm(insertionKm);
             var (h1, h2) = OrbitMath.Hohmann(r1, radiusKm);
             hohmannMs = (h1 + h2) * 1000;
-            deltaInclination = Math.Max(0, OrbitMath.MinimumInclinationDeg(siteLatitude) - inclinationDeg);
-            planeChangeMs = OrbitMath.PlaneChangeKmS(OrbitMath.CircularSpeedKmS(r1), deltaInclination) * 1000;
-            degPerOrbit = OrbitMath.PhasingDegPerOrbit(r1, radiusKm);
+            deltaInclination = LaunchGeometry.PlaneChangeNeededDeg(siteLatitude, inclinationDeg);
+            planeChangeMs = LaunchGeometry.PlaneChangeDeltaVms(siteLatitude, inclinationDeg, insertionKm);
+            degPerOrbit = Rendezvous.PhasingDegPerOrbit(r1, radiusKm);
             insertionPeriodS = OrbitMath.PeriodS(r1);
-            phasingDays = degPerOrbit > 0 ? 360 / degPerOrbit * insertionPeriodS / SecondsPerDay : double.PositiveInfinity;
+            phasingDays = Rendezvous.WorstCasePhasingDays(r1, radiusKm);
             deltaVms = (hohmannMs + planeChangeMs + ApproachDeltaVms + ShipDeorbitDeltaVms) * (1 + ShipDeltaVReserve);
             neededKg = Rocket.PropellantKg(wetKg, deltaVms, ispS);
         }
