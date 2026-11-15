@@ -30,6 +30,23 @@ each time, after a local build, lint and test run; CI then ran on `main`.
 Commits written with an agent carry a `Co-Authored-By: Claude …` line, so the git history
 shows which changes an agent produced.
 
+## AI inside the game
+
+The game has a **mission mentor** chat (D111): the player asks about their design, and after a
+flight asks the mentor to explain the report.
+
+- **With an Anthropic API key on the server** the mentor is **Claude Sonnet 5.5**. The backend
+  computes the design and the flight itself and gives the model only the game's own data —
+  checks, role comments, calculation sheets with their NASA sources, the report. The model is
+  told to use only those numbers and not to invent figures or NASA facts. Its answers are
+  marked «AI · Claude».
+- **Without a key, or when the call fails**, the mentor answers in **demo mode**: no AI, the
+  answer is assembled by rules from the game's own messages (bottleneck, failed checks, role
+  advice, calculation summaries). These answers are marked «Demo answer without AI».
+- The key lives only in the hosting settings, never in the code or the browser.
+
+Which mode the deployed game runs is shown by `GET /api/health` (`advisor`).
+
 ## How we kept it honest
 
 - **Every number has a source label** in the game: NASA, NASA retold (to be verified),
