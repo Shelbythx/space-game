@@ -104,9 +104,48 @@ public sealed class EvaluatorTests
     [Fact]
     public void Rideshare_WaitsForNextFlight()
     {
-        var e = Eval(Sat("radio-x", launch: "rideshare"));
-        Assert.Equal(21, e.Resources.Time.LaunchMonth);
-        Assert.Equal("fail", CheckByCode(e, "check.mission.launchLate")!.Status);
+        // Найкращі деталі готові на 12-му — рейс 9-го пропущено, летимо 15-м (D107).
+        var best = Eval(Sat("radio-x", launch: "rideshare"));
+        Assert.Equal(15, best.Resources.Time.LaunchMonth);
+        Assert.Null(CheckByCode(best, "check.mission.launchLate"));
+
+        // Скромні деталі встигають на рейс 9-го.
+        var basic = Eval(SatOrbit.Presets.Single(p => p.Id == "radiometer-rideshare").Design);
+        Assert.Equal(9, basic.Resources.Time.LaunchMonth);
+    }
+
+    [Fact]
+    public void Mission1_GoalReachableWithinBudgetAndDeadline()
+    {
+        // Задача 031: перевірка еталонів (019) не знайшла жодного валідного проєкту на 500 ГБ.
+        var e = Eval(SatOrbit.Presets.Single(p => p.Id == "camera-small").Design);
+        Assert.True(e.Resources.Data!.ExpectedTotalGb >= 500, $"{e.Resources.Data.ExpectedTotalGb} GB");
+        Assert.True(e.Resources.Budget.UsedK <= SatOrbit.Limits.BudgetK, $"{e.Resources.Budget.UsedK} k");
+        Assert.True(e.Resources.Time.LaunchMonth <= SatOrbit.Limits.LaunchDeadlineMonth, $"month {e.Resources.Time.LaunchMonth}");
+        Assert.NotNull(CheckByCode(e, "check.user.goalReached"));
+    }
+
+    [Fact]
+    public void AllPresets_AreValidAndPassMissionLaunchSpace()
+    {
+        foreach (var mission in Catalog.All)
+            foreach (var preset in mission.Presets)
+            {
+                Assert.Empty(DesignValidator.Validate(preset.Design, Catalog, out _));
+                var fails = Eval(preset.Design).Checks
+                    .Where(c => c.Status == "fail" && c.Segment is "mission" or "launch" or "space")
+                    .Select(c => c.Code);
+                Assert.True(!fails.Any(), $"{preset.Id}: {string.Join(", ", fails)}");
+            }
+    }
+
+    [Fact]
+    public void CubeSat_ColdGasFitsWithInstrument()
+    {
+        var first = Catalog.Find("cubesat-learn")!.Presets.Single(p => p.Id == "first-cubesat").Design;
+        var e = Eval(first with { Parts = first.Parts with { Propulsion = "prop-cold" } });
+        Assert.DoesNotContain(e.Checks, c => c.Status == "fail" && c.Segment is "mission" or "launch" or "space");
+        Assert.True(e.Resources.Mass.SlotsUsed <= e.Resources.Mass.Slots, $"{e.Resources.Mass.SlotsUsed}/{e.Resources.Mass.Slots}");
     }
 
     [Fact]

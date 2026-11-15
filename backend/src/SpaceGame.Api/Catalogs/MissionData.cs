@@ -127,7 +127,7 @@ public static class MissionData
         IReadOnlyList<Launch> launches =
         [
             new("rideshare", "launch.rideshare", 60, new Dictionary<string, double> { ["sso"] = 200 }, "sso", "medium",
-                Source.Estimate("Попутний запуск (D52): орбіта й дата фіксовані; маса й ціна — оцінка")),
+                Source.Estimate("Попутний запуск (D52): орбіта фіксована, рейси на 9-му, 15-му й 21-му місяці (D66, D107); маса й ціна — оцінка")),
             new("small", "launch.small", 250, new Dictionary<string, double> { ["leo"] = 450, ["sso"] = 300 }, null, "large",
                 Source.Nasa("Низька орбіта — Pegasus XL, до 453,59 кг (NASA LSP); SSO і ціна — оцінка")),
             new("medium", "launch.medium", 800,
@@ -139,19 +139,19 @@ public static class MissionData
             "sat-orbit", MissionKinds.Orbit, "mission.satOrbit.title", "mission.satOrbit.briefing",
             MissionGoal.Data(500, 12),
             new MissionLimits(450, 18, MassReserveRecommendedPct),
-            new MissionTiming(StandardBuild, 4, [9, 21], new Dictionary<string, int> { ["small"] = 3, ["medium"] = 5 }),
+            new MissionTiming(StandardBuild, 4, [9, 15, 21], new Dictionary<string, int> { ["small"] = 3, ["medium"] = 5 }),
             new MissionCatalogs(orbits, launches, SatelliteParts(), [Magnetometer(), Radiometer(), Camera(), Radar()],
                 [Fairbanks(), WhiteSands(), Guam()], [], []),
             [
                 new("radiometer-rideshare", "preset.satOrbit.radiometerRideshare", new Design
                 {
                     MissionId = "sat-orbit", Orbit = OrbitChoice.Preset("sso"), LaunchId = "rideshare",
-                    Parts = new("bus-s", "solar-body", "bat-s", "radio-s", "cpu-basic", "adcs-basic", "prop-none"),
+                    Parts = new("bus-s", "solar-body", "bat-s", "radio-s", "cpu-basic", "adcs-basic", "prop-cold"),
                     InstrumentIds = ["radiometer"], GroundStationIds = ["fairbanks"],
                 }),
                 new("camera-small", "preset.satOrbit.cameraSmall", new Design
                 {
-                    MissionId = "sat-orbit", Orbit = OrbitChoice.Preset("sso"), LaunchId = "small",
+                    MissionId = "sat-orbit", Orbit = OrbitChoice.Preset("sso"), LaunchId = "rideshare",
                     Parts = new("bus-m", "solar-deploy", "bat-m", "radio-x", "cpu-power", "adcs-fine", "prop-chem"),
                     InstrumentIds = ["camera"], GroundStationIds = ["fairbanks"],
                 }),
@@ -161,7 +161,7 @@ public static class MissionData
     private static IReadOnlyList<Part> SatelliteParts() =>
     [
         new("bus-s", PartCategories.Bus, "basic", "part.busS", 3, 5, 0,
-            new PartSpecs { MaxMassKg = 12, Slots = 6, DragAreaM2 = 0.06, BusSize = "small" }, [],
+            new PartSpecs { MaxMassKg = 12, Slots = 7, DragAreaM2 = 0.06, BusSize = "small" }, [],
             Source.Estimate("Маса, межа маси, місця й ціна — docs/catalogs.md (оцінка); площа перерізу й клас — оцінка до 016")),
         new("bus-m", PartCategories.Bus, "medium", "part.busM", 25, 40, 0,
             new PartSpecs { MaxMassKg = 150, Slots = 12, DragAreaM2 = 0.5, BusSize = "medium" }, [],
@@ -207,7 +207,7 @@ public static class MissionData
         IReadOnlyList<Part> parts =
         [
             new("bus-s", PartCategories.Bus, "basic", "part.busS", 3, 5, 0,
-                new PartSpecs { MaxMassKg = 12, Slots = 6, DragAreaM2 = 0.06, BusSize = "small" }, [],
+                new PartSpecs { MaxMassKg = 12, Slots = 7, DragAreaM2 = 0.06, BusSize = "small" }, [],
                 Source.Estimate("Як у місії 1 (docs/catalogs.md); площа перерізу й клас — оцінка")),
             Solar("solar-body", "basic", "part.solarBody", 19.2, 0.5, 2, "19,2 Вт, 38,55 Вт/кг — SmallSat SOA (переказ)"),
             Solar("solar-deploy", "best", "part.solarDeploy", 135, 4.4, 15, "135 Вт, 31 Вт/кг — SmallSat SOA (переказ)"),
