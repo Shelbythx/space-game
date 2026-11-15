@@ -1,0 +1,82 @@
+{
+  "title": "Flight",
+  "day": "Day {{day}} of {{total}}",
+  "trackNote": "Ground track: the first {{count}} orbits, replayed in a loop",
+  "map": {
+    "label": "Map of the Earth with the spacecraft's ground track and ground station zones"
+  },
+  "legend": {
+    "lit": "In sunlight",
+    "shadow": "In Earth's shadow",
+    "zone": "Station visibility zone",
+    "contact": "Contact session"
+  },
+  "goal": {
+    "title": "Mission goal",
+    "data": "{{delivered}} of {{goal}} GB delivered",
+    "pace": "Pace needed today: {{expected}} GB",
+    "reached": "Goal reached"
+  },
+  "gauge": {
+    "batteryMinPct": "Battery, daily minimum",
+    "dataStoredGb": "Data on board",
+    "dataDeliveredGb": "Data delivered",
+    "altitudeKm": "Orbit altitude",
+    "propellantKg": "Propellant"
+  },
+  "unit": {
+    "pct": "%",
+    "gb": "GB",
+    "km": "km",
+    "kg": "kg"
+  },
+  "stations": {
+    "title": "Ground stations",
+    "perDay": "{{contacts}} contacts · {{minutes}} min per day",
+    "silent": "no contact: wrong band or never in view",
+    "tdrs": "TDRS relay"
+  },
+  "events": {
+    "title": "Mission events",
+    "none": "No events so far",
+    "dayLabel": "Day {{day}}",
+    "donki": "Real storm from NASA DONKI, observed {{date}}",
+    "seeded": "Generated for this run's seed",
+    "jump": "Jump to day {{day}}: {{type}}"
+  },
+  "eventType": {
+    "solarStorm": "Geomagnetic storm",
+    "debris": "Space debris",
+    "failure": "Part failure",
+    "reentry": "Re-entry",
+    "spaceWeatherUnavailable": "No space-weather data"
+  },
+  "controls": {
+    "play": "Play",
+    "pause": "Pause",
+    "replay": "Replay",
+    "speed": "Speed",
+    "nextEvent": "Next event",
+    "scrub": "Mission day",
+    "keys": "Space — play/pause · ← → — rewind/forward · N — next event · 1 2 3 — speed",
+    "toReport": "To the report"
+  },
+  "status": {
+    "complete": "Mission time is over",
+    "lost": "Spacecraft lost"
+  },
+  "station": {
+    "fairbanks": "Alaska (Fairbanks)",
+    "whiteSands": "White Sands",
+    "guam": "Guam"
+  },
+  "event": {
+    "solarStorm": "Kp {{kp}} storm: {{lostContacts}} contact sessions lost.",
+    "solarStormComputerReset": "Kp {{kp}} storm reset the computer: {{lostGb}} GB of stored data lost.",
+    "debrisAvoidance": "Avoidance manoeuvre: Δv {{deltaVms}} m/s, {{propellantKg}} kg of propellant burned.",
+    "debrisLoss": "Debris on a collision course and no engine to dodge it: the spacecraft is lost.",
+    "failure": "A part stopped working: {{partId}}.",
+    "reentry": "The orbit decayed to {{altitudeKm}} km: the spacecraft re-entered the atmosphere.",
+    "spaceWeatherUnavailable": "NASA DONKI could not be reached: this run has no storms."
+  }
+}
