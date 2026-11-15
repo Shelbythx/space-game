@@ -24,7 +24,7 @@ N5 відкрито як зображення, бо текстовий шар �
 | # | Документ | Ідентифікатор | Адреса |
 | --- | --- | --- | --- |
 | N1 | Earth Fact Sheet (NSSDCA, GSFC) | — | https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html |
-| N2 | Drag Equation, Beginner's Guide to Aeronautics (NASA Glenn) | — | https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation-2/ |
+| N2 | Drag Equation, Beginner's Guide to Aeronautics (NASA Glenn) | — | https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/ |
 | N3 | Ideal Rocket Equation, Beginner's Guide to Aeronautics (NASA Glenn) | — | https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/ |
 | N4 | General Mission Analysis Tool (GMAT) Mathematical Specifications, 2007 (чернетка) | NTRS 20080031744 | https://ntrs.nasa.gov/api/citations/20080031744/downloads/20080031744.pdf |
 | N5 | U.S. Standard Atmosphere, 1976 | NASA-TM-X-74335, NTRS 19770009539 | https://ntrs.nasa.gov/api/citations/19770009539/downloads/19770009539.pdf |

@@ -9,7 +9,7 @@ namespace SpaceGame.Api.Simulation.Physics;
 public static class NasaSources
 {
     public const string N1 = "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html";
-    public const string N2 = "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation-2/";
+    public const string N2 = "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/";
     public const string N3 = "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/";
     public const string N4 = "https://ntrs.nasa.gov/api/citations/20080031744/downloads/20080031744.pdf";
     public const string N5 = "https://ntrs.nasa.gov/api/citations/19770009539/downloads/19770009539.pdf";
