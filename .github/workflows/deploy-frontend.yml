@@ -1,0 +1,40 @@
+# Розгортання фронтенду на Azure Static Web Apps (D105, задача 013).
+# Запускається після злиття в main, якщо змінився frontend/, або вручну (Run workflow).
+# Потрібно в GitHub (Settings → Secrets and variables → Actions):
+#   змінна  VITE_API_URL                     — адреса бекенду, напр. https://<app>.azurewebsites.net
+#   секрет  AZURE_STATIC_WEB_APPS_API_TOKEN  — Deployment token зі Static Web App
+name: Deploy frontend
+
+on:
+  push:
+    branches: [main]
+    paths: ['frontend/**', '.github/workflows/deploy-frontend.yml']
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-frontend
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          app_location: frontend/dist
+          skip_app_build: true
+          skip_api_build: true

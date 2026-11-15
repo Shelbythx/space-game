@@ -1,6 +1,6 @@
 # 013 · Інфраструктура · Розгортання
 
-Статус: todo
+Статус: in progress
 Виконавець: Stiluss
 Гілка: task/013-infra-deploy
 Частина: Інфраструктура
@@ -17,19 +17,19 @@
 - Azure for Students: одна група ресурсів на весь проєкт.
 - Фронтенд — Azure Static Web Apps (безкоштовний тариф), збірка `frontend/` з GitHub;
   `VITE_API_URL` — адреса бекенду.
-- Бекенд — `backend/Dockerfile` в App Service (Linux, B1); порт контейнера 8080; CORS
-  дозволяє домен Static Web Apps; `/api/health` відповідає.
+- Бекенд — App Service (Linux, B1, .NET 10), збірка з `dotnet publish`; CORS
+  (`Cors__Origins__N`) дозволяє домен Static Web Apps; `/api/health` відповідає.
 - PostgreSQL — Azure Database for PostgreSQL Flexible Server (B1ms); доступ для App
   Service; міграції — `Database__MigrateOnStartup=true`.
 - Секрети (`ConnectionStrings__Default`, `NASA_API_KEY`) — лише в налаштуваннях App
   Service, не в репозиторії.
-- Розгортання з GitHub Actions — за бажанням; достатньо й ручного.
+- Розгортання з GitHub Actions після злиття в `main`: `deploy-backend.yml`,
+  `deploy-frontend.yml`.
 - Не входить: власний домен, CD для кожної гілки.
 
 ## Зона файлів
 
-- `.github/workflows/` (файли розгортання), `frontend/staticwebapp.config.json`,
-  налаштування CORS у бекенді (`Program.cs` або `appsettings`)
+- `.github/workflows/deploy-*.yml`, `frontend/public/staticwebapp.config.json`
 
 ## Критерії готовності
 
