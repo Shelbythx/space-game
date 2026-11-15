@@ -3,12 +3,16 @@ namespace SpaceGame.Api.Catalogs;
 /// <summary>
 /// Каталоги трьох місій (D78). Місія 1 — числа з docs/catalogs.md (D56). Двигуни, пам'ять
 /// комп'ютера, площа перерізу й клас корпусу — ігрові оцінки до задачі 016; місія на МКС —
-/// оцінки до задачі 017; CubeSat — оцінки до задачі 018. Кожне число має source (D51).
+/// docs/catalogs-iss.md (017, перенесено в 034); CubeSat — docs/catalogs-cubesat.md (018, 034). Кожне число має source (D51).
 /// </summary>
 public static class MissionData
 {
     private const string SmallSatSoa = "https://www.nasa.gov/smallsat-institute/sst-soa/";
     private const string GoldRules = "https://standards.nasa.gov/standard/GSFC/GSFC-STD-1000";
+    private const string Orb2PressKit = "https://www.nasa.gov/wp-content/uploads/2015/06/orb2_press_kit.pdf";
+    private const string IssOem = "https://nasa-public-data.s3.amazonaws.com/iss-coords/current/ISS_OEM/ISS.OEM_J2K_EPH.txt";
+    private const string Crs22Overview = "https://www.nasa.gov/wp-content/uploads/2021/05/spacex_crs-22_mision_overview_high_res.pdf";
+    private const string CubeSat101 = "https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf";
 
     /// <summary>GSFC-STD-1000 Rev I, табл. 1.06-1: запас маси &gt; 15 % у Pre-Phase A (задача 026).</summary>
     public const double MassReserveRecommendedPct = 15;
@@ -188,20 +192,20 @@ public static class MissionData
         PropElec(),
     ];
 
-    // ───────────────────────────── Рівень CubeSat (оцінки до задачі 018) ─────────────────────────────
+    // ───────────────────────────── Рівень CubeSat (docs/catalogs-cubesat.md, задачі 018 і 034) ─────────────────────────────
 
     private static Mission CubesatLearn()
     {
         IReadOnlyList<Orbit> orbits =
         [
             new("iss-deploy", "orbit.issDeploy", 415, 51.64, null,
-                Source.Estimate("Виведення з МКС: висота й нахил орбіти станції — оцінка до задачі 018 (CubeSat 101)")),
+                Source.Calculated("Висота й нахил — орбіта МКС (docs/catalogs-iss.md, файл траєкторії NASA OEM); CubeSat випускають з МКС — CubeSat 101", CubeSat101)),
         ];
 
         IReadOnlyList<Launch> launches =
         [
             new("iss-deploy", "launch.issDeploy", 40, new Dictionary<string, double> { ["iss-deploy"] = 12 }, "iss-deploy", "small",
-                Source.Estimate("Доставка на МКС і виведення з неї: маса й ціна — оцінка до задачі 018")),
+                Source.Estimate("Доставка на МКС і випуск астронавтами — як у NASA CubeSat 101; маса й ціна — оцінка")),
         ];
 
         IReadOnlyList<Part> parts =
@@ -223,7 +227,7 @@ public static class MissionData
 
         return new Mission(
             "cubesat-learn", MissionKinds.Tutorial, "mission.cubesatLearn.title", "mission.cubesatLearn.briefing",
-            MissionGoal.Data(2, 6),
+            MissionGoal.Data(1, 6),
             new MissionLimits(150, 12, MassReserveRecommendedPct),
             new MissionTiming(StandardBuild, 2, [6, 12], new Dictionary<string, int>()),
             new MissionCatalogs(orbits, launches, parts, [Magnetometer(), Radiometer()], [Fairbanks(), WhiteSands()], [], []),
@@ -231,37 +235,38 @@ public static class MissionData
                 new("first-cubesat", "preset.cubesatLearn.first", new Design
                 {
                     MissionId = "cubesat-learn", Orbit = OrbitChoice.Preset("iss-deploy"), LaunchId = "iss-deploy",
-                    Parts = new("bus-s", "solar-body", "bat-s", "radio-uhf", "cpu-basic", "adcs-basic", "prop-none"),
-                    InstrumentIds = ["magnetometer"], GroundStationIds = ["fairbanks"],
+                    Parts = new("bus-s", "solar-body", "bat-s", "radio-s", "cpu-basic", "adcs-basic", "prop-none"),
+                    InstrumentIds = ["magnetometer"], GroundStationIds = ["white-sands"],
                 }),
             ]);
     }
 
-    // ───────────────────────────── Місія 2: «Вантаж на МКС» (оцінки до задачі 017) ─────────────────────────────
+    // ───────────────────────────── Місія 2: «Вантаж на МКС» (docs/catalogs-iss.md, задачі 017 і 034) ─────────────────────────────
 
     private static Mission IssCargo()
     {
         IReadOnlyList<Orbit> orbits =
         [
             new("iss", "orbit.iss", 418, 51.64, null,
-                Source.Estimate("Орбіта МКС: висота й нахил — оцінка до задачі 017 (файл траєкторії NASA, OEM)")),
+                Source.Calculated("Висота 418 км — розрахунок із файлу траєкторії NASA (OEM, 13.11.2026): середня велика піввісь мінус екваторіальний радіус; нахил 51,64° — NASA (51,6°)", IssOem)),
         ];
 
         IReadOnlyList<Launch> launches =
         [
-            new("medium", "launch.medium", 800, new Dictionary<string, double> { ["iss"] = 7500 }, null, "large",
-                Source.Estimate("Маса на орбіту виведення в площині МКС і ціна — оцінка до задачі 017")),
+            new("medium", "launch.medium", 800, new Dictionary<string, double> { ["iss"] = 6100 }, null, "large",
+                Source.Nasa("Antares: до 6123 кг на орбіти середнього нахилу з Воллопса — NASA Orb-2 Press Kit; ціна — оцінка", Orb2PressKit)),
             new("heavy", "launch.heavy", 1400, new Dictionary<string, double> { ["iss"] = 15_000 }, null, "large",
-                Source.Estimate("Маса на орбіту виведення в площині МКС і ціна — оцінка до задачі 017")),
+                Source.Estimate("Falcon 9: NASA на сторінках місій вантажопідйомність не дає — маса й ціна оцінка (docs/catalogs-iss.md)")),
         ];
 
-        Source shipSource = Source.Estimate("Вантажний корабель: маса, місця, площа й ціна — оцінка до задачі 017 (прес-кіти CRS)");
         IReadOnlyList<Part> parts =
         [
             new("ship-small", PartCategories.Bus, "medium", "part.shipSmall", 1200, 180, 0,
-                new PartSpecs { MaxMassKg = 4000, Slots = 14, DragAreaM2 = 6, BusSize = "medium" }, [], shipSource),
+                new PartSpecs { MaxMassKg = 4700, Slots = 14, DragAreaM2 = 6, BusSize = "medium" }, [],
+                Source.NasaRetold("Cygnus: посилений модуль везе до 2700 кг вантажу — NASA Orb-2 Press Kit; макс. маса 4700 кг — розрахунок (1200 + 150 + 600 + 2700); маса порожнього, місця, площа й ціна — оцінка", Orb2PressKit)),
             new("ship-pressurized", PartCategories.Bus, "best", "part.shipPressurized", 2200, 300, 0,
-                new PartSpecs { MaxMassKg = 8000, Slots = 20, DragAreaM2 = 10, BusSize = "large" }, [], shipSource),
+                new PartSpecs { MaxMassKg = 8000, Slots = 20, DragAreaM2 = 10, BusSize = "large" }, [],
+                Source.NasaRetold("Dragon: до 6000 кг вантажу на старт — NASA CRS-22 Mission Overview; маса порожнього, макс. маса, місця, площа й ціна — оцінка", Crs22Overview)),
             Solar("solar-deploy", "medium", "part.solarDeploy", 135, 4.4, 15, "135 Вт, 31 Вт/кг — SmallSat SOA (переказ)"),
             Solar("solar-roll", "best", "part.solarRoll", 1000, 10, 60, "1000 Вт, 100 Вт/кг — SmallSat SOA (переказ)"),
             Battery("bat-m", "medium", "part.batM", 150, 1.04, 6, "144 Вт·год/кг — SmallSat SOA (переказ)"),
@@ -274,28 +279,31 @@ public static class MissionData
             AdcsFine(),
             new("prop-biprop", PartCategories.Propulsion, "medium", "part.propBiprop", 150, 60, 0,
                 new PartSpecs { IspS = 300, ThrustN = 400, PropellantKg = 600, PowerW = 0 }, [],
-                Source.Estimate("Двокомпонентний двигун корабля: Isp, тяга, паливо, маса й ціна — оцінка до задачі 017")),
+                Source.NasaRetold("Головний двигун Cygnus — 100 фунт-сил (~445 Н), гідразин / MON-3 — NASA Orb-2 Press Kit; у грі 400 Н; Isp, паливо, маса й ціна — оцінка", Orb2PressKit)),
             new("prop-biprop-xl", PartCategories.Propulsion, "best", "part.propBipropXl", 220, 90, 0,
                 new PartSpecs { IspS = 300, ThrustN = 400, PropellantKg = 1200, PowerW = 0 }, [],
-                Source.Estimate("Двокомпонентний двигун корабля зі збільшеним баком — оцінка до задачі 017")),
+                Source.Estimate("Двокомпонентний двигун корабля зі збільшеним баком — оцінка (docs/catalogs-iss.md)")),
         ];
 
-        Source siteSource = Source.Estimate("Широта й довгота — загальні географічні дані; перелік — до задачі 017");
         IReadOnlyList<LaunchSite> sites =
         [
-            new("cape-canaveral", "site.capeCanaveral", 28.5, -80.6, siteSource),
-            new("wallops", "site.wallops", 37.8, -75.5, siteSource),
-            new("kodiak", "site.kodiak", 57.4, -152.3, siteSource),
+            new("cape-canaveral", "site.capeCanaveral", 28.5, -80.6,
+                Source.Estimate("Широта й довгота — загальні географічні дані; майданчики LC-39A і SLC-40 названо в оглядах NASA CRS-29 і CRS-22")),
+            new("wallops", "site.wallops", 37.83, -75.49,
+                Source.Nasa("Майданчик 0A: 37,83° пн. ш., 75,49° зх. д. — NASA Orb-2 Press Kit", Orb2PressKit)),
+            new("kodiak", "site.kodiak", 57.4, -152.3,
+                Source.Estimate("Майданчик не NASA; широта — загальні географічні дані; потрібен як урок про зміну площини")),
         ];
 
-        Source cargoSource = Source.Estimate("Категорії — як у прес-кітах NASA Commercial Resupply; типові маси й цінність — оцінка до задачі 017");
+        Source cargoSource = Source.Calculated(
+            "Категорії — з маніфестів NASA; типова маса — середнє Orb-2, CRS-22 і CRS-29, округлено (docs/catalogs-iss.md); цінність — оцінка");
         IReadOnlyList<CargoCategory> cargo =
         [
-            new("crew-supplies", "cargo.crewSupplies", "medium", 1000, cargoSource),
-            new("science", "cargo.science", "highest", 900, cargoSource),
-            new("vehicle-hardware", "cargo.vehicleHardware", "low", 700, cargoSource),
-            new("spacewalk", "cargo.spacewalk", "medium", 150, cargoSource),
-            new("computer", "cargo.computer", "low", 30, cargoSource),
+            new("crew-supplies", "cargo.crewSupplies", "medium", 600, cargoSource),
+            new("science", "cargo.science", "highest", 750, cargoSource),
+            new("vehicle-hardware", "cargo.vehicleHardware", "low", 400, cargoSource),
+            new("spacewalk", "cargo.spacewalk", "medium", 50, cargoSource),
+            new("computer", "cargo.computer", "low", 40, cargoSource),
         ];
 
         return new Mission(
