@@ -9,7 +9,7 @@ namespace SpaceGame.Api.Simulation;
 /// Симуляція місії в часі (POST /api/simulate, задача 005): крок — доба; β-кут за датою,
 /// тінь, енергія й батарея, висота з гальмуванням, паливо, пам'ять, сеанси й події.
 /// Детермінована (D65): той самий проєкт, seed і бурі → той самий результат.
-/// Чистий код без бази й HTTP: бурі приходять ззовні (SpaceWeather, задача 021).
+/// Чистий код без бази й HTTP: бурі приходять ззовні (модуль SpaceWeather, задача 021).
 /// </summary>
 public static class Simulator
 {
@@ -43,7 +43,7 @@ public static class Simulator
 
     public static readonly DateTime BaseEpoch = new(2027, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-    public static SimulationResult Simulate(Design design, Mission mission, long seed, SpaceWeather weather)
+    public static SimulationResult Simulate(Design design, Mission mission, long seed, SpaceWeatherData weather)
     {
         var (evaluation, state) = Evaluator.Evaluate(design, mission);
         var rng = new Random(unchecked((int)(seed ^ (seed >> 32))));
@@ -129,7 +129,7 @@ public static class Simulator
 
     private static TimelineBuilder OrbitTimeline(
         EvaluationState s, Mission mission, List<Part> parts, List<Instrument> instruments, Part radio, Part computer, string band,
-        double raan0, DateTime startDate, Random rng, SpaceWeather weather, List<MissionEvent> events, Outcome outcome)
+        double raan0, DateTime startDate, Random rng, SpaceWeatherData weather, List<MissionEvent> events, Outcome outcome)
     {
         var tl = new TimelineBuilder();
         var days = (int)Math.Round(s.OperationDays);

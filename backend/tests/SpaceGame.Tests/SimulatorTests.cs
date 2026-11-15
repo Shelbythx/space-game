@@ -11,11 +11,11 @@ public sealed class SimulatorTests
 {
     private static readonly MissionCatalog Catalog = new();
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
-    private static readonly SpaceWeather NoStorms = SpaceWeather.None(new DateOnly(2015, 1, 1));
+    private static readonly SpaceWeatherData NoStorms = SpaceWeatherData.None(new DateOnly(2015, 1, 1));
 
     private static Design Preset(string mission, int index) => Catalog.Find(mission)!.Presets[index].Design;
 
-    private static SimulationResult Run(Design d, long seed, SpaceWeather? weather = null) =>
+    private static SimulationResult Run(Design d, long seed, SpaceWeatherData? weather = null) =>
         Simulator.Simulate(d, Catalog.Find(d.MissionId)!, seed, weather ?? NoStorms);
 
     [Theory]
@@ -91,7 +91,7 @@ public sealed class SimulatorTests
     [Fact]
     public void StrongStorm_IsReportedWithDonkiSource()
     {
-        var weather = new SpaceWeather([new Storm(30, 8, "2015-03-17T00:00:00-GST-001", new DateTime(2015, 3, 17, 15, 0, 0, DateTimeKind.Utc))],
+        var weather = new SpaceWeatherData([new Storm(30, 8, "2015-03-17T00:00:00-GST-001", new DateTime(2015, 3, 17, 15, 0, 0, DateTimeKind.Utc))],
             true, new DateOnly(2014, 10, 26), new DateOnly(2015, 10, 25));
 
         var result = Run(Preset("sat-orbit", 1), 5, weather);
@@ -106,7 +106,7 @@ public sealed class SimulatorTests
     [Fact]
     public void UnavailableSpaceWeather_AddsEvent()
     {
-        var weather = new SpaceWeather([], false, new DateOnly(2014, 10, 26), new DateOnly(2015, 10, 25));
+        var weather = new SpaceWeatherData([], false, new DateOnly(2014, 10, 26), new DateOnly(2015, 10, 25));
         var result = Run(Preset("sat-orbit", 1), 5, weather);
         Assert.Equal("spaceWeatherUnavailable", result.Events[0].Type);
     }
