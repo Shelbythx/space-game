@@ -54,6 +54,7 @@ export function FlightStage() {
           goalGb={mission.goal.dataGb}
           onFinish={() => navigate('../report')}
           gauges={gauges}
+          title={null}
         />
       </div>
     )

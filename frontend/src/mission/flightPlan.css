@@ -95,7 +95,7 @@
 .fp-step-link {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   min-height: 36px;
   color: var(--bp-ink-dim);
   text-decoration: none;
@@ -151,6 +151,9 @@
 @keyframes fp-stamp {
   from {
     transform: scale(1.6);
+  }
+  to {
+    transform: none;
   }
 }
 
@@ -208,6 +211,16 @@
 .fp-version .mm-btn {
   min-height: 38px;
   font-size: 15px;
+}
+
+/* The chosen version reads as a pressed key: inverted bevel and a cyan edge. */
+.fp-version .mm-btn[aria-pressed='true'] {
+  color: var(--bp-line);
+  border-color: var(--bp-line);
+  background-color: var(--mm-btn-lo);
+  box-shadow:
+    inset 3px 3px 0 #141c2a,
+    inset -3px -3px 0 var(--mm-btn);
 }
 
 .fp-fold {
@@ -461,6 +474,38 @@
   font-size: 15px;
 }
 
+/* Advanced consoles: the active role tab is outlined in its colour; yellow stays for the
+   current step and the main action. */
+.fp-main .bp-tab-on {
+  color: var(--role, var(--bp-line));
+  background: transparent;
+  border-color: var(--role, var(--bp-line));
+  border-bottom-width: 4px;
+}
+
+/* Flight: the map leaves room for the gauges and controls above the footer. */
+.fp-main .fl-map {
+  max-height: 46vh;
+}
+
+/* Report: the bottleneck is a rule-led line, formulas sit inline next to their numbers. */
+.fp-main .rp-bottleneck {
+  padding: 10px 0 4px;
+  background: transparent;
+  border: 0;
+  border-top: 2px solid var(--bp-warn);
+}
+
+.fp-main .rp-bottleneck .bp-note {
+  font-size: 14px;
+}
+
+.fp-main .rp-formula {
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
 /* ---------- footer: readiness and the next step ---------- */
 
 .fp-footer {
@@ -651,13 +696,32 @@
     display: none;
   }
 
+  /* A compact sticky bar: readiness on one line, Next takes the width. */
   .fp-footer {
-    position: static;
-    background: transparent;
+    gap: 6px 8px;
+    padding: 8px 0 10px;
+    background: var(--bp-paper);
   }
 
   .fp-ready {
-    font-size: 14.5px;
+    flex: 1 1 100%;
+    font-size: 13.5px;
+  }
+
+  .fp-actions .fp-prev {
+    flex: 0 0 auto;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .bp-svg .bp-part-label,
+  .bp-svg .bp-bus-name,
+  .bp-svg .bp-fairing-name {
+    display: none;
+  }
+
+  .bp-svg .bp-fairing-fit {
+    transform: translate(-62px, 74px);
   }
 
   .fp-mission {

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useGameText } from '../blueprint/format'
 import { readStorage, writeStorage } from '../lib/storage'
-import { STAGES, type Stage, useMission } from '../mission/context'
+import { type Stage, useMission } from '../mission/context'
 import './tutorial.css'
 
 // Training level «First CubeSat» (D78, task 025): step-by-step hints over the simple
@@ -36,7 +36,6 @@ export function TutorialPanel({ stage }: { stage: Stage }) {
   return (
     <aside className="tt-panel" aria-label={t('tutorial.title')}>
       <header className="tt-head">
-        <span className="tt-step">{t('tutorial.step', { n: STAGES.indexOf(stage) + 1, total: STAGES.length })}</span>
         <h3>{t(`tutorial.${stage}.title`)}</h3>
         <button type="button" className="tt-toggle" aria-expanded={open} onClick={toggle}>
           {open ? t('tutorial.hide') : t('tutorial.show')}

@@ -132,6 +132,7 @@ export function Consoles({ mission, design, evaluation, actions, role, onRole, h
 
   return (
     <div className="bp-consoles">
+      {roles.length > 1 && (
       <div className="bp-tabs" role="tablist" aria-label={t('bp.consoles')}>
         {roles.map((r) => (
           <button
@@ -146,6 +147,7 @@ export function Consoles({ mission, design, evaluation, actions, role, onRole, h
           </button>
         ))}
       </div>
+      )}
 
       <div className="bp-console" role="tabpanel">
         {role === 'planner' && (

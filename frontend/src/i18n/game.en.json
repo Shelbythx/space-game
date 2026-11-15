@@ -706,7 +706,6 @@
   },
   "tutorial": {
     "title": "Training",
-    "step": "Step {{n}} of {{total}}",
     "do": "What to do:",
     "why": "Why:",
     "now": "Right now:",

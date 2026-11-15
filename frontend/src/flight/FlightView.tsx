@@ -22,8 +22,8 @@ interface Props {
   /** Which series to show as gauges and in what order (missions differ: the CubeSat watches
    * its altitude, the ISS ship has no science data). Default — all five. */
   gauges?: SeriesKey[]
-  /** Heading of the screen; default «Flight». */
-  title?: string
+  /** Heading of the screen; default «Flight»; null keeps it for screen readers only. */
+  title?: string | null
 }
 
 const GAUGES: Array<{ key: SeriesKey; unit: 'pct' | 'gb' | 'km' | 'kg'; digits: number }> = [
@@ -96,7 +96,7 @@ export function FlightView({ simulation, stations, goalGb, onFinish, gauges, tit
   return (
     <section className="fl" aria-label={title ?? t('title')}>
       <header className="fl-head">
-        <h2 className="fl-head__title">{title ?? t('title')}</h2>
+        <h2 className={title === null ? 'bp-sr' : 'fl-head__title'}>{title ?? t('title')}</h2>
         <div className="fl-head__day">{t('day', { day: Math.floor(day), total: lastDay })}</div>
         {(playback.finished || lost) && (
           <div className={`fl-head__status${lost ? ' fl-head__status--lost' : ''}`}>

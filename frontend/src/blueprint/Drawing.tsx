@@ -266,7 +266,7 @@ export function Drawing({ mission, design, evaluation, selected, onSelect }: Pro
             <Glyph kind={item.kind} partId={item.partId} />
           </g>
           {dir !== 'inside' && dir !== 'right' && (
-            <text className="bp-label" x={0} y={labelOffset} textAnchor="middle">
+            <text className="bp-label bp-part-label" x={0} y={labelOffset} textAnchor="middle">
               {shortName(name(item.partId))}
             </text>
           )}
@@ -308,8 +308,8 @@ export function Drawing({ mission, design, evaluation, selected, onSelect }: Pro
         <rect x={x0} y={y0} width={size.w} height={size.h} />
         <rect x={x0 + 6} y={y0 + 6} width={size.w - 12} height={size.h - 12} className="bp-inner" />
         <text className="bp-label bp-bus-label" x={CX} y={y0 + size.h - 12} textAnchor="middle">
-          {name(design.parts.bus)}
-          {evaluation && ` · ${t('bp.slotsUsed', { used: evaluation.resources.mass.slotsUsed, slots: evaluation.resources.mass.slots })}`}
+          <tspan className="bp-bus-name">{name(design.parts.bus)}{evaluation && ' · '}</tspan>
+          {evaluation && t('bp.slotsUsed', { used: evaluation.resources.mass.slotsUsed, slots: evaluation.resources.mass.slots })}
         </text>
       </g>
 
@@ -325,8 +325,8 @@ export function Drawing({ mission, design, evaluation, selected, onSelect }: Pro
           <path d="M -26 70 L -26 0 Q -26 -40 0 -70 Q 26 -40 26 0 L 26 70 Z" />
           <rect x={-26 * busInFairing} y={10} width={52 * busInFairing} height={52 * busInFairing} className="bp-fairing-bus" />
         </g>
-        <text className="bp-label" x={40} y={-10}>{launch ? name(launch.id) : ''}</text>
-        <text className={fits ? 'bp-label bp-ok-text' : 'bp-label bp-fail-text'} x={40} y={8}>
+        <text className="bp-label bp-fairing-name" x={40} y={-10}>{launch ? name(launch.id) : ''}</text>
+        <text className={fits ? 'bp-label bp-fairing-fit bp-ok-text' : 'bp-label bp-fairing-fit bp-fail-text'} x={40} y={8}>
           {fits ? t('bp.fits') : t('bp.doesNotFit')}
         </text>
       </g>
