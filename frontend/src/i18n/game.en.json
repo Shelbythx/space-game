@@ -430,7 +430,8 @@
       "hint": "Higher orbits live longer and see stations longer, but the radio is weaker and launchers lift less."
     },
     "flight": {
-      "soon": "The flight on a map of the Earth comes with task 010. You can open the report already."
+      "loading": "Simulating the flight on the mission server…",
+      "needsServer": "The flight is simulated by the mission server, and it is offline: in the demo there is no orbit to replay. Start the server (docker compose up in backend/) to watch the flight on the map — or open the demo report."
     }
   },
   "credits": {
