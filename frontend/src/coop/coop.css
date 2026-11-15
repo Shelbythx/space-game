@@ -1,0 +1,218 @@
+/* Co-op (task 045): lobby in the menu's pixel style, room panel and notices in the mission frame. */
+
+.coop-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.coop-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.coop-input,
+.coop-select {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  font: 400 18px/1.2 var(--mm-font, monospace);
+  color: var(--mm-ink, #f3f7ff);
+  background: rgba(8, 13, 24, 0.9);
+  border: 3px solid #000;
+  box-shadow:
+    inset 3px 3px 0 #070b14,
+    inset -3px -3px 0 #2c3d5c;
+  border-radius: 0;
+}
+
+.coop-input:focus,
+.coop-select:focus {
+  outline: none;
+  border-color: #fff;
+}
+
+.coop-lobby {
+  justify-content: flex-start;
+}
+
+.coop-share {
+  width: min(720px, 100%);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.coop-share-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.coop-qr {
+  width: 168px;
+  height: 168px;
+  flex-shrink: 0;
+  border: 3px solid #000;
+  image-rendering: pixelated;
+}
+
+.coop-left {
+  text-align: left;
+}
+
+.coop-board {
+  width: min(720px, 100%);
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 24px;
+}
+
+.coop-players,
+.coop-roles {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 18px;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.coop-players li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coop-you {
+  color: var(--mm-accent, #7fd6ff);
+}
+
+.coop-role {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: rgba(8, 13, 24, 0.75);
+  border: 3px solid #000;
+}
+
+.coop-role-mine {
+  box-shadow: inset 0 0 0 2px var(--mm-accent, #7fd6ff);
+}
+
+.coop-role-owner {
+  color: var(--mm-ink-dim, #a8b9d4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.coop-role-actions .coop-select {
+  min-height: 36px;
+  font-size: 15px;
+  width: auto;
+}
+
+.mm-btn.coop-small {
+  min-height: 36px;
+  width: auto;
+  font-size: 16px;
+}
+
+.coop-problem {
+  margin: 0;
+  color: var(--mm-fail, #ff6b6b);
+  font-size: 17px;
+  text-shadow: 2px 2px 0 #000;
+}
+
+/* ---------- inside the mission frame ---------- */
+
+.coop-panel {
+  margin: 12px 0;
+  padding: 10px;
+  border: 2px solid currentColor;
+  font-size: 14px;
+}
+
+.coop-panel-title {
+  margin: 0 0 8px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.coop-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.coop-panel li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.coop-panel-owner {
+  opacity: 0.75;
+  max-width: 10ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.coop-panel-mine {
+  font-weight: 700;
+}
+
+.coop-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.coop-notice {
+  margin: 0;
+  padding: 8px 12px;
+  border-left: 4px solid #4f78ad;
+  background: rgba(79, 120, 173, 0.12);
+}
+
+.coop-notice-warn {
+  border-left-color: #d9a400;
+  background: rgba(217, 164, 0, 0.12);
+}
+
+@media (max-width: 640px) {
+  .coop-share {
+    flex-direction: column;
+  }
+
+  .coop-board {
+    grid-template-columns: 1fr;
+  }
+
+  .coop-role {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .coop-role-actions {
+    grid-column: 1 / -1;
+  }
+}

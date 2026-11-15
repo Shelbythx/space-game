@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import type { Design, Evaluation, Mission } from '../api/types'
-import { useBlueprint } from '../blueprint/useBlueprint'
+import { type BlueprintState, useBlueprint } from '../blueprint/useBlueprint'
 import { useGameText } from '../blueprint/format'
 import { readStorage, writeStorage } from '../lib/storage'
 import { TutorialPanel } from '../tutorial/TutorialPanel'
@@ -53,6 +53,23 @@ function useDecisions(mission: Mission | null, design: Design | null, evaluation
 export function MissionShell() {
   const { missionId = 'sat-orbit' } = useParams()
   const state = useBlueprint(missionId)
+  return <MissionFrame state={state} />
+}
+
+/** What co-op (task 045) changes in the frame: the way back, a room panel and a banner. */
+export interface CoopFrame {
+  backLabel: string
+  onBack: () => void
+  /** Players and roles, under the stage checklist. */
+  panel: ReactNode
+  /** «Who changed what» and other room notices, above the stage. */
+  banner: ReactNode
+  /** Why «Start mission» is disabled although the checks pass (a free role). */
+  startBlocked: string | null
+}
+
+/** The five-stage frame over one mission state: solo (useBlueprint) or a co-op room. */
+export function MissionFrame({ state, coop }: { state: BlueprintState; coop?: CoopFrame }) {
   const { mission, design, evaluation, failed, demo, launch, actions } = state
   const { t } = useGameText()
   const navigate = useNavigate()
@@ -81,15 +98,17 @@ export function MissionShell() {
   const locked = (s: Stage) => (s === 'flight' || s === 'report') && !launch.launched
   const startMission = () => {
     actions.launch()
-    navigate('flight')
+    // In co-op the room goes to «launched» for everyone; the room view then opens the flight.
+    if (!coop) navigate('flight')
   }
+  const canStart = launch.ready && !coop?.startBlocked
 
   return (
     <MissionContext.Provider value={state}>
       <div className={['mm-root bp-root fp-root', folded ? 'fp-folded' : ''].join(' ')}>
         <aside className="fp-rail" aria-label={t('flow.plan.title')}>
-          <button type="button" className="mm-btn fp-back" onClick={() => navigate('/missions')}>
-            {'<'} <span className="fp-hide-folded">{t('flow.missions')}</span>
+          <button type="button" className="mm-btn fp-back" onClick={coop ? coop.onBack : () => navigate('/missions')}>
+            {'<'} <span className="fp-hide-folded">{coop ? coop.backLabel : t('flow.missions')}</span>
           </button>
           <h1 className="fp-mission">{mission ? t(mission.titleCode) : t('bp.loading')}</h1>
 
@@ -136,7 +155,9 @@ export function MissionShell() {
             </ol>
           </nav>
 
-          {design && (
+          {coop?.panel}
+
+          {design && !coop && (
             <div className="fp-version" role="group" aria-label={t('bp.version.label')}>
               {(['simple', 'advanced'] as const).map((v) => (
                 <button
@@ -159,6 +180,7 @@ export function MissionShell() {
         </aside>
 
         <main className="fp-main">
+          {coop?.banner}
           <header className="fp-task">
             <h2 className="fp-title">{t(`flow.task.${stage}`)}</h2>
             <p className="fp-sub">{t(`flow.stageHint.${stage}`)}</p>
@@ -214,8 +236,8 @@ export function MissionShell() {
                     type="button"
                     className="mm-btn fp-next"
                     onClick={startMission}
-                    disabled={!launch.ready}
-                    title={launch.ready ? undefined : t('flow.locked.button')}
+                    disabled={!canStart}
+                    title={canStart ? undefined : (coop?.startBlocked ?? t('flow.locked.button'))}
                   >
                     {t('bp.launchButton')} {'>'}
                   </button>

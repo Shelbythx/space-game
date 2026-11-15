@@ -6,9 +6,11 @@ import type {
   Health,
   Mission,
   MissionSummary,
+  Role,
   SimulationRequest,
   SimulationResult,
 } from './types'
+import type { RoomState } from '../coop/types'
 
 const RAW_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5080').trim().replace(/\/+$/, '')
 // A host without a scheme (as in the repository variable) means HTTPS.
@@ -53,11 +55,15 @@ async function request<T>(path: string, init?: RequestInit & { timeoutMs?: numbe
     }
     throw new ApiError(response.status, title, errors)
   }
+  // 204 — nothing changed (co-op polling, docs/api.md 2.2).
+  if (response.status === 204) return undefined as T
   return (await response.json()) as T
 }
 
 const post = <T>(path: string, body: unknown, timeoutMs?: number) =>
   request<T>(path, { method: 'POST', body: JSON.stringify(body), timeoutMs })
+const put = <T>(path: string, body: unknown) => request<T>(path, { method: 'PUT', body: JSON.stringify(body) })
+const room = (code: string) => `/api/rooms/${encodeURIComponent(code)}`
 
 // Offline demo when the mission server cannot be reached (the backend exists since tasks
 // 002–006; keeping the demo is an open question in docs/decisions.md). VITE_API_MOCK:
@@ -128,4 +134,23 @@ export const api = {
   attempts: (playerId: string) =>
     request<AttemptSummary[]>(`/api/attempts?playerId=${encodeURIComponent(playerId)}`),
   attempt: (id: string) => request<Attempt>(`/api/attempts/${encodeURIComponent(id)}`),
+  // Co-op rooms (task 045, D109). No demo fallback: co-op needs the server.
+  rooms: {
+    create: (body: { playerId: string; name: string | null; design: Design }) => post<RoomState>('/api/rooms', body),
+    /** undefined — nothing changed since `since` (204). */
+    get: (code: string, playerId: string, since?: number) =>
+      request<RoomState | undefined>(
+        `${room(code)}?playerId=${encodeURIComponent(playerId)}${since === undefined ? '' : `&since=${since}`}`,
+        { timeoutMs: 8000 },
+      ),
+    join: (code: string, playerId: string, name: string | null) => post<RoomState>(`${room(code)}/join`, { playerId, name }),
+    leave: (code: string, playerId: string) => post<RoomState>(`${room(code)}/leave`, { playerId }),
+    assign: (code: string, playerId: string, role: Role, slot: number | null) =>
+      put<RoomState>(`${room(code)}/roles/${role}`, { playerId, slot }),
+    design: (code: string, playerId: string, design: Design) => put<RoomState>(`${room(code)}/design`, { playerId, design }),
+    // The launch runs the simulation (may wait for NASA DONKI), so it gets more time.
+    launch: (code: string, playerId: string, seed?: number) =>
+      post<RoomState>(`${room(code)}/launch`, { playerId, seed: seed ?? null }, 45000),
+    reset: (code: string, playerId: string) => post<RoomState>(`${room(code)}/reset`, { playerId }),
+  },
 }
