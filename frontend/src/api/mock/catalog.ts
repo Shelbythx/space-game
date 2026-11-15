@@ -1,8 +1,8 @@
 import type { Design, Instrument, Launch, Mission, Orbit, Part, Source } from '../types'
 
-// Demo copy of GET /api/missions/sat-orbit (contract v2) used while the backend (tasks
-// 002–004) does not exist. Numbers: docs/catalogs.md after task 016 (SOA 2026 tables).
-// The real catalog comes from the backend's database (task 003).
+// Demo copy of GET /api/missions/sat-orbit (contract v2), used only when the backend is
+// unreachable. Mirrors backend/src/SpaceGame.Api/Catalogs/MissionData.cs (task 003 + 029:
+// SOA 2026 numbers); keep the two in step. The real catalog always comes from the backend.
 
 const nasa = (note: string): Source => ({ kind: 'nasa', note, url: null })
 const estimate = (note: string | null = null): Source => ({ kind: 'estimate', note, url: null })
@@ -16,7 +16,7 @@ const orbits: Orbit[] = [
 
 const launches: Launch[] = [
   { id: 'rideshare', nameCode: 'launch.rideshare', priceK: 60, capacityKg: { sso: 200 }, fixedOrbitId: 'sso', maxBusSize: 'medium', source: estimate() },
-  { id: 'small', nameCode: 'launch.small', priceK: 250, capacityKg: { leo: 450, sso: 300 }, fixedOrbitId: null, maxBusSize: 'medium', source: nasa('Pegasus XL, до 453,59 кг на низьку орбіту; решта — оцінка') },
+  { id: 'small', nameCode: 'launch.small', priceK: 250, capacityKg: { leo: 450, sso: 300 }, fixedOrbitId: null, maxBusSize: 'large', source: nasa('Pegasus XL, до 453,59 кг на низьку орбіту; решта — оцінка') },
   { id: 'medium', nameCode: 'launch.medium', priceK: 800, capacityKg: { leo: 8000, sso: 6000, meo: 2500, geo: 1500 }, fixedOrbitId: null, maxBusSize: 'large', source: estimate() },
 ]
 
@@ -47,8 +47,8 @@ const parts: Part[] = [
 
   { id: 'prop-none', category: 'propulsion', tier: 'basic', nameCode: 'part.propNone', massKg: 0, priceK: 0, consumptionW: 0, specs: { ispS: 0, thrustN: 0, propellantKg: 0, powerW: 0 }, requires: [], source: estimate() },
   { id: 'prop-cold', category: 'propulsion', tier: 'basic', nameCode: 'part.propCold', massKg: 0.78, priceK: 15, consumptionW: 0, specs: { ispS: 40, thrustN: 0.08, propellantKg: 0.47, powerW: 0 }, requires: [], source: soa('4-5', 109, 'VACCO C-POD') },
-  { id: 'prop-chem', category: 'propulsion', tier: 'medium', nameCode: 'part.propChem', massKg: 8.6, priceK: 60, consumptionW: 0, specs: { ispS: 200, thrustN: 4, propellantKg: 6.1, powerW: 0 }, requires: [], source: soa('4-3', 107, 'VACCO Integrated Propulsion System') },
-  { id: 'prop-elec', category: 'propulsion', tier: 'best', nameCode: 'part.propElec', massKg: 1.25, priceK: 90, consumptionW: 0, specs: { ispS: 1960, thrustN: 0.001, propellantKg: 1.65, powerW: 70 }, requires: [], source: soa('4-9', 113, 'Busek BIT-3') },
+  { id: 'prop-chem', category: 'propulsion', tier: 'medium', nameCode: 'part.propChem', massKg: 8.6, priceK: 40, consumptionW: 0, specs: { ispS: 200, thrustN: 4, propellantKg: 6.1, powerW: 0 }, requires: [], source: soa('4-3', 107, 'VACCO Integrated Propulsion System') },
+  { id: 'prop-elec', category: 'propulsion', tier: 'best', nameCode: 'part.propElec', massKg: 1.25, priceK: 70, consumptionW: 0, specs: { ispS: 1960, thrustN: 0.001, propellantKg: 1.65, powerW: 70 }, requires: [], source: soa('4-9', 113, 'Busek BIT-3') },
 ]
 
 const needsPointing = [{ category: 'computer' as const, partId: 'cpu-power' }, { category: 'adcs' as const, partId: 'adcs-fine' }]
@@ -88,39 +88,33 @@ export const mockMission: Mission = {
     parts,
     instruments,
     groundStations: [
-      { id: 'fairbanks', nameCode: 'station.fairbanks', latitudeDeg: 64.9, longitudeDeg: -147.9, bands: ['uhf', 's', 'x'], priceK: 30, source: nasa('NEN Users\' Guide Rev 4, табл. 2-1: S і X; UHF — оцінка') },
-      { id: 'white-sands', nameCode: 'station.whiteSands', latitudeDeg: 32.5, longitudeDeg: -106.6, bands: ['s'], priceK: 20, source: nasa('NEN Users\' Guide Rev 4, табл. 2-1: WS1 — S і Ka') },
-      { id: 'guam', nameCode: 'station.guam', latitudeDeg: 13.4, longitudeDeg: 144.8, bands: ['s', 'x'], priceK: 20, source: estimate('у NEN немає; див. catalogs.md') },
+      { id: 'fairbanks', nameCode: 'station.fairbanks', latitudeDeg: 64.86, longitudeDeg: -147.85, bands: ['uhf', 's', 'x'], priceK: 30, source: estimate('координати — географія; діапазони й ціна — оцінка') },
+      { id: 'white-sands', nameCode: 'station.whiteSands', latitudeDeg: 32.5, longitudeDeg: -106.61, bands: ['s', 'x'], priceK: 20, source: estimate('координати — географія; діапазони й ціна — оцінка') },
+      { id: 'guam', nameCode: 'station.guam', latitudeDeg: 13.59, longitudeDeg: 144.84, bands: ['s', 'x'], priceK: 20, source: estimate('координати — географія; діапазони й ціна — оцінка') },
     ],
     launchSites: [],
     cargoCategories: [],
   },
+  // Same two presets as the backend (MissionData.cs).
   presets: [
     {
-      id: 'thrifty',
-      nameCode: 'preset.thrifty',
-      design: { ...base, version: 'simple', launchId: 'rideshare', parts: { ...base.parts } },
-    },
-    {
-      id: 'balanced',
-      nameCode: 'preset.balanced',
+      id: 'radiometer-rideshare',
+      nameCode: 'preset.satOrbit.radiometerRideshare',
       design: {
         ...base,
         version: 'simple',
-        parts: { ...base.parts, radio: 'radio-x', computer: 'cpu-power', adcs: 'adcs-fine', propulsion: 'prop-cold' },
-        instrumentIds: ['camera'],
+        launchId: 'rideshare',
+        parts: { bus: 'bus-s', solar: 'solar-body', battery: 'bat-s', radio: 'radio-s', computer: 'cpu-basic', adcs: 'adcs-basic', propulsion: 'prop-none' },
       },
     },
     {
-      id: 'science',
-      nameCode: 'preset.science',
+      id: 'camera-small',
+      nameCode: 'preset.satOrbit.cameraSmall',
       design: {
         ...base,
         version: 'simple',
-        launchId: 'medium',
-        parts: { bus: 'bus-l', solar: 'solar-roll', battery: 'bat-l', radio: 'radio-x', computer: 'cpu-power', adcs: 'adcs-fine', propulsion: 'prop-elec' },
-        instrumentIds: ['camera', 'radar'],
-        groundStationIds: ['fairbanks', 'guam'],
+        parts: { bus: 'bus-m', solar: 'solar-deploy', battery: 'bat-m', radio: 'radio-x', computer: 'cpu-power', adcs: 'adcs-fine', propulsion: 'prop-chem' },
+        instrumentIds: ['camera'],
       },
     },
   ],

@@ -88,7 +88,7 @@
   },
   "instrument": { "magnetometer": "Магнітометр", "radiometer": "Мікрохвильовий радіометр", "camera": "Багатоспектральна камера", "radar": "Радар" },
   "station": { "fairbanks": "Аляска (Fairbanks)", "whiteSands": "White Sands", "guam": "Гуам" },
-  "preset": { "thrifty": "Ощадливий", "balanced": "Збалансований", "science": "Максимум науки" },
+  "preset": { "satOrbit": { "radiometerRideshare": "Радіометр попутним запуском", "cameraSmall": "Камера на малому носії" } },
   "check": {
     "mission": {
       "overBudget": "Бюджет перевищено: {{usedK}} к з {{limitK}} к",

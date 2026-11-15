@@ -88,7 +88,7 @@
   },
   "instrument": { "magnetometer": "Magnetometer", "radiometer": "Microwave radiometer", "camera": "Multispectral camera", "radar": "Radar" },
   "station": { "fairbanks": "Alaska (Fairbanks)", "whiteSands": "White Sands", "guam": "Guam" },
-  "preset": { "thrifty": "Thrifty", "balanced": "Balanced", "science": "Maximum science" },
+  "preset": { "satOrbit": { "radiometerRideshare": "Radiometer on a rideshare", "cameraSmall": "Camera on a small launcher" } },
   "check": {
     "mission": {
       "overBudget": "Budget exceeded: {{usedK}} k of {{limitK}} k",

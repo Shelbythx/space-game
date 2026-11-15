@@ -51,7 +51,8 @@ export function useBlueprint() {
         if (cancelled) return
         setMission(m)
         const saved = loadSaved()
-        const start = saved ?? m.presets.find((p) => p.id === 'balanced')?.design ?? m.presets[0].design
+        const preset = m.presets.find((p) => p.id === 'camera-small') ?? m.presets[0]
+        const start = saved ?? { ...preset.design, version: preset.design.version ?? 'simple' }
         setDesign(normalize(start, m))
       })
       .catch(() => !cancelled && setFailed(true))

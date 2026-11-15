@@ -54,7 +54,7 @@ export function SimpleControls({ mission, design, actions }: { mission: Mission;
         <div className="bp-presets">
           {mission.presets.map((p) => (
             <button key={p.id} type="button" className="mm-btn bp-preset" onClick={() => actions.applyPreset(p.id)}>
-              {t(`preset.${p.id}`)}
+              {t(p.nameCode)}
             </button>
           ))}
         </div>
