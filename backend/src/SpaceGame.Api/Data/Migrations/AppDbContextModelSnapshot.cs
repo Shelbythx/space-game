@@ -22,6 +22,61 @@ namespace SpaceGame.Api.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("SpaceGame.Api.Attempts.AttemptEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Bottleneck")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("bottleneck");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Design")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("design");
+
+                    b.Property<string>("MissionId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("mission_id");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("player_id");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("result");
+
+                    b.Property<string>("Scores")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("scores");
+
+                    b.Property<long>("Seed")
+                        .HasColumnType("bigint")
+                        .HasColumnName("seed");
+
+                    b.Property<bool>("Success")
+                        .HasColumnType("boolean")
+                        .HasColumnName("success");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId", "CreatedAt");
+
+                    b.ToTable("attempts", (string)null);
+                });
+
             modelBuilder.Entity("SpaceGame.Api.SpaceWeather.SpaceWeatherCacheEntry", b =>
                 {
                     b.Property<DateOnly>("PeriodStart")
