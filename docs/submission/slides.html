@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Space Mission Design Game — pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiny5&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono&display=swap">
+<style>
+  /* Seven 16:9 slides (D67). Open in a browser: arrow keys or scroll to move; print
+     (Ctrl+P, landscape, no margins, background graphics on) to save a PDF for the
+     submission. Screenshots are in ./screenshots. */
+  :root {
+    --paper: #0b1a2e;
+    --panel: #0f2440;
+    --ink: #e6f1ff;
+    --ink-dim: #a9c3df;
+    --line: #2f5d8a;
+    --cyan: #5cc8ff;
+    --sun: #ffd166;
+    --deep: #081320;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: #050b14; }
+  body { font-family: 'IBM Plex Sans', Arial, sans-serif; color: var(--ink); }
+  .deck { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 24px 0; }
+  .frame { width: calc(1920px * var(--k, 0.5)); height: calc(1080px * var(--k, 0.5)); overflow: hidden; }
+  section {
+    width: 1920px; height: 1080px; padding: 128px;
+    transform: scale(var(--k, 0.5)); transform-origin: top left;
+    background: var(--paper); display: flex; flex-direction: column; gap: 40px; position: relative;
+  }
+  section.alt { background: var(--panel); }
+  section.statement { background: var(--sun); color: var(--paper); }
+  h1, h2, h3, .eyebrow, .num, .tag, .page { font-family: 'Tiny5', 'Courier New', monospace; font-weight: 400; }
+  h1 { font-size: 96px; line-height: 1.1; }
+  h2 { font-size: 64px; line-height: 1.15; }
+  h3 { font-size: 30px; line-height: 1.2; color: var(--cyan); }
+  .eyebrow { font-size: 30px; letter-spacing: 2px; color: var(--cyan); }
+  .lead { font-size: 40px; line-height: 1.35; color: var(--ink-dim); }
+  .body { font-size: 30px; line-height: 1.4; color: var(--ink-dim); }
+  .small { font-size: 24px; line-height: 1.4; color: var(--ink-dim); }
+  .mono { font-family: 'IBM Plex Mono', 'Courier New', monospace; font-size: 24px; color: var(--cyan); }
+  .row { display: flex; gap: 48px; align-items: flex-start; }
+  .col { display: flex; flex-direction: column; gap: 28px; flex: 1; min-width: 0; }
+  .shot { display: block; object-fit: contain; background: var(--deep); border: 3px solid var(--line); }
+  .cards { display: grid; gap: 24px; }
+  .cards3 { grid-template-columns: repeat(3, 1fr); }
+  .cards5 { grid-template-columns: repeat(5, 1fr); }
+  .card { display: flex; flex-direction: column; gap: 12px; padding: 28px; background: var(--panel); border: 2px solid var(--line); border-top: 8px solid var(--cyan); }
+  section.alt .card { background: var(--paper); }
+  .num { font-size: 64px; line-height: 1; color: var(--sun); }
+  .cards5 .small { font-size: 30px; }
+  section.statement h2 { color: var(--paper); }
+  section.statement .eyebrow { color: #6b4a00; }
+  section.statement .card { background: #fbe7ae; border: 2px solid #c99a2e; border-top: 8px solid var(--paper); }
+  section.statement .card h3 { color: var(--paper); }
+  section.statement .card .body { color: #2a2a22; }
+  .chain { display: flex; align-items: stretch; gap: 20px; }
+  .link { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 20px 24px; background: var(--panel); border: 2px solid var(--line); }
+  .tag { font-size: 24px; color: var(--sun); }
+  .link .small { color: var(--ink); }
+  .to { align-self: center; font-family: 'IBM Plex Sans', Arial, sans-serif; font-size: 48px; color: var(--cyan); }
+  .list { font-size: 30px; line-height: 1.4; color: var(--ink-dim); padding-left: 36px; display: flex; flex-direction: column; gap: 16px; }
+  .list b { color: var(--ink); font-weight: 600; }
+  .strip { padding: 18px 28px; background: var(--deep); border-left: 8px solid var(--sun); }
+  .page { position: absolute; right: 128px; bottom: 56px; font-size: 24px; color: #7f9dbd; }
+  section.statement .page { color: #6b4a00; }
+  @media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    html { background: none; }
+    .deck { display: block; padding: 0; gap: 0; }
+    .frame { width: 1920px; height: 1080px; break-after: page; }
+    section { transform: none; }
+  }
+</style>
+</head>
+<body>
+<main class="deck">
+
+<div class="frame"><section id="cover">
+  <div class="row" style="align-items:center; flex:1; gap:64px;">
+    <div class="col" style="gap:32px;">
+      <p class="eyebrow">NASA SPACE APPS CHALLENGE 2026</p>
+      <h1>Space Mission Design Game</h1>
+      <p class="lead">Design a mission, launch it, and see exactly why it worked — or failed.</p>
+      <p class="small">Challenge: Space Mission Design Game · Team [team name]</p>
+    </div>
+    <img class="shot" src="screenshots/menu.jpg" alt="Main menu: pixel title over a starry sky and the edge of the Earth" style="width:760px; height:475px;">
+  </div>
+  <p class="page">1 / 7</p>
+</section></div>
+
+<div class="frame"><section id="problem" class="statement">
+  <p class="eyebrow">THE GAP</p>
+  <h2>Students learn orbits, rockets and spacecraft one by one — and never see how they pull on each other inside one mission.</h2>
+  <div class="cards cards3">
+    <div class="card"><h3>Six limited resources</h3><p class="body">Mass, power, budget, data, comms and time — all shared, all on screen.</p></div>
+    <div class="card"><h3>Every choice has a price</h3><p class="body">A better camera needs a faster radio, more power, more budget and a bigger launcher.</p></div>
+    <div class="card"><h3>Failure should teach</h3><p class="body">Not just a score: the game names the reason and lets you fix the design and fly again.</p></div>
+  </div>
+  <p class="page">2 / 7</p>
+</section></div>
+
+<div class="frame"><section id="loop" class="alt">
+  <h2>Five stages, like a real NASA mission</h2>
+  <div class="cards cards5">
+    <div class="card"><p class="num">1</p><h3>Goal</h3><p class="small">The end product and the limits: 500 GB in 12 months, 450k budget, launch by month 18.</p></div>
+    <div class="card"><p class="num">2</p><h3>Concept</h3><p class="small">Orbit, launcher and ground stations — and what each orbit means.</p></div>
+    <div class="card"><p class="num">3</p><h3>Design</h3><p class="small">Assemble the spacecraft on a blueprint, part by part.</p></div>
+    <div class="card"><p class="num">4</p><h3>Flight</h3><p class="small">The mission in accelerated time on a map of the Earth.</p></div>
+    <div class="card"><p class="num">5</p><h3>Report</h3><p class="small">What worked, what failed and why — then back to any stage.</p></div>
+  </div>
+  <div class="strip">
+    <p class="body"><b style="color:var(--ink)">Four roles</b> — Planner, Scientist, Engineer, Designer. Each decision has one owner; the roles collide through shared resources, even in single player.</p>
+  </div>
+  <p class="page">3 / 7</p>
+</section></div>
+
+<div class="frame"><section id="design">
+  <h2>Every decision has a price</h2>
+  <div class="row">
+    <img class="shot" src="screenshots/design.jpg" alt="Blueprint stage: six resource bars, the spacecraft drawing, role comments and checks by NASA segment" style="width:1040px; height:650px;">
+    <ul class="list col">
+      <li><b>Six resource bars</b> update after every change.</li>
+      <li><b>Roles comment:</b> “We collect 278 GB a day but send only 24.”</li>
+      <li><b>No single right answer:</b> a cheap rideshare forces modest parts.</li>
+      <li><b>Two depths:</b> simple gives advice; advanced shows every formula and its NASA source.</li>
+    </ul>
+  </div>
+  <p class="page">4 / 7</p>
+</section></div>
+
+<div class="frame"><section id="why" class="alt">
+  <h2>Fly it — then see why</h2>
+  <div class="row" style="gap:32px;">
+    <img class="shot" src="screenshots/flight.jpg" alt="Flight stage: ground track over a flat Earth map, station zone and playback controls" style="width:816px; height:510px;">
+    <img class="shot" src="screenshots/report.jpg" alt="Report stage: verdict, bottleneck and four scores with their formulas" style="width:816px; height:510px;">
+  </div>
+  <div class="chain">
+    <div class="link"><p class="tag">DECISION</p><p class="small">Sun-synchronous orbit at 705 km</p></div>
+    <p class="to">→</p>
+    <div class="link"><p class="tag">PHYSICS</p><p class="small">One orbit takes 99 min; the Earth’s shadow covers 36% of it</p><p class="mono">T = 2π√(r³/μ)</p></div>
+    <p class="to">→</p>
+    <div class="link"><p class="tag">RESULT</p><p class="small">The battery must carry the spacecraft through every shadow</p></div>
+  </div>
+  <p class="page">5 / 7</p>
+</section></div>
+
+<div class="frame"><section id="nasa">
+  <h2>Real NASA data, real NASA formulas</h2>
+  <div class="cards cards3">
+    <div class="card"><h3>NASA DONKI</h3><p class="small">Real historical geomagnetic storms replayed during the flight, with date and Kp.</p></div>
+    <div class="card"><h3>SmallSat State-of-the-Art 2026</h3><p class="small">Solar arrays, batteries, radios and engines in the parts catalog.</p></div>
+    <div class="card"><h3>GSFC-STD-1000 Gold Rules</h3><p class="small">Mass 15% and power 25% margins for a concept-stage mission.</p></div>
+    <div class="card"><h3>Earth Fact Sheet · GMAT · Std Atmosphere</h3><p class="small">Orbit period, Earth’s shadow, ground track, drag and orbit decay.</p></div>
+    <div class="card"><h3>NASA-STD-8719.14C</h3><p class="small">The 25-year rule for leaving orbit after the mission.</p></div>
+    <div class="card"><h3>Near Earth Network</h3><p class="small">Ground stations and their elevation mask.</p></div>
+  </div>
+  <div class="strip"><p class="body">Every number is labelled: <b style="color:var(--ink)">NASA</b> · <b style="color:var(--ink)">derived from NASA formulas</b> · <b style="color:var(--ink)">game estimate</b>. The backend computes it all; the screen only shows it.</p></div>
+  <p class="page">6 / 7</p>
+</section></div>
+
+<div class="frame"><section id="next" class="alt">
+  <h2>Where we are</h2>
+  <div class="row">
+    <div class="col">
+      <h3>Working now</h3>
+      <ul class="list">
+        <li>Mission 1 from goal to report, in English and Ukrainian</li>
+        <li>Backend physics for an ISS cargo mission and a CubeSat training mission</li>
+        <li>Attempts saved and compared; the same seed replays the same flight</li>
+        <li>CI on every pull request: build, lint and 80+ backend tests</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3>Next</h3>
+      <ul class="list">
+        <li>Co-op for 2–4 players over a local network — designed, one role per player</li>
+        <li>ISS rendezvous and CubeSat screens</li>
+        <li>Library of similar real NASA missions for the report</li>
+      </ul>
+    </div>
+  </div>
+  <p class="small" style="margin-top:auto;">github.com/Shelbythx/space-game · How we used AI: docs/ai-usage.md</p>
+  <p class="page">7 / 7</p>
+</section></div>
+
+</main>
+<script>
+  // Fit each 1920×1080 slide to the window width; arrow keys jump between slides.
+  const fit = () => document.documentElement.style.setProperty('--k', String(Math.min(1, (window.innerWidth - 48) / 1920)))
+  fit()
+  window.addEventListener('resize', fit)
+  const frames = [...document.querySelectorAll('.frame')]
+  window.addEventListener('keydown', (e) => {
+    const step = e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp' ? -1 : 0
+    if (!step) return
+    e.preventDefault()
+    const mid = window.scrollY + window.innerHeight / 2
+    const current = frames.findIndex((f) => f.offsetTop + f.offsetHeight > mid)
+    const next = frames[Math.max(0, Math.min(frames.length - 1, (current < 0 ? 0 : current) + step))]
+    next.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
+</script>
+</body>
+</html>
