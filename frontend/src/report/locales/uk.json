@@ -86,7 +86,22 @@
     "icecube": "IceCube",
     "dellingr": "Dellingr",
     "crs29": "SpaceX CRS-29",
-    "ng20": "Northrop Grumman NG-20"
+    "ng20": "Northrop Grumman NG-20",
+    "modeled": {
+      "cubesatCheapest": "Найдешевший CubeSat",
+      "cubesatIcecubeLike": "CubeSat на зразок IceCube",
+      "cubesatBalanced": "Збалансований CubeSat",
+      "cubesatBest": "Найсильніший CubeSat",
+      "cubesatDellingrLike": "CubeSat на зразок Dellingr",
+      "orbitCheapest": "Найдешевший супутник",
+      "orbitTropicsLike": "Супутник на зразок TROPICS",
+      "orbitBalanced": "Збалансований супутник",
+      "orbitCameraRideshare": "Супутник із камерою на попутному запуску",
+      "issCheapest": "Найдешевший вантажний корабель до МКС",
+      "issCrs29Like": "Вантажний корабель на зразок CRS-29",
+      "issNgWallopsLike": "Вантажний корабель на зразок NG з Воллопса",
+      "issBest": "Найсильніший вантажний корабель до МКС"
+    }
   },
   "check": {
     "mission": {

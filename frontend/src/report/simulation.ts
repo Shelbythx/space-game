@@ -129,8 +129,11 @@ export function useSimulation(design: Design | null) {
     const entry = entryFor(key)
     entry.listeners.add(rerender)
     if (!entry.started) {
+      // The mission keeps its seed until «fly again»: a changed design (or a switch between the
+      // simple and advanced versions) meets the same storms and failures, so the comparison
+      // with the previous attempt shows the effect of the design, not of luck.
       const flight = readJson<Flight>(flightKey(design.missionId))
-      void start(entry, design, key, flight?.key === key ? flight.seed : undefined)
+      void start(entry, design, key, flight?.seed)
     }
     return () => {
       entry.listeners.delete(rerender)

@@ -10,7 +10,9 @@ import type {
   SimulationResult,
 } from './types'
 
-const BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:5080').replace(/\/$/, '')
+const RAW_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5080').trim().replace(/\/+$/, '')
+// A host without a scheme (as in the repository variable) means HTTPS.
+const BASE_URL = /^https?:\/\//.test(RAW_URL) ? RAW_URL : `https://${RAW_URL}`
 
 /** RFC 7807 problem from the backend, or a network failure (status 0). */
 export class ApiError extends Error {
@@ -77,15 +79,21 @@ export const demoMode = {
   },
 }
 
+// In "auto" the demo is not for the whole session: a server that was asleep (a cold start
+// on hosting) or briefly unreachable is asked again after this pause.
+const RETRY_SERVER_MS = 20000
+let demoSince = 0
+
 async function withDemo<T>(real: () => Promise<T>, fake: () => Promise<T>): Promise<T> {
   if (MOCK_MODE === 'always') return fake()
-  if (demo && MOCK_MODE === 'auto') return fake()
+  if (demo && MOCK_MODE === 'auto' && Date.now() - demoSince < RETRY_SERVER_MS) return fake()
   try {
     const result = await real()
     setDemo(false)
     return result
   } catch (error) {
     if (MOCK_MODE === 'auto' && error instanceof ApiError && (error.status === 0 || error.status === 404)) {
+      demoSince = Date.now()
       setDemo(true)
       return fake()
     }

@@ -86,7 +86,22 @@
     "icecube": "IceCube",
     "dellingr": "Dellingr",
     "crs29": "SpaceX CRS-29",
-    "ng20": "Northrop Grumman NG-20"
+    "ng20": "Northrop Grumman NG-20",
+    "modeled": {
+      "cubesatCheapest": "The cheapest CubeSat",
+      "cubesatIcecubeLike": "A CubeSat like IceCube",
+      "cubesatBalanced": "A balanced CubeSat",
+      "cubesatBest": "The strongest CubeSat",
+      "cubesatDellingrLike": "A CubeSat like Dellingr",
+      "orbitCheapest": "The cheapest satellite",
+      "orbitTropicsLike": "A satellite like TROPICS",
+      "orbitBalanced": "A balanced satellite",
+      "orbitCameraRideshare": "A camera satellite on a rideshare",
+      "issCheapest": "The cheapest ISS cargo ship",
+      "issCrs29Like": "A cargo ship like CRS-29",
+      "issNgWallopsLike": "A cargo ship like NG from Wallops",
+      "issBest": "The strongest ISS cargo ship"
+    }
   },
   "check": {
     "mission": {

@@ -32,25 +32,32 @@ export function useGameText() {
     [t, i18n],
   )
 
+  /** A text param from the backend in the player's words: a side, a bus size, a band or a catalog id. */
+  const word = useCallback(
+    (key: string, value: string): string => {
+      if (key === 'side' || key === 'expectedSide') return t(`side.${value}`)
+      if (key === 'busSize' || key === 'maxBusSize') return t(`busSize.${value}`)
+      if (key === 'band') return value.toUpperCase()
+      return name(value)
+    },
+    [t, name],
+  )
+
   const msg = useCallback(
     (m: Message): string => {
       const params: Record<string, string> = {}
       for (const [key, value] of Object.entries(m.params)) {
-        if (typeof value === 'number') params[key] = num(value)
-        else if (key === 'side' || key === 'expectedSide') params[key] = t(`side.${value}`)
-        else if (key === 'busSize' || key === 'maxBusSize') params[key] = t(`busSize.${value}`)
-        else if (key === 'band') params[key] = value.toUpperCase()
-        else params[key] = name(value)
+        params[key] = typeof value === 'number' ? num(value) : word(key, value)
       }
       return t(m.code, params)
     },
-    [t, num, name],
+    [t, num, word],
   )
 
   /** Unit in the player's language («kg» / «кг»), keys in game.*.json «unit». */
   const unit = useCallback((key: string) => t(`unit.${key}`), [t])
 
-  return { t, num, name, msg, unit, lang: i18n.language }
+  return { t, num, name, word, msg, unit, lang: i18n.language }
 }
 
 /** Role that owns a design decision (D92, docs/api.md «Хто власник рішення»). */
