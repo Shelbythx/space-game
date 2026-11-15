@@ -18,9 +18,16 @@ failed mission explains itself — so you change one thing and fly again.
 **Who it is for:** high-school and university students (about 14–22) with no space-engineering
 background. **Languages:** English and Ukrainian.
 
-| Main menu | Design stage: build the spacecraft |
+| Main menu | Design: build the spacecraft |
 | --- | --- |
 | ![Main menu of the game](docs/submission/screenshots/menu.png) | ![Design stage with six resource bars, the blueprint and role comments](docs/submission/screenshots/design.png) |
+| **Flight on the Earth map** | **Report: why it worked or failed** |
+| ![Flight replay: ground track, Earth's shadow and station visibility zones](docs/submission/screenshots/flight.png) | ![Mission report: four scores with formulas, the bottleneck, limits and the launch segment chain](docs/submission/screenshots/report.png) |
+| **Cargo to the ISS: the chase and docking** | |
+| ![Rendezvous with the ISS: insertion orbit, ISS orbit, phase angle, altitude and propellant](docs/submission/screenshots/iss.png) | |
+
+<sub>Screenshots from the live game in English: the first four from Mission 1 "Satellite to
+orbit", the last one from Mission 2 "Cargo to the ISS".</sub>
 
 ## Three missions
 

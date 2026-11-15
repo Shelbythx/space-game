@@ -12,8 +12,11 @@ This is that statement for the Space Mission Design Game.
 ## Who did what
 
 **People decided; agents wrote most of the text and code.** Each team member worked with
-their own Claude agent on tasks assigned to them; everything reached `main` through pull
-requests that a team member opened and merged, with CI (build, lint, tests) on every PR.
+their own Claude agent on tasks assigned to them, each task in its own branch. Most work
+reached `main` through pull requests that a team member opened and merged, with CI (build,
+lint, tests) on every PR. In the last hours before the deadline a team member also had the
+agent merge finished branches into `main` directly — only on that person's explicit approval
+each time, after a local build, lint and test run; CI then ran on `main`.
 
 | Area | People | AI agents |
 | --- | --- | --- |
@@ -37,9 +40,8 @@ shows which changes an agent produced.
   game estimate in [`catalogs.md`](catalogs.md) and [`physics-sources.md`](physics-sources.md).
 - **Tests pin the formulas** — orbit period, eclipse fraction, drag, rocket equation,
   Hohmann transfer, deterministic simulation for a given seed.
-- **People checked the results** in the running game. The screenshots in the submission
-  are of the real game; where the flight and the report show sample data instead of a live
-  backend run, the caption says so.
+- **People checked the results** in the running game. The screenshots in the README are of
+  the live game with the live backend (`docs/submission/screenshots/*.png`).
 
 ## Where the text of this file goes
 
