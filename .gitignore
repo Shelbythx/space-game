@@ -17,3 +17,8 @@ __pycache__/
 .env.*
 !.env.example
 *.log
+
+# Impeccable design skill: local review captures and decision-page state
+.impeccable/review/
+.impeccable/questions/
+.impeccable/hook.cache.json

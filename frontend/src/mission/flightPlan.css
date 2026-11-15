@@ -1,0 +1,690 @@
+/* Flight plan frame (task 033): the mission as a NASA checklist on the blueprint paper.
+   Left rail — the five stages on a trajectory line; main — the task, the scene without boxes,
+   and a sticky footer with readiness and the pixel «Next >». Frames stay only where a
+   drawing lives; everything else sits on the paper, divided by thin rules. */
+
+.fp-root {
+  --fp-rail: 236px;
+  --fp-rail-folded: 76px;
+  --fp-ink-soft: #b9cde4;
+  --fp-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  display: grid;
+  grid-template-columns: var(--fp-rail) minmax(0, 1fr);
+  padding: 0;
+  font-size: 16px;
+  scrollbar-color: var(--bp-line-dim) transparent;
+}
+
+.fp-root.fp-folded {
+  grid-template-columns: var(--fp-rail-folded) minmax(0, 1fr);
+}
+
+.fp-root ::selection {
+  color: #06121f;
+  background: var(--bp-line);
+}
+
+.fp-root :focus-visible {
+  outline: 2px solid var(--bp-warn);
+  outline-offset: 2px;
+}
+
+/* ---------- rail: the checklist ---------- */
+
+.fp-rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 14px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background-color: #081426;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' shape-rendering='crispEdges'%3E%3Crect x='9' y='14' width='2' height='2' fill='%23cfe8ff' fill-opacity='.35'/%3E%3Crect x='47' y='6' width='2' height='2' fill='%235cc8ff' fill-opacity='.3'/%3E%3Crect x='30' y='41' width='2' height='2' fill='%23fff' fill-opacity='.22'/%3E%3Crect x='61' y='55' width='2' height='2' fill='%23cfe8ff' fill-opacity='.28'/%3E%3Crect x='16' y='62' width='2' height='2' fill='%235cc8ff' fill-opacity='.2'/%3E%3C/svg%3E");
+  border-right: 1px solid var(--bp-line-dim);
+}
+
+.fp-back {
+  align-self: flex-start;
+  width: auto;
+  min-height: 40px;
+  padding: 4px 12px;
+  font-size: 16px;
+}
+
+.fp-mission {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 #000;
+  overflow-wrap: anywhere;
+}
+
+.fp-plan {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fp-step {
+  position: relative;
+  padding-bottom: 10px;
+}
+
+/* The trajectory: a dashed line to the next stage, solid once the stage is done. */
+.fp-step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 34px;
+  bottom: -2px;
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--bp-line-dim) 0 6px, transparent 6px 10px);
+}
+
+.fp-step-done:not(:last-child)::before {
+  background: var(--bp-line);
+}
+
+.fp-step-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+  color: var(--bp-ink-dim);
+  text-decoration: none;
+}
+
+.fp-step-link:hover .fp-step-name {
+  color: var(--bp-ink);
+}
+
+.fp-box {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  font-family: var(--mm-font);
+  font-size: 16px;
+  color: var(--bp-ink-dim);
+  background: #0a1a30;
+  border: 2px solid var(--bp-line-dim);
+}
+
+/* Done: a green box with a drawn pixel tick instead of the number. */
+.fp-step-done .fp-box {
+  border-color: var(--bp-ok);
+  background: #0f3326 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Cpath fill='%236fe39b' d='M1 4h1v1H1zM2 5h1v1H2zM3 6h1v1H3zM4 5h1v1H4zM5 4h1v1H5zM6 3h1v1H6zM7 2h1v1H7z'/%3E%3C/svg%3E") center / 16px no-repeat;
+}
+
+.fp-step-done .fp-num {
+  visibility: hidden;
+}
+
+/* Now: the sun-yellow box, stamped in when the stage opens. */
+.fp-step-now .fp-box {
+  color: #1a1405;
+  background: var(--bp-warn);
+  border-color: var(--bp-warn);
+  animation: fp-stamp 420ms steps(4, end) both;
+}
+
+.fp-step-now .fp-box::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 2px solid var(--bp-warn);
+  opacity: 0;
+  animation: fp-ping 2.4s var(--fp-ease) 0.5s infinite;
+}
+
+@keyframes fp-stamp {
+  from {
+    transform: scale(1.6);
+  }
+}
+
+@keyframes fp-ping {
+  0% {
+    inset: -2px;
+    opacity: 0.9;
+  }
+  60%,
+  100% {
+    inset: -9px;
+    opacity: 0;
+  }
+}
+
+.fp-step-text {
+  min-width: 0;
+}
+
+.fp-step-name {
+  font-family: var(--mm-font);
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.fp-step-now .fp-step-name {
+  color: var(--bp-ink);
+}
+
+.fp-step-todo .fp-step-name {
+  color: #7f9dbd;
+}
+
+.fp-decisions {
+  display: grid;
+  gap: 2px;
+  margin: 4px 0 0 44px;
+  padding: 0;
+  list-style: none;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--fp-ink-soft);
+}
+
+.fp-decisions li {
+  overflow-wrap: anywhere;
+}
+
+.fp-version {
+  display: grid;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.fp-version .mm-btn {
+  min-height: 38px;
+  font-size: 15px;
+}
+
+.fp-fold {
+  align-self: flex-start;
+  padding: 4px 10px;
+  font: 14px var(--mm-font);
+  color: var(--bp-ink-dim);
+  background: transparent;
+  border: 1px solid var(--bp-line-dim);
+  cursor: pointer;
+}
+
+.fp-fold:hover {
+  color: var(--bp-ink);
+  border-color: var(--bp-line);
+}
+
+/* Folded rail: only the numbered boxes stay. */
+.fp-folded .fp-hide-folded,
+.fp-folded .fp-step-text,
+.fp-folded .fp-decisions,
+.fp-folded .fp-mission,
+.fp-folded .fp-version {
+  display: none;
+}
+
+.fp-folded .fp-rail {
+  align-items: center;
+  padding-inline: 10px;
+}
+
+.fp-folded .fp-back,
+.fp-folded .fp-fold {
+  align-self: center;
+}
+
+.fp-folded .fp-plan {
+  justify-items: center;
+}
+
+/* ---------- main: the task ---------- */
+
+.fp-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 28px 0;
+}
+
+.fp-task {
+  max-width: 1100px;
+}
+
+.fp-title {
+  margin: 0;
+  font-size: clamp(28px, 3.1vw, 42px);
+  line-height: 1.08;
+  text-shadow: 3px 3px 0 #000;
+  text-wrap: balance;
+}
+
+.fp-sub {
+  max-width: 68ch;
+  margin: 8px 0 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--fp-ink-soft);
+}
+
+.fp-main .flow-page {
+  max-width: 1100px;
+}
+
+.fp-main .flow-page-wide {
+  max-width: 1180px;
+}
+
+/* The scene sits on the paper: groups lose their boxes, a thin rule separates them. */
+.fp-main .bp-group {
+  margin-bottom: 6px;
+  padding: 14px 0 6px;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--bp-line-dim);
+}
+
+.fp-main .bp-group h3,
+.fp-main .bp-group h2 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  color: var(--bp-line);
+}
+
+.fp-main .bp-group-hl {
+  border-top: 2px solid var(--bp-warn);
+  background: rgba(255, 209, 102, 0.05);
+  box-shadow: none;
+}
+
+.fp-main .flow-lead {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.fp-main .bp-note {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fp-ink-soft);
+}
+
+/* Goal: the requirements read as one spec line, the roles as a plain two-column list. */
+.fp-main .flow-tiles {
+  gap: 0 18px;
+}
+
+.fp-main .flow-tile {
+  gap: 6px;
+  padding: 12px 2px 4px;
+  background: transparent;
+  border: 0;
+  border-top: 2px solid var(--bp-line);
+}
+
+.fp-main .flow-tile-label {
+  font-size: 14px;
+  color: var(--fp-ink-soft);
+}
+
+.fp-main .flow-tile-value {
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.fp-main .flow-roles {
+  gap: 0 24px;
+}
+
+.fp-main .flow-role {
+  padding: 12px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dashed var(--bp-line-dim);
+}
+
+.fp-main .flow-role p {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Six resources as one strip of instrument readouts. */
+.fp-main .bp-resources {
+  gap: 0 18px;
+  margin-bottom: 4px;
+}
+
+.fp-main .bp-res {
+  gap: 7px;
+  padding: 10px 2px 8px;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--bp-line-dim);
+}
+
+.fp-main .bp-res:hover,
+.fp-main .bp-res:focus-visible {
+  border-top-color: var(--bp-line);
+  background: rgba(92, 200, 255, 0.05);
+}
+
+.fp-main .bp-res-text {
+  font-size: 13.5px;
+  color: var(--fp-ink-soft);
+}
+
+.fp-main .bp-res-bar {
+  height: 6px;
+  border: 0;
+  background: #14304f;
+}
+
+.fp-main .bp-res-ok .bp-res-bar span {
+  background: var(--bp-ok);
+}
+
+/* Role voices as radio transmissions: who speaks, then the line. */
+.fp-main .bp-comment {
+  gap: 5px;
+  padding: 10px 0;
+  font-size: 15px;
+  line-height: 1.45;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dashed var(--bp-line-dim);
+}
+
+.fp-main .bp-advice {
+  font-size: 14px;
+}
+
+.fp-main .bp-check {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.fp-main .bp-seg-name {
+  font-size: 15px;
+}
+
+.fp-main .bp-left,
+.fp-main .bp-right {
+  max-height: none;
+}
+
+@media (min-width: 1200px) {
+  .fp-main .bp-main {
+    grid-template-columns: minmax(260px, 300px) minmax(0, 1fr) minmax(240px, 290px);
+  }
+}
+
+/* Report: the verdict leads; scores read as a row of readouts, not four boxes. */
+.fp-main .flow-verdict {
+  margin: 2px 0 6px;
+  font-size: 30px;
+  line-height: 1.1;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.fp-main .rp-scores {
+  gap: 0 20px;
+}
+
+.fp-main .rp-score {
+  padding: 12px 2px 6px;
+  background: transparent;
+  border: 0;
+  border-top: 2px solid var(--bp-line);
+}
+
+.fp-main .rp-score p {
+  font-size: 14px;
+  color: var(--fp-ink-soft);
+}
+
+.fp-main .rp-seg {
+  background: rgba(15, 36, 64, 0.6);
+}
+
+.fp-main .rp-text {
+  font-size: 15px;
+}
+
+/* ---------- footer: readiness and the next step ---------- */
+
+.fp-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-top: auto;
+  padding: 12px 0 14px;
+  background: linear-gradient(to top, var(--bp-paper) 72%, rgba(11, 26, 46, 0));
+  border-top: 1px solid var(--bp-line-dim);
+}
+
+.fp-ready {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+.fp-ready-mark {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+}
+
+.fp-ready-ok {
+  color: var(--bp-ok);
+}
+
+.fp-ready-warn {
+  color: var(--bp-warn);
+}
+
+.fp-ready-fail {
+  color: var(--bp-fail);
+}
+
+.fp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.fp-actions .mm-btn {
+  width: auto;
+  min-height: 50px;
+  padding: 6px 18px;
+  font-size: 19px;
+}
+
+/* The primary action is a sun-yellow pixel button in the menu's bevel. */
+.fp-next {
+  --mm-btn: #d9a93a;
+  --mm-btn-hi: #ffe08a;
+  --mm-btn-lo: #7d5c12;
+  --mm-btn-hover: #f2c14e;
+  --mm-btn-hover-hi: #fff0b8;
+  --mm-btn-hover-lo: #96701a;
+  --mm-ink: #1a1405;
+  --mm-ink-shadow: #f7dd8f;
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .fp-step-now .fp-box,
+  .fp-step-now .fp-box::after {
+    animation: none;
+  }
+}
+
+/* ---------- narrow screens: the rail becomes a top stepper ---------- */
+
+@media (max-width: 1099px) {
+  .fp-root,
+  .fp-root.fp-folded {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fp-rail,
+  .fp-folded .fp-rail {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    padding: 12px 16px;
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 1px solid var(--bp-line-dim);
+  }
+
+  .fp-folded .fp-hide-folded,
+  .fp-folded .fp-mission {
+    display: initial;
+  }
+
+  .fp-mission {
+    flex: 1 1 200px;
+    font-size: 19px;
+  }
+
+  .fp-rail > nav {
+    order: 3;
+    flex: 1 1 100%;
+  }
+
+  .fp-plan,
+  .fp-folded .fp-plan {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .fp-step {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-bottom: 0;
+  }
+
+  .fp-step:not(:last-child)::before {
+    left: 34px;
+    right: -6px;
+    top: 15px;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    background: repeating-linear-gradient(to right, var(--bp-line-dim) 0 6px, transparent 6px 10px);
+  }
+
+  .fp-step-done:not(:last-child)::before {
+    background: var(--bp-line);
+  }
+
+  .fp-step-link {
+    gap: 8px;
+  }
+
+  .fp-folded .fp-step-text,
+  .fp-step-text {
+    display: block;
+    position: relative;
+    z-index: 1;
+    padding-right: 4px;
+    background: #081426;
+  }
+
+  .fp-step-name {
+    font-size: 15px;
+  }
+
+  .fp-decisions,
+  .fp-fold {
+    display: none;
+  }
+
+  .fp-version,
+  .fp-folded .fp-version {
+    display: flex;
+    order: 2;
+    margin-top: 0;
+  }
+
+  .fp-version .mm-btn {
+    width: auto;
+    min-height: 36px;
+    font-size: 14px;
+  }
+
+  .fp-main {
+    padding: 16px 16px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .fp-step-text,
+  .fp-folded .fp-step-text {
+    display: none;
+  }
+
+  .fp-footer {
+    position: static;
+    background: transparent;
+  }
+
+  .fp-ready {
+    font-size: 14.5px;
+  }
+
+  .fp-mission {
+    flex-basis: 100%;
+    order: 1;
+  }
+
+  .fp-back {
+    order: 0;
+  }
+
+  .fp-actions {
+    width: 100%;
+  }
+
+  .fp-actions .mm-btn {
+    flex: 1 1 0;
+    min-height: 46px;
+    padding: 6px 10px;
+    font-size: 16px;
+  }
+
+  .fp-title {
+    font-size: 27px;
+  }
+
+  .fp-sub {
+    font-size: 15.5px;
+  }
+}

@@ -18,17 +18,6 @@ export function FlightStage() {
   const { mission, design } = useMission()
   const { simulation, flyAgain } = useSimulation(design)
 
-  const nav = (
-    <div className="flow-nav">
-      <button type="button" className="mm-btn" onClick={() => navigate('../design')}>
-        {'<'} {t('bp.stage.design')}
-      </button>
-      <button type="button" className="mm-btn" onClick={() => navigate('../report')}>
-        {t('bp.stage.report')} {'>'}
-      </button>
-    </div>
-  )
-
   if (simulation.status === 'ready' && mission && design && mission.kind === 'iss') {
     // ISS mission (task 024): first the chase and docking, then the stay at the station on
     // the map of task 010 — without science data, the ship has no instruments.
@@ -44,7 +33,6 @@ export function FlightStage() {
           gauges={['batteryMinPct', 'altitudeKm', 'propellantKg']}
           title={t('rendezvous.atStation')}
         />
-        {nav}
       </div>
     )
   }
@@ -67,7 +55,6 @@ export function FlightStage() {
           onFinish={() => navigate('../report')}
           gauges={gauges}
         />
-        {nav}
       </div>
     )
   }
@@ -95,7 +82,6 @@ export function FlightStage() {
           </>
         )}
       </section>
-      {nav}
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import type { ResourceKind, Role } from '../api/types'
 import { useMission } from '../mission/context'
 import { CalcSheet } from './CalcSheet'
@@ -18,7 +17,6 @@ import { SimpleControls } from './SimpleControls'
 
 export function BlueprintPage() {
   const { t, name } = useGameText()
-  const navigate = useNavigate()
   const { mission, design, evaluation, evaluating, failed, actions } = useMission()
   const [role, setRole] = useState<Role>('engineer')
   const [highlight, setHighlight] = useState<string | null>(null)
@@ -60,19 +58,11 @@ export function BlueprintPage() {
           </div>
           {evaluation && <OrbitStrip strip={evaluation.orbitStrip} altitudeKm={evaluation.orbit.altitudeKm} />}
           {failed && <p className="bp-error">{t('bp.error')}</p>}
-          <div className="bp-launch">
-            <button type="button" className="mm-btn" onClick={() => navigate('../concept')}>
-              {'<'} {t('bp.stage.concept')}
-            </button>
-            <button type="button" className="mm-btn" onClick={() => navigate('../flight')}>
-              {t('bp.launchButton')} {'>'}
-            </button>
-            {highlight && (
-              <span className="bp-note">
-                {name(highlight)} · {t('bp.owner', { role: t(`role.${ownerOf(highlight)}`) })}
-              </span>
-            )}
-          </div>
+          {highlight && (
+            <p className="bp-note">
+              {name(highlight)} · {t('bp.owner', { role: t(`role.${ownerOf(highlight)}`) })}
+            </p>
+          )}
         </section>
 
         <aside className="bp-right" aria-label={t('bp.feed')}>

@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import type { ResourceKind, Role } from '../api/types'
 import { CalcSheet } from '../blueprint/CalcSheet'
 import { Consoles } from '../blueprint/Consoles'
@@ -18,7 +17,6 @@ const PLANNER: Role[] = ['planner']
 
 export function ConceptStage() {
   const { t, num, unit } = useGameText()
-  const navigate = useNavigate()
   const { mission, design, evaluation, actions } = useMission()
   const [sheet, setSheet] = useState<ResourceKind | null>(null)
   const closeSheet = useCallback(() => setSheet(null), [])
@@ -79,14 +77,6 @@ export function ConceptStage() {
             <p className="bp-note">{t(rv ? 'flow.concept.hintIss' : 'flow.concept.hint')}</p>
           </section>
           {evaluation && <OrbitStrip strip={evaluation.orbitStrip} altitudeKm={evaluation.orbit.altitudeKm} />}
-          <div className="flow-nav">
-            <button type="button" className="mm-btn" onClick={() => navigate('../goal')}>
-              {'<'} {t('bp.stage.goal')}
-            </button>
-            <button type="button" className="mm-btn" onClick={() => navigate('../design')}>
-              {t('bp.stage.design')} {'>'}
-            </button>
-          </div>
         </section>
 
         <aside className="bp-right" aria-label={t('bp.feed')}>

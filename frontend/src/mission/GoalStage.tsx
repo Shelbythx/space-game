@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import type { Role } from '../api/types'
 import { useGameText } from '../blueprint/format'
 import { useMission } from './context'
@@ -10,7 +9,6 @@ const ROLES: Role[] = ['planner', 'scientist', 'engineer', 'designer']
 
 export function GoalStage() {
   const { t, num, unit } = useGameText()
-  const navigate = useNavigate()
   const { mission } = useMission()
   if (!mission) return null
   const g = mission.goal
@@ -36,7 +34,6 @@ export function GoalStage() {
   return (
     <div className="flow-page">
       <section className="bp-group flow-brief">
-        <h2>{t('flow.goal.title')}</h2>
         <p className="flow-lead">{t(mission.briefingCode)}</p>
         <p className="bp-note">{t('flow.goal.why')}</p>
       </section>
@@ -64,12 +61,6 @@ export function GoalStage() {
         <p className="bp-note">{t('flow.goal.conflict')}</p>
       </section>
 
-      <div className="flow-nav">
-        <span />
-        <button type="button" className="mm-btn" onClick={() => navigate('../concept')}>
-          {t('bp.stage.concept')} {'>'}
-        </button>
-      </div>
     </div>
   )
 }

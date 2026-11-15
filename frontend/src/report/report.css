@@ -313,17 +313,16 @@
   gap: 2px 10px;
   padding: 6px 8px;
   background: var(--bp-panel);
-  border-left: 4px solid var(--bp-line-dim);
 }
 
-.rp-event-solarStorm {
-  border-left-color: var(--bp-warn);
+.rp-event-solarStorm .rp-day {
+  color: var(--bp-warn);
 }
 
-.rp-event-debris,
-.rp-event-failure,
-.rp-event-reentry {
-  border-left-color: var(--bp-fail);
+.rp-event-debris .rp-day,
+.rp-event-failure .rp-day,
+.rp-event-reentry .rp-day {
+  color: var(--bp-fail);
 }
 
 .rp-day {

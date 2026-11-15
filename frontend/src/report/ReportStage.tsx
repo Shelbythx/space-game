@@ -265,12 +265,10 @@ function Attempts({ attempts, report }: { attempts: AttemptsState; report: Repor
 
 function FullReport({ result, attempts, flyAgain }: { result: SimulationResult; attempts: AttemptsState; flyAgain: () => void }) {
   const { t } = useReportText()
-  const navigate = useNavigate()
   const { report } = result
   return (
     <>
       <section className="bp-group flow-brief">
-        <h2>{t('bp.stage.report')}</h2>
         <p className={report.success ? 'flow-verdict' : 'flow-verdict flow-verdict-fail'}>
           {t(report.success ? 'report.success' : 'report.failure')}
         </p>
@@ -279,9 +277,6 @@ function FullReport({ result, attempts, flyAgain }: { result: SimulationResult; 
         <div className="rp-seed">
           <span className="bp-note">{t('report.seed', { seed: result.seed })}</span>
           <div className="flow-nav flow-nav-wrap">
-            <button type="button" className="mm-btn" onClick={() => navigate('../flight')}>
-              {'<'} {t('bp.stage.flight')}
-            </button>
             <button type="button" className="mm-btn" onClick={flyAgain}>
               {t('report.flyAgain')}
             </button>
@@ -309,7 +304,6 @@ function DemoView() {
   return (
     <>
       <section className="bp-group flow-brief">
-        <h2>{t('bp.stage.report')}</h2>
         <p className="rp-demo-tag">{t('report.demo.tag')}</p>
         <p className={demo.success ? 'flow-verdict' : 'flow-verdict flow-verdict-fail'}>
           {t(demo.success ? 'report.demo.ready' : 'report.demo.notReady')}
@@ -353,7 +347,6 @@ export function ReportStage() {
     <div className="flow-page rp-page">
       {simulation.status === 'loading' && (
         <section className="bp-group flow-brief">
-          <h2>{t('bp.stage.report')}</h2>
           <p className="flow-lead rp-wait" role="status">
             {t('report.loading')}
           </p>
@@ -361,7 +354,6 @@ export function ReportStage() {
       )}
       {simulation.status === 'error' && (
         <section className="bp-group flow-brief">
-          <h2>{t('bp.stage.report')}</h2>
           <p className="bp-error" role="alert">
             {t('report.error', { problem: simulation.problem })}
           </p>

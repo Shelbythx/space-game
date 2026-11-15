@@ -416,11 +416,11 @@
       "advanced": "Advanced: a console per role, every number and formula, roles state facts only."
     },
     "stageHint": {
-      "goal": "Stage 1 of 5 — the need, the end product and the limits.",
-      "concept": "Stage 2 of 5 — orbit, launcher and ground stations.",
-      "design": "Stage 3 of 5 — assemble the spacecraft inside the fairing.",
-      "flight": "Stage 4 of 5 — the mission in accelerated time.",
-      "report": "Stage 5 of 5 — what worked, what failed and why."
+      "goal": "The need, the end product and the limits.",
+      "concept": "Orbit, launcher and ground stations — the Planner's choices.",
+      "design": "Assemble the spacecraft that fits the launcher's fairing.",
+      "flight": "The mission in accelerated time.",
+      "report": "What worked, what failed and why."
     },
     "goal": {
       "title": "Goal and requirements",
@@ -464,6 +464,32 @@
     "flight": {
       "loading": "Simulating the flight on the mission server…",
       "needsServer": "The flight is simulated by the mission server, and it is offline: in the demo there is no orbit to replay. Start the server (docker compose up in backend/) to watch the flight on the map — or open the demo report."
+    },
+    "task": {
+      "goal": "What the mission must deliver",
+      "concept": "Choose where and how to fly",
+      "design": "Build the spacecraft",
+      "flight": "Watch the mission fly",
+      "report": "Find out why"
+    },
+    "plan": {
+      "title": "Flight plan",
+      "goalData": "{{gb}} GB in {{months}} months",
+      "goalCargo": "{{kg}} kg to the ISS",
+      "insertion": "insertion {{km}} {{unit}}",
+      "relay": "TDRS relay",
+      "stations": "stations: {{count}}",
+      "budget": "budget {{used}} of {{limit}} k",
+      "status": {
+        "done": "done",
+        "now": "current stage",
+        "todo": "ahead"
+      },
+      "fold": "Fold the plan",
+      "unfold": "Unfold the plan",
+      "readyOk": "All checks pass — ready for launch.",
+      "readyWarn": "Risks: {{count}} — the mission may run into trouble.",
+      "readyFail": "Failed checks: {{count}} — fix them before launch."
     }
   },
   "credits": {
