@@ -1,0 +1,53 @@
+# Розгортання фронтенду на GitHub Pages (D105, задача 013).
+# Після злиття в main, якщо змінився frontend/, або вручну (Run workflow).
+# Збірка працює з /<repo>/: base './' у vite.config.ts і HashRouter (App.tsx).
+# Потрібно в GitHub:
+#   Settings → Pages → Source: GitHub Actions
+#   Settings → Secrets and variables → Actions → змінна VITE_API_URL — адреса бекенду
+#     на Azure, напр. https://<app>.azurewebsites.net (без / у кінці)
+name: Deploy frontend
+
+on:
+  push:
+    branches: [main]
+    paths: ['frontend/**', '.github/workflows/deploy-frontend.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
