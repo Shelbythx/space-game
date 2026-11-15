@@ -6,6 +6,7 @@ import { FLIGHT_NS } from '../flight/i18n'
 import type { RendezvousProfile } from '../flight/types'
 import { type SpeedIndex, usePlayback } from '../flight/usePlayback'
 import '../flight/flight.css'
+import { RV_NS } from './i18n'
 import './rendezvous.css'
 
 interface Props {
@@ -51,7 +52,7 @@ function samplePhase(series: number[], index: number): number {
  * come from the backend (D59); the scheme only places them on screen and is not to scale.
  */
 export function RendezvousView({ profile, deadlineDays, onFinish }: Props) {
-  const { t, i18n } = useTranslation([FLIGHT_NS, 'translation'])
+  const { t, i18n } = useTranslation([RV_NS, FLIGHT_NS])
   const lastHour = profile.hours[profile.hours.length - 1] ?? 0
   const playback = usePlayback(lastHour, HOUR_SPEEDS)
   const { day: hour, seek, toggle, setSpeed } = playback
@@ -80,7 +81,9 @@ export function RendezvousView({ profile, deadlineDays, onFinish }: Props) {
   const phase = docked ? 0 : samplePhase(profile.phaseAngleDeg, index)
   const shipR = LOW_R + (HIGH_R - LOW_R) * climb
   const [issX, issY] = at(HIGH_R, 0)
-  const [shipX, shipY] = docked ? [issX, issY] : at(shipR, phase)
+  // On approach the backend phase is 0; draw the ship a little behind so both stay visible.
+  const drawAngle = stage === 'approach' ? Math.max(phase, 9) : phase
+  const [shipX, shipY] = docked ? [issX, issY] : at(shipR, drawAngle)
   const [arcStartX, arcStartY] = at(ARC_R, 0)
   const [arcEndX, arcEndY] = at(ARC_R, phase)
   const [labelX, labelY] = at(ARC_R - 16, phase / 2)
@@ -108,30 +111,30 @@ export function RendezvousView({ profile, deadlineDays, onFinish }: Props) {
   }, [hour, lastHour, seek, toggle, setSpeed])
 
   return (
-    <section className="fl rv" aria-label={t('rv.title')}>
+    <section className="fl rv" aria-label={t('title')}>
       <header className="fl-head">
-        <h2 className="fl-head__title">{t('rv.title')}</h2>
+        <h2 className="fl-head__title">{t('title')}</h2>
         <div className="fl-head__day">
-          {t('rv.elapsed', { days: Math.floor(hour / 24), hours: Math.floor(hour % 24) })}
+          {t('elapsed', { days: Math.floor(hour / 24), hours: Math.floor(hour % 24) })}
         </div>
-        <div className={`fl-head__status rv-status--${stage}`}>{t(`rv.stage.${stage}`)}</div>
+        <div className={`fl-head__status rv-status--${stage}`}>{t(`stage.${stage}`)}</div>
       </header>
 
       <div className="rv-body">
         <div className="fl-stage rv-scheme">
-          <svg viewBox={`0 0 ${SIZE} ${SIZE}`} role="img" aria-label={t('rv.schemeLabel')}>
+          <svg viewBox={`0 0 ${SIZE} ${SIZE}`} role="img" aria-label={t('schemeLabel')}>
             <circle className="rv-earth" cx={CENTER} cy={CENTER} r={EARTH_R} />
             <text className="rv-earth__name" x={CENTER} y={CENTER + 3}>
-              {t('rv.earth')}
+              {t('earth')}
             </text>
 
             <circle className="rv-orbit rv-orbit--low" cx={CENTER} cy={CENTER} r={LOW_R} />
             <circle className="rv-orbit rv-orbit--iss" cx={CENTER} cy={CENTER} r={HIGH_R} />
             <text className="rv-orbit__label" x={CENTER} y={CENTER + LOW_R - 4}>
-              {t('rv.insertionOrbit', { km: number(insertionKm, 0) })}
+              {t('insertionOrbit', { km: number(insertionKm, 0) })}
             </text>
             <text className="rv-orbit__label rv-orbit__label--iss" x={CENTER} y={CENTER + HIGH_R + 11}>
-              {t('rv.issOrbit', { km: number(targetKm, 0) })}
+              {t('issOrbit', { km: number(targetKm, 0) })}
             </text>
 
             {/* Direction of flight: counter-clockwise, so "ahead" is to the left of the top. */}
@@ -146,7 +149,7 @@ export function RendezvousView({ profile, deadlineDays, onFinish }: Props) {
               </marker>
             </defs>
 
-            {!docked && (
+            {!docked && phase >= 1 && (
               <g className="rv-phase">
                 <line x1={CENTER} y1={CENTER} x2={issX} y2={issY} />
                 <line x1={CENTER} y1={CENTER} x2={shipX} y2={shipY} />
@@ -166,7 +169,7 @@ export function RendezvousView({ profile, deadlineDays, onFinish }: Props) {
               <rect className="rv-iss__panel" x={5} y={-3} width={8} height={6} />
               <rect className="rv-iss__body" x={-4} y={-4} width={8} height={8} />
               <text className="rv-iss__name" x={0} y={-10}>
-                {t('rv.iss')}
+                {t('iss')}
               </text>
             </g>
 
@@ -178,50 +181,50 @@ export function RendezvousView({ profile, deadlineDays, onFinish }: Props) {
             )}
           </svg>
           <div className="fl-legend">
-            <span className="fl-legend__item rv-legend--low">{t('rv.legend.low')}</span>
-            <span className="fl-legend__item rv-legend--iss">{t('rv.legend.iss')}</span>
-            <span className="fl-legend__item rv-legend--phase">{t('rv.legend.phase')}</span>
-            <span className="fl-legend__note">{t('rv.notToScale')}</span>
+            <span className="fl-legend__item rv-legend--low">{t('legend.low')}</span>
+            <span className="fl-legend__item rv-legend--iss">{t('legend.iss')}</span>
+            <span className="fl-legend__item rv-legend--phase">{t('legend.phase')}</span>
+            <span className="fl-legend__note">{t('notToScale')}</span>
           </div>
         </div>
 
         <div className="rv-side">
           <div className={`fl-event rv-card rv-card--${stage}`} aria-live="polite">
-            <div className="fl-event__title">{t('rv.now')}</div>
+            <div className="fl-event__title">{t('now')}</div>
             <div className="fl-event__head">
-              <span className="fl-event__type">{t(`rv.stage.${stage}`)}</span>
+              <span className="fl-event__type">{t(`stage.${stage}`)}</span>
             </div>
-            <div className="fl-event__text">{t(`rv.explain.${stage}`)}</div>
+            <div className="fl-event__text">{t(`explain.${stage}`)}</div>
             {profile.dockedAtHours !== null && (
               <div className="fl-event__source">
-                {t('rv.dockedAt', {
+                {t('dockedAt', {
                   days: Math.floor(profile.dockedAtHours / 24),
                   hours: Math.floor(profile.dockedAtHours % 24),
                 })}
-                {deadlineDays !== undefined && ` · ${t('rv.deadline', { days: deadlineDays })}`}
+                {deadlineDays !== undefined && ` · ${t('deadline', { days: deadlineDays })}`}
               </div>
             )}
           </div>
 
           <div className="fl-gauges rv-gauges">
             <Gauge
-              label={t('rv.gauge.phase')}
+              label={t('gauge.phase')}
               value={number(phase, 0)}
               unit="°"
               series={profile.phaseAngleDeg}
               index={index}
             />
             <Gauge
-              label={t('gauge.altitudeKm')}
+              label={t('flight:gauge.altitudeKm')}
               value={number(altitude, 0)}
-              unit={t('unit.km')}
+              unit={t('flight:unit.km')}
               series={profile.altitudeKm}
               index={index}
             />
             <Gauge
-              label={t('gauge.propellantKg')}
+              label={t('flight:gauge.propellantKg')}
               value={number(propellant, 0)}
-              unit={t('unit.kg')}
+              unit={t('flight:unit.kg')}
               series={profile.propellantKg}
               index={index}
             />
@@ -240,34 +243,34 @@ export function RendezvousView({ profile, deadlineDays, onFinish }: Props) {
               max={lastHour}
               step={1}
               value={Math.round(hour)}
-              aria-label={t('rv.scrub')}
+              aria-label={t('scrub')}
               onChange={(e) => seek(Number(e.target.value))}
             />
             {profile.dockedAtHours !== null && (
               <span
                 className="rv-mark rv-mark--dock"
                 style={{ left: `${(Math.min(profile.dockedAtHours, span) / span) * 100}%` }}
-                title={t('rv.stage.docked')}
+                title={t('stage.docked')}
               />
             )}
             {deadlineHours !== null && deadlineHours <= lastHour && (
               <span
                 className="rv-mark rv-mark--deadline"
                 style={{ left: `${(deadlineHours / span) * 100}%` }}
-                title={t('rv.deadline', { days: deadlineDays })}
+                title={t('deadline', { days: deadlineDays })}
               />
             )}
           </div>
           <div className="fl-strip__scale">
             <span>0</span>
-            <span>{t('rv.hoursScale', { hours: lastHour })}</span>
+            <span>{t('hoursScale', { hours: lastHour })}</span>
           </div>
         </div>
         <div className="fl-controls__row">
           <button type="button" className="fl-btn fl-btn--main" onClick={toggle}>
-            {playback.finished ? t('controls.replay') : playback.playing ? t('controls.pause') : t('controls.play')}
+            {playback.finished ? t('flight:controls.replay') : playback.playing ? t('flight:controls.pause') : t('flight:controls.play')}
           </button>
-          <div className="fl-controls__speed" role="group" aria-label={t('controls.speed')}>
+          <div className="fl-controls__speed" role="group" aria-label={t('flight:controls.speed')}>
             {HOUR_SPEEDS.map((value, i) => (
               <button
                 key={value}
@@ -282,11 +285,11 @@ export function RendezvousView({ profile, deadlineDays, onFinish }: Props) {
           </div>
           {onFinish && (
             <button type="button" className="fl-btn fl-btn--report" onClick={onFinish}>
-              {t('controls.toReport')}
+              {t('flight:controls.toReport')}
             </button>
           )}
         </div>
-        <div className="fl-controls__keys">{t('rv.keys')}</div>
+        <div className="fl-controls__keys">{t('keys')}</div>
       </div>
     </section>
   )
