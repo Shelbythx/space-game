@@ -14,7 +14,7 @@
         "bus": "bus-s",
         "solar": "solar-body",
         "battery": "bat-s",
-        "radio": "radio-uhf",
+        "radio": "radio-s",
         "computer": "cpu-basic",
         "adcs": "adcs-basic",
         "propulsion": "prop-none"
@@ -23,7 +23,7 @@
         "magnetometer"
       ],
       "groundStationIds": [
-        "fairbanks"
+        "white-sands"
       ]
     }
   },
@@ -68,8 +68,8 @@
       "launchId": "iss-deploy",
       "parts": {
         "bus": "bus-s",
-        "solar": "solar-deploy",
-        "battery": "bat-s",
+        "solar": "solar-body",
+        "battery": "bat-m",
         "radio": "radio-s",
         "computer": "cpu-basic",
         "adcs": "adcs-basic",
@@ -96,12 +96,12 @@
       "launchId": "iss-deploy",
       "parts": {
         "bus": "bus-s",
-        "solar": "solar-deploy",
+        "solar": "solar-body",
         "battery": "bat-m",
         "radio": "radio-s",
         "computer": "cpu-basic",
         "adcs": "adcs-basic",
-        "propulsion": "prop-none"
+        "propulsion": "prop-cold"
       },
       "instrumentIds": [
         "radiometer"
@@ -126,16 +126,16 @@
         "bus": "bus-s",
         "solar": "solar-body",
         "battery": "bat-m",
-        "radio": "radio-uhf",
+        "radio": "radio-s",
         "computer": "cpu-basic",
         "adcs": "adcs-basic",
-        "propulsion": "prop-none"
+        "propulsion": "prop-cold"
       },
       "instrumentIds": [
         "magnetometer"
       ],
       "groundStationIds": [
-        "fairbanks"
+        "white-sands"
       ]
     }
   },
@@ -157,7 +157,7 @@
         "radio": "radio-s",
         "computer": "cpu-basic",
         "adcs": "adcs-basic",
-        "propulsion": "prop-none"
+        "propulsion": "prop-cold"
       },
       "instrumentIds": [
         "radiometer"
@@ -227,32 +227,31 @@
     }
   },
   {
-    "id": "orbit-own-launch",
+    "id": "orbit-camera-rideshare",
     "kind": "modeled",
-    "nameCode": "reference.modeled.orbitOwnLaunch",
+    "nameCode": "reference.modeled.orbitCameraRideshare",
     "design": {
       "missionId": "sat-orbit",
       "version": "simple",
       "orbit": {
-        "presetId": "leo"
+        "presetId": "sso"
       },
-      "launchId": "small",
+      "launchId": "rideshare",
       "parts": {
         "bus": "bus-m",
         "solar": "solar-deploy",
         "battery": "bat-m",
-        "radio": "radio-s",
-        "computer": "cpu-basic",
-        "adcs": "adcs-basic",
+        "radio": "radio-x",
+        "computer": "cpu-power",
+        "adcs": "adcs-fine",
         "propulsion": "prop-chem"
       },
       "instrumentIds": [
-        "radiometer",
-        "magnetometer"
+        "camera"
       ],
       "groundStationIds": [
-        "white-sands",
-        "guam"
+        "fairbanks",
+        "white-sands"
       ]
     }
   },

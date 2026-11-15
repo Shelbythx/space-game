@@ -715,7 +715,7 @@
     "show": "Show hints",
     "goal": {
       "title": "Your first CubeSat",
-      "do": "Read the goal: send 2 GB of measurements in 6 months, spend no more than 150 k and launch by month 12. Then go to Concept.",
+      "do": "Read the goal: send 1 GB of measurements in 6 months, spend no more than 150 k and launch by month 12. Then go to Concept.",
       "why": "Every NASA mission starts here: first what is needed, then the hardware. Later every choice is checked against these numbers."
     },
     "concept": {

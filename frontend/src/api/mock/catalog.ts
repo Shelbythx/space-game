@@ -23,7 +23,7 @@ const launches: Launch[] = [
 const soa = (table: string, page: number, product: string) => nasa(`SOA 2026, табл. ${table}, с. ${page}: ${product}`)
 
 const parts: Part[] = [
-  { id: 'bus-s', category: 'bus', tier: 'basic', nameCode: 'part.busS', massKg: 3, priceK: 5, consumptionW: 0, specs: { maxMassKg: 12, slots: 6, dragAreaM2: 0.06, busSize: 'small' }, requires: [], source: estimate() },
+  { id: 'bus-s', category: 'bus', tier: 'basic', nameCode: 'part.busS', massKg: 3, priceK: 5, consumptionW: 0, specs: { maxMassKg: 12, slots: 7, dragAreaM2: 0.06, busSize: 'small' }, requires: [], source: estimate() },
   { id: 'bus-m', category: 'bus', tier: 'medium', nameCode: 'part.busM', massKg: 25, priceK: 40, consumptionW: 0, specs: { maxMassKg: 150, slots: 12, dragAreaM2: 0.36, busSize: 'medium' }, requires: [], source: estimate() },
   { id: 'bus-l', category: 'bus', tier: 'best', nameCode: 'part.busL', massKg: 120, priceK: 150, consumptionW: 0, specs: { maxMassKg: 500, slots: 20, dragAreaM2: 1.5, busSize: 'large' }, requires: [], source: estimate() },
 
@@ -79,7 +79,7 @@ export const mockMission: Mission = {
   timing: {
     buildMonths: { basic: 3, medium: 5, best: 8 },
     integrationMonths: 4,
-    rideshareMonths: [9, 21],
+    rideshareMonths: [9, 15, 21],
     launchLeadMonths: { small: 3, medium: 5 },
   },
   catalogs: {
@@ -132,9 +132,9 @@ const cubesatBase: Omit<Design, 'version'> = {
   missionId: 'cubesat-learn',
   orbit: { presetId: 'iss-deploy' },
   launchId: 'iss-deploy',
-  parts: { bus: 'bus-s', solar: 'solar-body', battery: 'bat-s', radio: 'radio-uhf', computer: 'cpu-basic', adcs: 'adcs-basic', propulsion: 'prop-none' },
+  parts: { bus: 'bus-s', solar: 'solar-body', battery: 'bat-s', radio: 'radio-s', computer: 'cpu-basic', adcs: 'adcs-basic', propulsion: 'prop-none' },
   instrumentIds: ['magnetometer'],
-  groundStationIds: ['fairbanks'],
+  groundStationIds: ['white-sands'],
 }
 
 /** Demo copy of GET /api/missions/cubesat-learn: a small satellite released from the ISS. */
@@ -143,7 +143,7 @@ export const mockCubesat: Mission = {
   kind: 'tutorial',
   titleCode: 'mission.cubesatLearn.title',
   briefingCode: 'mission.cubesatLearn.briefing',
-  goal: { dataGb: 2, operationMonths: 6 },
+  goal: { dataGb: 1, operationMonths: 6 },
   limits: { budgetK: 150, launchDeadlineMonth: 12, massReserveRecommendedPct: 15 },
   timing: {
     buildMonths: { basic: 3, medium: 5, best: 8 },
@@ -202,11 +202,11 @@ export const mockIss: Mission = {
   catalogs: {
     orbits: [{ id: 'iss', nameCode: 'orbit.iss', altitudeKm: 418, inclinationDeg: 51.64, epochDate: null, source: estimate('орбіта МКС — оцінка до задачі 017') }],
     launches: [
-      { id: 'medium', nameCode: 'launch.medium', priceK: 800, capacityKg: { iss: 7500 }, fixedOrbitId: null, maxBusSize: 'large', source: estimate('маса на орбіту виведення в площині МКС — оцінка до задачі 017') },
-      { id: 'heavy', nameCode: 'launch.heavy', priceK: 1400, capacityKg: { iss: 15000 }, fixedOrbitId: null, maxBusSize: 'large', source: estimate('маса на орбіту виведення в площині МКС — оцінка до задачі 017') },
+      { id: 'medium', nameCode: 'launch.medium', priceK: 800, capacityKg: { iss: 6100 }, fixedOrbitId: null, maxBusSize: 'large', source: nasa('Antares: 6123 кг на орбіту виведення з Воллопса — NASA Orb-2 Press Kit; у грі 6100 кг') },
+      { id: 'heavy', nameCode: 'launch.heavy', priceK: 1400, capacityKg: { iss: 15000 }, fixedOrbitId: null, maxBusSize: 'large', source: estimate('маса на орбіту виведення в площині МКС — оцінка') },
     ],
     parts: [
-      { id: 'ship-small', category: 'bus', tier: 'medium', nameCode: 'part.shipSmall', massKg: 1200, priceK: 180, consumptionW: 0, specs: { maxMassKg: 4000, slots: 14, dragAreaM2: 6, busSize: 'medium' }, requires: [], source: shipSource },
+      { id: 'ship-small', category: 'bus', tier: 'medium', nameCode: 'part.shipSmall', massKg: 1200, priceK: 180, consumptionW: 0, specs: { maxMassKg: 4700, slots: 14, dragAreaM2: 6, busSize: 'medium' }, requires: [], source: shipSource },
       { id: 'ship-pressurized', category: 'bus', tier: 'best', nameCode: 'part.shipPressurized', massKg: 2200, priceK: 300, consumptionW: 0, specs: { maxMassKg: 8000, slots: 20, dragAreaM2: 10, busSize: 'large' }, requires: [], source: shipSource },
       cubesatPart('solar-deploy'),
       cubesatPart('solar-roll'),
@@ -225,15 +225,15 @@ export const mockIss: Mission = {
     groundStations: ['white-sands', 'fairbanks', 'guam'].map((id) => mockMission.catalogs.groundStations.find((s) => s.id === id)!),
     launchSites: [
       { id: 'cape-canaveral', nameCode: 'site.capeCanaveral', latitudeDeg: 28.5, longitudeDeg: -80.6, source: siteSource },
-      { id: 'wallops', nameCode: 'site.wallops', latitudeDeg: 37.8, longitudeDeg: -75.5, source: siteSource },
+      { id: 'wallops', nameCode: 'site.wallops', latitudeDeg: 37.83, longitudeDeg: -75.49, source: siteSource },
       { id: 'kodiak', nameCode: 'site.kodiak', latitudeDeg: 57.4, longitudeDeg: -152.3, source: siteSource },
     ],
     cargoCategories: [
-      { id: 'crew-supplies', nameCode: 'cargo.crewSupplies', value: 'medium', typicalMassKg: 1000, source: cargoSource },
-      { id: 'science', nameCode: 'cargo.science', value: 'highest', typicalMassKg: 900, source: cargoSource },
-      { id: 'vehicle-hardware', nameCode: 'cargo.vehicleHardware', value: 'low', typicalMassKg: 700, source: cargoSource },
-      { id: 'spacewalk', nameCode: 'cargo.spacewalk', value: 'medium', typicalMassKg: 150, source: cargoSource },
-      { id: 'computer', nameCode: 'cargo.computer', value: 'low', typicalMassKg: 30, source: cargoSource },
+      { id: 'crew-supplies', nameCode: 'cargo.crewSupplies', value: 'medium', typicalMassKg: 600, source: cargoSource },
+      { id: 'science', nameCode: 'cargo.science', value: 'highest', typicalMassKg: 750, source: cargoSource },
+      { id: 'vehicle-hardware', nameCode: 'cargo.vehicleHardware', value: 'low', typicalMassKg: 400, source: cargoSource },
+      { id: 'spacewalk', nameCode: 'cargo.spacewalk', value: 'medium', typicalMassKg: 50, source: cargoSource },
+      { id: 'computer', nameCode: 'cargo.computer', value: 'low', typicalMassKg: 40, source: cargoSource },
     ],
   },
   presets: [
