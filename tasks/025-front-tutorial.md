@@ -1,7 +1,7 @@
 # 025 · Фронтенд · Навчання CubeSat
 
 Статус: todo
-Виконавець: Stiluss
+Виконавець: Svyatoslav Maliuga (D106)
 Гілка: task/025-front-tutorial
 Частина: Фронтенд
 Залежить від: 009
