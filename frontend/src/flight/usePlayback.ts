@@ -24,7 +24,7 @@ export interface Playback {
  * The mission clock. It only moves a cursor over the series the backend returned; the
  * track animation loops on its own clock because the track covers the first orbits only.
  */
-export function usePlayback(lastDay: number): Playback {
+export function usePlayback(lastDay: number, speeds: readonly number[] = SPEEDS): Playback {
   const [day, setDay] = useState(0)
   const [trackPhase, setTrackPhase] = useState(0)
   const [playing, setPlaying] = useState(true)
@@ -45,13 +45,13 @@ export function usePlayback(lastDay: number): Playback {
       // The first frame's timestamp can be earlier than `previous`, hence the lower bound.
       const dt = Math.max(0, Math.min(0.1, (now - previous) / 1000))
       previous = now
-      setDay((d) => Math.min(lastDay, d + dt * SPEEDS[speedRef.current]))
+      setDay((d) => Math.min(lastDay, d + dt * speeds[speedRef.current]))
       setTrackPhase((p) => (p + dt / TRACK_LOOP_SECONDS) % 1)
       frame = requestAnimationFrame(tick)
     }
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
-  }, [playing, finished, lastDay])
+  }, [playing, finished, lastDay, speeds])
 
   const toggle = useCallback(() => {
     if (finished) {

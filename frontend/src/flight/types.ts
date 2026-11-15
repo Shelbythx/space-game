@@ -56,12 +56,27 @@ export interface StationContacts {
   visibilityRadiusDeg: number | null
 }
 
+/** Hour-by-hour approach to the ISS (`simulate.rendezvous`, mission `iss` only). */
+export interface RendezvousProfile {
+  initialPhaseAngleDeg: number
+  stepHours: number
+  hours: number[]
+  /** How many degrees the ISS is ahead of the ship. */
+  phaseAngleDeg: number[]
+  altitudeKm: number[]
+  propellantKg: number[]
+  /** null if the ship never docked. */
+  dockedAtHours: number | null
+}
+
 /** What the flight screen needs from the `POST /api/simulate` response. */
 export interface FlightSimulation {
   timeline: FlightTimeline
   groundTrack: GroundTrack
   contacts: StationContacts[]
   events: FlightEvent[]
+  /** Present for the ISS mission; null or absent otherwise. */
+  rendezvous?: RendezvousProfile | null
 }
 
 /** Ground station position from the mission catalog (`GET /api/missions/{id}`). */

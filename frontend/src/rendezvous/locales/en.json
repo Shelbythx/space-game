@@ -1,0 +1,38 @@
+{
+  "title": "Rendezvous with the ISS",
+  "elapsed": "Day {{days}}, {{hours}} h after launch",
+  "schemeLabel": "Scheme seen from above the orbit: the Earth, the ship's orbit, the ISS orbit and the phase angle between them",
+  "earth": "Earth",
+  "iss": "ISS",
+  "insertionOrbit": "ship · {{km}} km",
+  "issOrbit": "ISS · {{km}} km",
+  "notToScale": "Not to scale · flight direction ↺",
+  "now": "Now",
+  "legend": {
+    "low": "Insertion orbit",
+    "iss": "ISS orbit",
+    "phase": "Phase angle"
+  },
+  "gauge": {
+    "phase": "ISS ahead of the ship"
+  },
+  "stage": {
+    "phasing": "Phasing",
+    "transfer": "Hohmann transfer",
+    "approach": "Approach",
+    "docked": "Docked",
+    "notDocked": "Not docked"
+  },
+  "explain": {
+    "phasing": "The ship flies on a lower orbit, which is faster, so every orbit it gains on the ISS. It waits until the ISS is just the right angle ahead.",
+    "transfer": "Two engine burns raise the ship from its orbit to the ISS orbit along half an ellipse.",
+    "approach": "The ship is on the ISS orbit: final approach, checks and waiting for a contact with mission control.",
+    "docked": "The ship is docked to the ISS. The crew can start unloading the cargo.",
+    "notDocked": "The ship did not reach the ISS: it ran out of propellant or time. The report explains why."
+  },
+  "dockedAt": "Docked {{days}} d {{hours}} h after launch",
+  "deadline": "deadline: {{days}} days",
+  "scrub": "Hours since launch",
+  "hoursScale": "{{hours}} h",
+  "keys": "Space — play/pause · ← → — rewind/forward · 1 2 3 — speed"
+}
