@@ -1,8 +1,10 @@
-# Розгортання фронтенду на Azure Static Web Apps (D105, задача 013).
-# Запускається після злиття в main, якщо змінився frontend/, або вручну (Run workflow).
-# Потрібно в GitHub (Settings → Secrets and variables → Actions):
-#   змінна  VITE_API_URL                     — адреса бекенду, напр. https://<app>.azurewebsites.net
-#   секрет  AZURE_STATIC_WEB_APPS_API_TOKEN  — Deployment token зі Static Web App
+# Розгортання фронтенду на GitHub Pages (D105, задача 013).
+# Після злиття в main, якщо змінився frontend/, або вручну (Run workflow).
+# Збірка працює з /<repo>/: base './' у vite.config.ts і HashRouter (App.tsx).
+# Потрібно в GitHub:
+#   Settings → Pages → Source: GitHub Actions
+#   Settings → Secrets and variables → Actions → змінна VITE_API_URL — адреса бекенду
+#     на Azure, напр. https://<app>.azurewebsites.net (без / у кінці)
 name: Deploy frontend
 
 on:
@@ -11,12 +13,17 @@ on:
     paths: ['frontend/**', '.github/workflows/deploy-frontend.yml']
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 concurrency:
-  group: deploy-frontend
+  group: pages
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,10 +38,16 @@ jobs:
         working-directory: frontend
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL }}
-      - uses: Azure/static-web-apps-deploy@v1
+      - uses: actions/upload-pages-artifact@v3
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          action: upload
-          app_location: frontend/dist
-          skip_app_build: true
-          skip_api_build: true
+          path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

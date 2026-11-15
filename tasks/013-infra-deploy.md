@@ -15,10 +15,10 @@
 ## Обсяг
 
 - Azure for Students: одна група ресурсів на весь проєкт.
-- Фронтенд — Azure Static Web Apps (безкоштовний тариф), збірка `frontend/` з GitHub;
-  `VITE_API_URL` — адреса бекенду.
+- Фронтенд — GitHub Pages (Static Web Apps заблоковано політикою регіонів студентської
+  підписки); `VITE_API_URL` — адреса бекенду. Pages потребує публічного репозиторію.
 - Бекенд — App Service (Linux, B1, .NET 10), збірка з `dotnet publish`; CORS
-  (`Cors__Origins__N`) дозволяє домен Static Web Apps; `/api/health` відповідає.
+  (`Cors__Origins__N`) дозволяє `https://shelbythx.github.io`; `/api/health` відповідає.
 - PostgreSQL — Azure Database for PostgreSQL Flexible Server (B1ms); доступ для App
   Service; міграції — `Database__MigrateOnStartup=true`.
 - Секрети (`ConnectionStrings__Default`, `NASA_API_KEY`) — лише в налаштуваннях App
@@ -29,7 +29,7 @@
 
 ## Зона файлів
 
-- `.github/workflows/deploy-*.yml`, `frontend/public/staticwebapp.config.json`
+- `.github/workflows/deploy-*.yml`
 
 ## Критерії готовності
 
