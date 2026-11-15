@@ -1,9 +1,11 @@
 namespace SpaceGame.Api.Catalogs;
 
 /// <summary>
-/// Каталоги трьох місій (D78). Місія 1 — числа з docs/catalogs.md (D56). Двигуни, пам'ять
-/// комп'ютера, площа перерізу й клас корпусу — ігрові оцінки до задачі 016; місія на МКС —
-/// оцінки до задачі 017; CubeSat — оцінки до задачі 018. Кожне число має source (D51).
+/// Каталоги трьох місій (D78). Місія 1 — числа з docs/catalogs.md (D56). Панелі, батареї,
+/// радіо, комп'ютери, орієнтацію й двигуни звірено з NASA SmallSat SOA 2026 (задача 016:
+/// таблиця й сторінка — у source); пам'ять комп'ютера, площа перерізу, клас корпусу й ціни —
+/// ігрові оцінки; місія на МКС — оцінки до задачі 017; CubeSat — до задачі 018. Кожне число
+/// має source (D51).
 /// </summary>
 public static class MissionData
 {
@@ -34,37 +36,37 @@ public static class MissionData
 
     private static Part Solar(string id, string tier, string nameCode, double powerW, double massKg, double priceK, string note) =>
         new(id, PartCategories.Solar, tier, nameCode, massKg, priceK, 0,
-            new PartSpecs { PowerW = powerW }, [], Source.NasaRetold(note + "; маса — розрахунок за питомою потужністю", SmallSatSoa));
+            new PartSpecs { PowerW = powerW }, [], Source.Nasa(note + "; маса — розрахунок за питомою потужністю", SmallSatSoa));
 
     private static Part Battery(string id, string tier, string nameCode, double capacityWh, double massKg, double priceK, string note) =>
         new(id, PartCategories.Battery, tier, nameCode, massKg, priceK, 0,
             new PartSpecs { CapacityWh = capacityWh },
-            [], Source.NasaRetold(note + "; ємність — оцінка; маса — розрахунок", SmallSatSoa));
+            [], Source.Nasa(note + "; ємність — оцінка; маса — розрахунок", SmallSatSoa));
 
-    private static Part Radio(string id, string tier, string nameCode, double rateKbps, string band, double massKg, double consumptionW, double priceK, IReadOnlyList<Requirement> requires) =>
+    private static Part Radio(string id, string tier, string nameCode, double rateKbps, string band, double massKg, double consumptionW, double priceK, IReadOnlyList<Requirement> requires, string product) =>
         new(id, PartCategories.Radio, tier, nameCode, massKg, priceK, consumptionW,
             new PartSpecs { RateKbps = rateKbps, Band = band }, requires,
-            Source.NasaRetold("Швидкість і маса — SmallSat SOA (переказ); споживання — оцінка", SmallSatSoa));
+            Source.Nasa($"Швидкість і маса — SmallSat SOA 2026, табл. 9-3, {product}; споживання — оцінка", SmallSatSoa));
 
     private static Part CpuBasic() =>
         new("cpu-basic", PartCategories.Computer, "basic", "part.cpuBasic", 0.1, 2, 0.4,
             new PartSpecs { StorageGb = 32 }, [],
-            Source.NasaRetold("Споживання 0,4 Вт — SmallSat SOA (переказ); маса й пам'ять 32 ГБ — оцінка", SmallSatSoa));
+            Source.Nasa("Споживання 0,4 Вт — SmallSat SOA 2026, табл. 8-4, с. 229: AAC Clyde Space Kryten-M3; маса й пам'ять 32 ГБ — оцінка", SmallSatSoa));
 
     private static Part CpuPower() =>
         new("cpu-power", PartCategories.Computer, "best", "part.cpuPower", 0.8, 20, 30,
             new PartSpecs { StorageGb = 512 }, [],
-            Source.NasaRetold("Споживання 25–40 Вт — SmallSat SOA (переказ); маса й пам'ять 512 ГБ — оцінка", SmallSatSoa));
+            Source.Nasa("Споживання 25–40 Вт — SmallSat SOA 2026, табл. 8-4, с. 235: Unibap iX10-100A; маса й пам'ять 512 ГБ — оцінка", SmallSatSoa));
 
     private static Part AdcsBasic() =>
         new("adcs-basic", PartCategories.Adcs, "basic", "part.adcsBasic", 0.47, 10, 3,
             new PartSpecs { AccuracyDeg = 1 }, [],
-            Source.Nasa("Точність < 1° і маса 0,47 кг — SmallSat SOA; споживання — оцінка", SmallSatSoa));
+            Source.Nasa("Точність < 1° і маса 0,470 кг — SmallSat SOA 2026, табл. 5-2, с. 142: AAC Clyde Space iADCS-200; споживання — оцінка", SmallSatSoa));
 
     private static Part AdcsFine() =>
         new("adcs-fine", PartCategories.Adcs, "best", "part.adcsFine", 1.813, 45, 8,
             new PartSpecs { AccuracyDeg = 0.003 }, [],
-            Source.Nasa("Точність 0,003° і маса 1,813 кг — SmallSat SOA; споживання — оцінка", SmallSatSoa));
+            Source.Nasa("Точність 0,003° і маса 1,813 кг — SmallSat SOA 2026, табл. 5-2, с. 142: Blue Canyon XACT-100; споживання — оцінка", SmallSatSoa));
 
     private static Part PropNone() =>
         new("prop-none", PartCategories.Propulsion, "basic", "part.propNone", 0, 0, 0,
@@ -72,19 +74,19 @@ public static class MissionData
             Source.Estimate("Без двигуна (D81)"));
 
     private static Part PropCold() =>
-        new("prop-cold", PartCategories.Propulsion, "basic", "part.propCold", 1.2, 15, 0,
-            new PartSpecs { IspS = 70, ThrustN = 0.1, PropellantKg = 0.5, PowerW = 0 }, [],
-            Source.Estimate("Холодний газ: Isp ~70 с за планом (2.8); маса, тяга, паливо й ціна — оцінка до задачі 016"));
+        new("prop-cold", PartCategories.Propulsion, "basic", "part.propCold", 0.78, 15, 0,
+            new PartSpecs { IspS = 40, ThrustN = 0.08, PropellantKg = 0.47, PowerW = 0 }, [],
+            Source.Nasa("SmallSat SOA 2026, табл. 4-5, с. 109: VACCO C-POD (R236fa, 8 × 10 мН, Isp 40 с, 186 Н·с, повна маса 1,25 кг); суха маса й паливо — розрахунок; ціна — оцінка", SmallSatSoa));
 
     private static Part PropChem() =>
-        new("prop-chem", PartCategories.Propulsion, "medium", "part.propChem", 3.5, 40, 0,
-            new PartSpecs { IspS = 220, ThrustN = 1, PropellantKg = 4, PowerW = 0 }, [],
-            Source.Estimate("Монопаливний: Isp ~220 с за планом (2.8); маса, тяга, паливо й ціна — оцінка до задачі 016"));
+        new("prop-chem", PartCategories.Propulsion, "medium", "part.propChem", 8.6, 40, 0,
+            new PartSpecs { IspS = 200, ThrustN = 4, PropellantKg = 6.1, PowerW = 0 }, [],
+            Source.Nasa("SmallSat SOA 2026, табл. 4-3, с. 107: VACCO Integrated Propulsion System (LMP-103S, 4 × 1 Н, Isp 200 с, 12 кН·с, повна маса 14,7 кг); суха маса й паливо — розрахунок; ціна — оцінка", SmallSatSoa));
 
     private static Part PropElec() =>
-        new("prop-elec", PartCategories.Propulsion, "best", "part.propElec", 2, 70, 0,
-            new PartSpecs { IspS = 1200, ThrustN = 0.001, PropellantKg = 1, PowerW = 60 }, [],
-            Source.Estimate("Електричний: Isp ~1200 с за планом (2.8); тяга 1 мН, споживання 60 Вт, маса й ціна — оцінка до задачі 016"));
+        new("prop-elec", PartCategories.Propulsion, "best", "part.propElec", 1.25, 70, 0,
+            new PartSpecs { IspS = 1960, ThrustN = 0.001, PropellantKg = 1.65, PowerW = 70 }, [],
+            Source.Nasa("SmallSat SOA 2026, табл. 4-9, с. 113: Busek BIT-3 (йод, 1,0 мН, Isp 1960 с, 31,7 кН·с, повна маса 2,9 кг, 70 Вт); суха маса й паливо — розрахунок; ціна — оцінка", SmallSatSoa));
 
     private static readonly IReadOnlyList<Requirement> NeedsFinePointing = [new(PartCategories.Adcs, "adcs-fine")];
 
@@ -169,15 +171,15 @@ public static class MissionData
         new("bus-l", PartCategories.Bus, "best", "part.busL", 120, 150, 0,
             new PartSpecs { MaxMassKg = 500, Slots = 20, DragAreaM2 = 2, BusSize = "large" }, [],
             Source.Estimate("Маса, межа маси, місця й ціна — docs/catalogs.md (оцінка); площа перерізу й клас — оцінка до 016")),
-        Solar("solar-body", "basic", "part.solarBody", 19.2, 0.5, 2, "19,2 Вт, 38,55 Вт/кг — SmallSat SOA (переказ)"),
-        Solar("solar-deploy", "medium", "part.solarDeploy", 135, 4.4, 15, "135 Вт, 31 Вт/кг — SmallSat SOA (переказ)"),
-        Solar("solar-roll", "best", "part.solarRoll", 1000, 10, 60, "1000 Вт, 100 Вт/кг — SmallSat SOA (переказ)"),
-        Battery("bat-s", "basic", "part.batS", 40, 0.24, 1, "168,8 Вт·год/кг — SmallSat SOA (переказ)"),
-        Battery("bat-m", "medium", "part.batM", 150, 1.04, 6, "144 Вт·год/кг — SmallSat SOA (переказ)"),
-        Battery("bat-l", "best", "part.batL", 1000, 5.6, 30, "178,1 Вт·год/кг — SmallSat SOA (переказ)"),
-        Radio("radio-uhf", "basic", "part.radioUhf", 38.4, "uhf", 0.025, 4, 1, []),
-        Radio("radio-s", "medium", "part.radioS", 3000, "s", 0.34, 12, 8, []),
-        Radio("radio-x", "best", "part.radioX", 50_000, "x", 0.13, 20, 25, NeedsFinePointing),
+        Solar("solar-body", "basic", "part.solarBody", 19.2, 0.26, 2, "19,2 Вт, 74 Вт/кг — SmallSat SOA 2026, табл. 3-2, с. 35: NPC Spacemind SP6X"),
+        Solar("solar-deploy", "medium", "part.solarDeploy", 135, 4.4, 15, "135 Вт, 31 Вт/кг — SmallSat SOA 2026, табл. 3-2, с. 35: Pumpkin Dual Articulated Deployable Solar Array"),
+        Solar("solar-roll", "best", "part.solarRoll", 1000, 10, 60, "1000 Вт, 100 Вт/кг — SmallSat SOA 2026, табл. 3-2, с. 35: Redwire ROSA"),
+        Battery("bat-s", "basic", "part.batS", 40, 0.24, 1, "168,8 Вт·год/кг — SmallSat SOA 2026, табл. 3-5, с. 44: GomSpace NanoPower BP4"),
+        Battery("bat-m", "medium", "part.batM", 150, 1.04, 6, "144 Вт·год/кг — SmallSat SOA 2026, табл. 3-5, с. 44: Astro Digital Direct Energy Pack"),
+        Battery("bat-l", "best", "part.batL", 1000, 5.6, 30, "178,1 Вт·год/кг — SmallSat SOA 2026, табл. 3-5, с. 44: EnduroSat EPS IV"),
+        Radio("radio-uhf", "basic", "part.radioUhf", 38.4, "uhf", 0.025, 4, 1, [], "с. 260: GomSpace NanoCom AX100"),
+        Radio("radio-s", "medium", "part.radioS", 3000, "s", 0.34, 12, 8, [], "с. 263: EnduroSat S-Band Transceiver III"),
+        Radio("radio-x", "best", "part.radioX", 50_000, "x", 0.13, 20, 25, NeedsFinePointing, "с. 265: AAC Clyde Space PULSAR-DATA XTX"),
         CpuBasic(),
         CpuPower(),
         AdcsBasic(),
@@ -209,12 +211,12 @@ public static class MissionData
             new("bus-s", PartCategories.Bus, "basic", "part.busS", 3, 5, 0,
                 new PartSpecs { MaxMassKg = 12, Slots = 7, DragAreaM2 = 0.06, BusSize = "small" }, [],
                 Source.Estimate("Як у місії 1 (docs/catalogs.md); площа перерізу й клас — оцінка")),
-            Solar("solar-body", "basic", "part.solarBody", 19.2, 0.5, 2, "19,2 Вт, 38,55 Вт/кг — SmallSat SOA (переказ)"),
-            Solar("solar-deploy", "best", "part.solarDeploy", 135, 4.4, 15, "135 Вт, 31 Вт/кг — SmallSat SOA (переказ)"),
-            Battery("bat-s", "basic", "part.batS", 40, 0.24, 1, "168,8 Вт·год/кг — SmallSat SOA (переказ)"),
-            Battery("bat-m", "best", "part.batM", 150, 1.04, 6, "144 Вт·год/кг — SmallSat SOA (переказ)"),
-            Radio("radio-uhf", "basic", "part.radioUhf", 38.4, "uhf", 0.025, 4, 1, []),
-            Radio("radio-s", "best", "part.radioS", 3000, "s", 0.34, 12, 8, []),
+            Solar("solar-body", "basic", "part.solarBody", 19.2, 0.26, 2, "19,2 Вт, 74 Вт/кг — SmallSat SOA 2026, табл. 3-2, с. 35: NPC Spacemind SP6X"),
+            Solar("solar-deploy", "best", "part.solarDeploy", 135, 4.4, 15, "135 Вт, 31 Вт/кг — SmallSat SOA 2026, табл. 3-2, с. 35: Pumpkin Dual Articulated Deployable Solar Array"),
+            Battery("bat-s", "basic", "part.batS", 40, 0.24, 1, "168,8 Вт·год/кг — SmallSat SOA 2026, табл. 3-5, с. 44: GomSpace NanoPower BP4"),
+            Battery("bat-m", "best", "part.batM", 150, 1.04, 6, "144 Вт·год/кг — SmallSat SOA 2026, табл. 3-5, с. 44: Astro Digital Direct Energy Pack"),
+            Radio("radio-uhf", "basic", "part.radioUhf", 38.4, "uhf", 0.025, 4, 1, [], "с. 260: GomSpace NanoCom AX100"),
+            Radio("radio-s", "best", "part.radioS", 3000, "s", 0.34, 12, 8, [], "с. 263: EnduroSat S-Band Transceiver III"),
             CpuBasic(),
             AdcsBasic(),
             PropNone(),
@@ -262,12 +264,12 @@ public static class MissionData
                 new PartSpecs { MaxMassKg = 4000, Slots = 14, DragAreaM2 = 6, BusSize = "medium" }, [], shipSource),
             new("ship-pressurized", PartCategories.Bus, "best", "part.shipPressurized", 2200, 300, 0,
                 new PartSpecs { MaxMassKg = 8000, Slots = 20, DragAreaM2 = 10, BusSize = "large" }, [], shipSource),
-            Solar("solar-deploy", "medium", "part.solarDeploy", 135, 4.4, 15, "135 Вт, 31 Вт/кг — SmallSat SOA (переказ)"),
-            Solar("solar-roll", "best", "part.solarRoll", 1000, 10, 60, "1000 Вт, 100 Вт/кг — SmallSat SOA (переказ)"),
-            Battery("bat-m", "medium", "part.batM", 150, 1.04, 6, "144 Вт·год/кг — SmallSat SOA (переказ)"),
-            Battery("bat-l", "best", "part.batL", 1000, 5.6, 30, "178,1 Вт·год/кг — SmallSat SOA (переказ)"),
-            Radio("radio-s", "medium", "part.radioS", 3000, "s", 0.34, 12, 8, []),
-            Radio("radio-x", "best", "part.radioX", 50_000, "x", 0.13, 20, 25, NeedsFinePointing),
+            Solar("solar-deploy", "medium", "part.solarDeploy", 135, 4.4, 15, "135 Вт, 31 Вт/кг — SmallSat SOA 2026, табл. 3-2, с. 35: Pumpkin Dual Articulated Deployable Solar Array"),
+            Solar("solar-roll", "best", "part.solarRoll", 1000, 10, 60, "1000 Вт, 100 Вт/кг — SmallSat SOA 2026, табл. 3-2, с. 35: Redwire ROSA"),
+            Battery("bat-m", "medium", "part.batM", 150, 1.04, 6, "144 Вт·год/кг — SmallSat SOA 2026, табл. 3-5, с. 44: Astro Digital Direct Energy Pack"),
+            Battery("bat-l", "best", "part.batL", 1000, 5.6, 30, "178,1 Вт·год/кг — SmallSat SOA 2026, табл. 3-5, с. 44: EnduroSat EPS IV"),
+            Radio("radio-s", "medium", "part.radioS", 3000, "s", 0.34, 12, 8, [], "с. 263: EnduroSat S-Band Transceiver III"),
+            Radio("radio-x", "best", "part.radioX", 50_000, "x", 0.13, 20, 25, NeedsFinePointing, "с. 265: AAC Clyde Space PULSAR-DATA XTX"),
             CpuBasic(),
             CpuPower(),
             AdcsBasic(),
