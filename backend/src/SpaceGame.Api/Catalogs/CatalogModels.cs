@@ -11,7 +11,7 @@ public sealed record Source(string Kind, string? Note = null, string? Url = null
     public static Source Nasa(string note, string? url = null) => new("nasa", note, url);
     public static Source NasaRetold(string note, string? url = null) => new("nasaRetold", note, url);
     public static Source Estimate(string note) => new("estimate", note);
-    public static Source Calculated(string note) => new("calculated", note);
+    public static Source Calculated(string note, string? url = null) => new("calculated", note, url);
 }
 
 public sealed record MissionSummary(string Id, string Kind, string TitleCode, bool Available);

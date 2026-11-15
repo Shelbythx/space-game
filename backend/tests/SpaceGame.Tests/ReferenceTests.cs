@@ -42,13 +42,15 @@ public sealed class ReferenceTests(ApiFactory factory) : IClassFixture<ApiFactor
         var errors = DesignValidator.Validate(design, Catalog, out var mission);
         Assert.Empty(errors);
 
-        // docs/reference-missions.md, «Як перевірити знову»: без fail у mission і launch, крім
-        // iss-cheapest, що навмисно недовозить вантаж. Сегмент space не перевіряємо: еталони
-        // складено до фізики МКС (022), і три з них тепер падають за орбітою (нотатки 023).
+        // docs/reference-missions.md, «Як перевірити знову»: без fail у mission, launch і space
+        // (після 019 жоден еталон не падає за орбітою), крім iss-cheapest, що навмисно недовозить
+        // вантаж. iss-best (6992 кг) не вміщується в medium на 6100 кг (034); еталон зменшує 019.
         var e = Evaluator.Evaluate(design, mission!).Evaluation;
-        var fails = e.Checks.Where(c => c.Status == "fail" && c.Segment is "mission" or "launch").Select(c => c.Code).ToList();
+        var fails = e.Checks.Where(c => c.Status == "fail" && c.Segment is "mission" or "launch" or "space").Select(c => c.Code).ToList();
         if (id == "iss-cheapest")
             Assert.All(fails, code => Assert.Contains("cargo", code, StringComparison.OrdinalIgnoreCase));
+        else if (id == "iss-best")
+            Assert.All(fails, code => Assert.Equal("check.launch.overCapacity", code));
         else
             Assert.Empty(fails);
     }
