@@ -1,0 +1,424 @@
+[
+  {
+    "id": "cubesat-cheapest",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.cubesatCheapest",
+    "design": {
+      "missionId": "cubesat-learn",
+      "version": "simple",
+      "orbit": {
+        "presetId": "iss-deploy"
+      },
+      "launchId": "iss-deploy",
+      "parts": {
+        "bus": "bus-s",
+        "solar": "solar-body",
+        "battery": "bat-s",
+        "radio": "radio-uhf",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-none"
+      },
+      "instrumentIds": [
+        "magnetometer"
+      ],
+      "groundStationIds": [
+        "fairbanks"
+      ]
+    }
+  },
+  {
+    "id": "cubesat-icecube-like",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.cubesatIcecubeLike",
+    "design": {
+      "missionId": "cubesat-learn",
+      "version": "simple",
+      "orbit": {
+        "presetId": "iss-deploy"
+      },
+      "launchId": "iss-deploy",
+      "parts": {
+        "bus": "bus-s",
+        "solar": "solar-body",
+        "battery": "bat-s",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-none"
+      },
+      "instrumentIds": [
+        "radiometer"
+      ],
+      "groundStationIds": [
+        "white-sands"
+      ]
+    }
+  },
+  {
+    "id": "cubesat-balanced",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.cubesatBalanced",
+    "design": {
+      "missionId": "cubesat-learn",
+      "version": "simple",
+      "orbit": {
+        "presetId": "iss-deploy"
+      },
+      "launchId": "iss-deploy",
+      "parts": {
+        "bus": "bus-s",
+        "solar": "solar-deploy",
+        "battery": "bat-s",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-none"
+      },
+      "instrumentIds": [
+        "radiometer"
+      ],
+      "groundStationIds": [
+        "white-sands"
+      ]
+    }
+  },
+  {
+    "id": "cubesat-best",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.cubesatBest",
+    "design": {
+      "missionId": "cubesat-learn",
+      "version": "simple",
+      "orbit": {
+        "presetId": "iss-deploy"
+      },
+      "launchId": "iss-deploy",
+      "parts": {
+        "bus": "bus-s",
+        "solar": "solar-deploy",
+        "battery": "bat-m",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-none"
+      },
+      "instrumentIds": [
+        "radiometer"
+      ],
+      "groundStationIds": [
+        "white-sands"
+      ]
+    }
+  },
+  {
+    "id": "cubesat-dellingr-like",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.cubesatDellingrLike",
+    "design": {
+      "missionId": "cubesat-learn",
+      "version": "simple",
+      "orbit": {
+        "presetId": "iss-deploy"
+      },
+      "launchId": "iss-deploy",
+      "parts": {
+        "bus": "bus-s",
+        "solar": "solar-body",
+        "battery": "bat-m",
+        "radio": "radio-uhf",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-none"
+      },
+      "instrumentIds": [
+        "magnetometer"
+      ],
+      "groundStationIds": [
+        "fairbanks"
+      ]
+    }
+  },
+  {
+    "id": "orbit-cheapest",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.orbitCheapest",
+    "design": {
+      "missionId": "sat-orbit",
+      "version": "simple",
+      "orbit": {
+        "presetId": "sso"
+      },
+      "launchId": "rideshare",
+      "parts": {
+        "bus": "bus-s",
+        "solar": "solar-body",
+        "battery": "bat-s",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-none"
+      },
+      "instrumentIds": [
+        "radiometer"
+      ],
+      "groundStationIds": [
+        "white-sands"
+      ]
+    }
+  },
+  {
+    "id": "orbit-tropics-like",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.orbitTropicsLike",
+    "design": {
+      "missionId": "sat-orbit",
+      "version": "simple",
+      "orbit": {
+        "presetId": "leo"
+      },
+      "launchId": "small",
+      "parts": {
+        "bus": "bus-s",
+        "solar": "solar-body",
+        "battery": "bat-s",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-none"
+      },
+      "instrumentIds": [
+        "radiometer"
+      ],
+      "groundStationIds": [
+        "white-sands",
+        "guam"
+      ]
+    }
+  },
+  {
+    "id": "orbit-balanced",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.orbitBalanced",
+    "design": {
+      "missionId": "sat-orbit",
+      "version": "simple",
+      "orbit": {
+        "presetId": "sso"
+      },
+      "launchId": "rideshare",
+      "parts": {
+        "bus": "bus-m",
+        "solar": "solar-deploy",
+        "battery": "bat-m",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-chem"
+      },
+      "instrumentIds": [
+        "radiometer",
+        "magnetometer"
+      ],
+      "groundStationIds": [
+        "fairbanks",
+        "white-sands"
+      ]
+    }
+  },
+  {
+    "id": "orbit-own-launch",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.orbitOwnLaunch",
+    "design": {
+      "missionId": "sat-orbit",
+      "version": "simple",
+      "orbit": {
+        "presetId": "leo"
+      },
+      "launchId": "small",
+      "parts": {
+        "bus": "bus-m",
+        "solar": "solar-deploy",
+        "battery": "bat-m",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-chem"
+      },
+      "instrumentIds": [
+        "radiometer",
+        "magnetometer"
+      ],
+      "groundStationIds": [
+        "white-sands",
+        "guam"
+      ]
+    }
+  },
+  {
+    "id": "iss-cheapest",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.issCheapest",
+    "design": {
+      "missionId": "iss-cargo",
+      "version": "simple",
+      "launchId": "medium",
+      "parts": {
+        "bus": "ship-small",
+        "solar": "solar-deploy",
+        "battery": "bat-m",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-biprop"
+      },
+      "instrumentIds": [],
+      "groundStationIds": [
+        "white-sands"
+      ],
+      "launchSiteId": "cape-canaveral",
+      "insertionAltitudeKm": 200,
+      "cargo": [
+        {
+          "categoryId": "crew-supplies",
+          "massKg": 1200
+        },
+        {
+          "categoryId": "science",
+          "massKg": 800
+        }
+      ],
+      "relay": false
+    }
+  },
+  {
+    "id": "iss-crs29-like",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.issCrs29Like",
+    "design": {
+      "missionId": "iss-cargo",
+      "version": "simple",
+      "launchId": "medium",
+      "parts": {
+        "bus": "ship-pressurized",
+        "solar": "solar-deploy",
+        "battery": "bat-m",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-biprop"
+      },
+      "instrumentIds": [],
+      "groundStationIds": [
+        "white-sands"
+      ],
+      "launchSiteId": "cape-canaveral",
+      "insertionAltitudeKm": 200,
+      "cargo": [
+        {
+          "categoryId": "science",
+          "massKg": 1000
+        },
+        {
+          "categoryId": "crew-supplies",
+          "massKg": 700
+        },
+        {
+          "categoryId": "vehicle-hardware",
+          "massKg": 700
+        },
+        {
+          "categoryId": "computer",
+          "massKg": 50
+        },
+        {
+          "categoryId": "spacewalk",
+          "massKg": 50
+        }
+      ],
+      "relay": true
+    }
+  },
+  {
+    "id": "iss-ng-wallops-like",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.issNgWallopsLike",
+    "design": {
+      "missionId": "iss-cargo",
+      "version": "simple",
+      "launchId": "medium",
+      "parts": {
+        "bus": "ship-pressurized",
+        "solar": "solar-deploy",
+        "battery": "bat-m",
+        "radio": "radio-s",
+        "computer": "cpu-basic",
+        "adcs": "adcs-basic",
+        "propulsion": "prop-biprop"
+      },
+      "instrumentIds": [],
+      "groundStationIds": [
+        "white-sands",
+        "fairbanks"
+      ],
+      "launchSiteId": "wallops",
+      "insertionAltitudeKm": 220,
+      "cargo": [
+        {
+          "categoryId": "crew-supplies",
+          "massKg": 1300
+        },
+        {
+          "categoryId": "science",
+          "massKg": 900
+        },
+        {
+          "categoryId": "vehicle-hardware",
+          "massKg": 400
+        }
+      ],
+      "relay": false
+    }
+  },
+  {
+    "id": "iss-best",
+    "kind": "modeled",
+    "nameCode": "reference.modeled.issBest",
+    "design": {
+      "missionId": "iss-cargo",
+      "version": "simple",
+      "launchId": "medium",
+      "parts": {
+        "bus": "ship-pressurized",
+        "solar": "solar-deploy",
+        "battery": "bat-m",
+        "radio": "radio-x",
+        "computer": "cpu-power",
+        "adcs": "adcs-fine",
+        "propulsion": "prop-biprop-xl"
+      },
+      "instrumentIds": [],
+      "groundStationIds": [
+        "white-sands"
+      ],
+      "launchSiteId": "cape-canaveral",
+      "insertionAltitudeKm": 250,
+      "cargo": [
+        {
+          "categoryId": "science",
+          "massKg": 1500
+        },
+        {
+          "categoryId": "crew-supplies",
+          "massKg": 1200
+        },
+        {
+          "categoryId": "vehicle-hardware",
+          "massKg": 300
+        }
+      ],
+      "relay": true
+    }
+  }
+]
