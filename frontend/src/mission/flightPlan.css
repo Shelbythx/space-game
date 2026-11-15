@@ -577,6 +577,23 @@
   --mm-ink-shadow: #f7dd8f;
 }
 
+/* Flight and report wait for «Start mission»: the step reads as closed, not as a link. */
+.fp-step-locked .fp-step-link {
+  cursor: not-allowed;
+}
+
+.fp-step-locked .fp-box {
+  border-style: dashed;
+}
+
+.fp-actions .mm-btn:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.85) brightness(0.75);
+  border-color: var(--mm-edge);
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
 /* ---------- motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {

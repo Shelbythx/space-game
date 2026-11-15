@@ -6,6 +6,16 @@ import { readStorage, writeStorage } from '../lib/storage'
 
 const designKey = (missionId: string) => `smdg.design.${missionId}`
 const startKey = (missionId: string) => `smdg.start.${missionId}`
+const launchKey = (missionId: string) => `smdg.launch.${missionId}`
+
+/** The design the player launched from the Design stage (flight and report open only for it). */
+export const launchedDesign = (missionId: string): string | null => readStorage(launchKey(missionId)) || null
+
+export function saveLaunch(design: Design): string {
+  const key = JSON.stringify(design)
+  writeStorage(launchKey(design.missionId), key)
+  return key
+}
 
 export function loadDesign(missionId: string): Design | null {
   const raw = readStorage(designKey(missionId))
@@ -27,6 +37,7 @@ export const hasSave = (missionId: string) => loadDesign(missionId) !== null
 /** New game: forget the saved design and remember which version to start in. */
 export function startFresh(missionId: string, version: GameVersion): void {
   writeStorage(designKey(missionId), '')
+  writeStorage(launchKey(missionId), '')
   writeStorage(startKey(missionId), version)
 }
 
