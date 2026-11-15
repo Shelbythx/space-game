@@ -1,6 +1,6 @@
 import type { Design, Instrument, Launch, Mission, MissionSummary, Orbit, Part, Source } from '../types'
 
-// Demo copies of GET /api/missions/sat-orbit and cubesat-learn (contract v2.1), used only when the backend is
+// Demo copies of GET /api/missions/sat-orbit, cubesat-learn and iss-cargo (contract v2.1), used only when the backend is
 // unreachable. Mirrors backend/src/SpaceGame.Api/Catalogs/MissionData.cs (task 003 + 029:
 // SOA 2026 numbers); keep the two in step. The real catalog always comes from the backend.
 
@@ -179,14 +179,95 @@ export const mockCubesat: Mission = {
   presets: [{ id: 'first-cubesat', nameCode: 'preset.cubesatLearn.first', design: { ...cubesatBase, version: 'simple' } }],
 }
 
-const demoMissions: Record<string, Mission> = { 'sat-orbit': mockMission, 'cubesat-learn': mockCubesat }
+// ---------- Mission 2 «Cargo to the ISS» (task 017 estimates in MissionData.cs) ----------
+
+const shipSource = estimate('вантажний корабель: маса, місця, площа й ціна — оцінка до задачі 017 (прес-кіти CRS)')
+const siteSource = estimate('широта й довгота — загальні географічні дані; перелік — до задачі 017')
+const cargoSource = estimate('категорії — як у прес-кітах NASA Commercial Resupply; маси й цінність — оцінка до задачі 017')
+
+/** Demo copy of GET /api/missions/iss-cargo: a cargo ship launched to the station. */
+export const mockIss: Mission = {
+  id: 'iss-cargo',
+  kind: 'iss',
+  titleCode: 'mission.issCargo.title',
+  briefingCode: 'mission.issCargo.briefing',
+  goal: { cargoKg: 2500, scienceCargoMinPct: 30, dockingDeadlineDays: 5 },
+  limits: { budgetK: 1500, launchDeadlineMonth: 18, massReserveRecommendedPct: 15 },
+  timing: {
+    buildMonths: { basic: 3, medium: 5, best: 8 },
+    integrationMonths: 4,
+    rideshareMonths: [],
+    launchLeadMonths: { medium: 5, heavy: 7 },
+  },
+  catalogs: {
+    orbits: [{ id: 'iss', nameCode: 'orbit.iss', altitudeKm: 418, inclinationDeg: 51.64, epochDate: null, source: estimate('орбіта МКС — оцінка до задачі 017') }],
+    launches: [
+      { id: 'medium', nameCode: 'launch.medium', priceK: 800, capacityKg: { iss: 7500 }, fixedOrbitId: null, maxBusSize: 'large', source: estimate('маса на орбіту виведення в площині МКС — оцінка до задачі 017') },
+      { id: 'heavy', nameCode: 'launch.heavy', priceK: 1400, capacityKg: { iss: 15000 }, fixedOrbitId: null, maxBusSize: 'large', source: estimate('маса на орбіту виведення в площині МКС — оцінка до задачі 017') },
+    ],
+    parts: [
+      { id: 'ship-small', category: 'bus', tier: 'medium', nameCode: 'part.shipSmall', massKg: 1200, priceK: 180, consumptionW: 0, specs: { maxMassKg: 4000, slots: 14, dragAreaM2: 6, busSize: 'medium' }, requires: [], source: shipSource },
+      { id: 'ship-pressurized', category: 'bus', tier: 'best', nameCode: 'part.shipPressurized', massKg: 2200, priceK: 300, consumptionW: 0, specs: { maxMassKg: 8000, slots: 20, dragAreaM2: 10, busSize: 'large' }, requires: [], source: shipSource },
+      cubesatPart('solar-deploy'),
+      cubesatPart('solar-roll'),
+      cubesatPart('bat-m'),
+      cubesatPart('bat-l'),
+      cubesatPart('radio-s'),
+      cubesatPart('radio-x'),
+      cubesatPart('cpu-basic'),
+      cubesatPart('cpu-power'),
+      cubesatPart('adcs-basic'),
+      cubesatPart('adcs-fine'),
+      { id: 'prop-biprop', category: 'propulsion', tier: 'medium', nameCode: 'part.propBiprop', massKg: 150, priceK: 60, consumptionW: 0, specs: { ispS: 300, thrustN: 400, propellantKg: 600, powerW: 0 }, requires: [], source: estimate('двокомпонентний двигун корабля — оцінка до задачі 017') },
+      { id: 'prop-biprop-xl', category: 'propulsion', tier: 'best', nameCode: 'part.propBipropXl', massKg: 220, priceK: 90, consumptionW: 0, specs: { ispS: 300, thrustN: 400, propellantKg: 1200, powerW: 0 }, requires: [], source: estimate('двокомпонентний двигун зі збільшеним баком — оцінка до задачі 017') },
+    ],
+    instruments: [],
+    groundStations: ['white-sands', 'fairbanks', 'guam'].map((id) => mockMission.catalogs.groundStations.find((s) => s.id === id)!),
+    launchSites: [
+      { id: 'cape-canaveral', nameCode: 'site.capeCanaveral', latitudeDeg: 28.5, longitudeDeg: -80.6, source: siteSource },
+      { id: 'wallops', nameCode: 'site.wallops', latitudeDeg: 37.8, longitudeDeg: -75.5, source: siteSource },
+      { id: 'kodiak', nameCode: 'site.kodiak', latitudeDeg: 57.4, longitudeDeg: -152.3, source: siteSource },
+    ],
+    cargoCategories: [
+      { id: 'crew-supplies', nameCode: 'cargo.crewSupplies', value: 'medium', typicalMassKg: 1000, source: cargoSource },
+      { id: 'science', nameCode: 'cargo.science', value: 'highest', typicalMassKg: 900, source: cargoSource },
+      { id: 'vehicle-hardware', nameCode: 'cargo.vehicleHardware', value: 'low', typicalMassKg: 700, source: cargoSource },
+      { id: 'spacewalk', nameCode: 'cargo.spacewalk', value: 'medium', typicalMassKg: 150, source: cargoSource },
+      { id: 'computer', nameCode: 'cargo.computer', value: 'low', typicalMassKg: 30, source: cargoSource },
+    ],
+  },
+  presets: [
+    {
+      id: 'cape-medium',
+      nameCode: 'preset.issCargo.capeMedium',
+      design: {
+        missionId: 'iss-cargo',
+        version: 'simple',
+        orbit: null,
+        launchId: 'medium',
+        parts: { bus: 'ship-pressurized', solar: 'solar-deploy', battery: 'bat-m', radio: 'radio-s', computer: 'cpu-basic', adcs: 'adcs-fine', propulsion: 'prop-biprop' },
+        instrumentIds: [],
+        groundStationIds: ['white-sands'],
+        launchSiteId: 'cape-canaveral',
+        insertionAltitudeKm: 200,
+        cargo: [
+          { categoryId: 'crew-supplies', massKg: 1500 },
+          { categoryId: 'science', massKg: 1000 },
+        ],
+        relay: true,
+      },
+    },
+  ],
+}
+
+const demoMissions: Record<string, Mission> = { 'sat-orbit': mockMission, 'cubesat-learn': mockCubesat, 'iss-cargo': mockIss }
 
 /** Demo mission by id; unknown ids fall back to mission 1. */
 export const mockMissionById = (id: string): Mission => demoMissions[id] ?? mockMission
 
-/** Demo list for GET /api/missions: the ISS mission needs the server. */
+/** Demo list for GET /api/missions. */
 export const mockMissions: MissionSummary[] = [
   { id: 'cubesat-learn', kind: 'tutorial', titleCode: 'mission.cubesatLearn.title', available: true },
   { id: 'sat-orbit', kind: 'orbit', titleCode: 'mission.satOrbit.title', available: true },
-  { id: 'iss-cargo', kind: 'iss', titleCode: 'mission.issCargo.title', available: false },
+  { id: 'iss-cargo', kind: 'iss', titleCode: 'mission.issCargo.title', available: true },
 ]

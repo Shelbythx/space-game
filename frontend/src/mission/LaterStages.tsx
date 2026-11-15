@@ -3,6 +3,7 @@ import { useGameText } from '../blueprint/format'
 import { FlightView } from '../flight/FlightView'
 import '../flight/i18n'
 import type { SeriesKey } from '../flight/types'
+import { RendezvousView } from '../rendezvous/RendezvousView'
 import { useSimulation } from '../report/simulation'
 import { useMission } from './context'
 
@@ -27,6 +28,26 @@ export function FlightStage() {
       </button>
     </div>
   )
+
+  if (simulation.status === 'ready' && mission && design && mission.kind === 'iss') {
+    // ISS mission (task 024): first the chase and docking, then the stay at the station on
+    // the map of task 010 — without science data, the ship has no instruments.
+    const { result } = simulation
+    const stations = mission.catalogs.groundStations.filter((s) => design.groundStationIds.includes(s.id))
+    return (
+      <div className="flow-page flow-page-wide">
+        {result.rendezvous && <RendezvousView profile={result.rendezvous} mission={mission} evaluation={result.evaluation} />}
+        <FlightView
+          simulation={result}
+          stations={stations}
+          onFinish={() => navigate('../report')}
+          gauges={['batteryMinPct', 'altitudeKm', 'propellantKg']}
+          title={t('rendezvous.atStation')}
+        />
+        {nav}
+      </div>
+    )
+  }
 
   if (simulation.status === 'ready' && mission && design) {
     const stations = mission.catalogs.groundStations.filter((s) => design.groundStationIds.includes(s.id))

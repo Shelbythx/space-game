@@ -14,6 +14,15 @@ function normalize(design: Design, mission: Mission): Design {
   const launch = mission.catalogs.launches.find((l) => l.id === design.launchId)
   const next: Design = { ...design }
   if (launch?.fixedOrbitId) next.orbit = { presetId: launch.fixedOrbitId }
+  if (mission.kind === 'iss') {
+    // The target is the ISS orbit from the catalog (orbit null); the ISS-only fields are
+    // required there (docs/api.md «Design»).
+    next.orbit = null
+    next.launchSiteId ??= mission.catalogs.launchSites[0]?.id
+    next.insertionAltitudeKm ??= 200
+    next.cargo ??= []
+    next.relay ??= false
+  }
   if (next.version === 'simple') {
     next.layout = null
     next.massReservePct = null
@@ -99,6 +108,18 @@ export function useBlueprint(missionId: string) {
     setVersion: (version: GameVersion) => update((d) => ({ ...d, version })),
     setSide: (key: string, side: Side) => update((d) => ({ ...d, layout: { ...(d.layout ?? {}), [key]: side } })),
     setReserve: (pct: number) => update((d) => ({ ...d, massReservePct: pct })),
+    // ISS mission (task 024): planner — launch site, insertion orbit, relay; scientist — cargo.
+    setLaunchSite: (id: string) => update((d) => ({ ...d, launchSiteId: id })),
+    setInsertion: (altitudeKm: number) => update((d) => ({ ...d, insertionAltitudeKm: altitudeKm })),
+    setRelay: (relay: boolean) => update((d) => ({ ...d, relay })),
+    setCargo: (categoryId: string, massKg: number) =>
+      update((d) => {
+        const rest = (d.cargo ?? []).filter((c) => c.categoryId !== categoryId)
+        const items = massKg > 0 ? [...rest, { categoryId, massKg }] : rest
+        // Keep the catalog order so the design (and its saved seed) does not depend on clicks.
+        const order = mission?.catalogs.cargoCategories.map((c) => c.id) ?? []
+        return { ...d, cargo: items.sort((a, b) => order.indexOf(a.categoryId) - order.indexOf(b.categoryId)) }
+      }),
     applyPreset: (presetId: string) =>
       update((d) => {
         const preset = mission?.presets.find((p) => p.id === presetId)

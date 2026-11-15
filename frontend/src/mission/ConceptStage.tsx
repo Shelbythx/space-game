@@ -24,6 +24,7 @@ export function ConceptStage() {
   const closeSheet = useCallback(() => setSheet(null), [])
   if (!mission || !design) return null
   const o = evaluation?.orbit
+  const rv = evaluation?.rendezvous
 
   const facts = o
     ? [
@@ -32,7 +33,14 @@ export function ConceptStage() {
         [t('flow.concept.period'), `${num(o.periodMin)} ${unit('min')}`],
         [t('flow.concept.speed'), `${num(o.speedKmS, 2)} ${unit('kms')}`],
         [t('flow.concept.shadow'), `${num(o.eclipseFraction * 100, 0)}%`],
-        [t('flow.concept.lifetime'), o.lifetimeYears == null ? '—' : t('flow.concept.years', { years: num(o.lifetimeYears, 0) })],
+        ...(rv
+          ? [
+              // ISS mission: the way up to the station (plan 2.10), numbers from evaluate.
+              [t('flow.concept.hohmann'), `${num(rv.hohmannDeltaVms, 0)} ${unit('ms')}`],
+              [t('flow.concept.phasing'), t('flow.concept.days', { days: num(rv.phasingDays) })],
+              [t('flow.concept.planeChange'), `${num(rv.planeChangeDeltaVms, 0)} ${unit('ms')}`],
+            ]
+          : [[t('flow.concept.lifetime'), o.lifetimeYears == null ? '—' : t('flow.concept.years', { years: num(o.lifetimeYears, 0) })]]),
       ]
     : []
 
@@ -59,7 +67,7 @@ export function ConceptStage() {
 
         <section className="bp-center">
           <section className="bp-group">
-            <h3>{t('flow.concept.orbitFacts')}</h3>
+            <h3>{t(rv ? 'flow.concept.issFacts' : 'flow.concept.orbitFacts')}</h3>
             <dl className="flow-facts">
               {facts.map(([k, v]) => (
                 <div key={k}>
@@ -68,7 +76,7 @@ export function ConceptStage() {
                 </div>
               ))}
             </dl>
-            <p className="bp-note">{t('flow.concept.hint')}</p>
+            <p className="bp-note">{t(rv ? 'flow.concept.hintIss' : 'flow.concept.hint')}</p>
           </section>
           {evaluation && <OrbitStrip strip={evaluation.orbitStrip} altitudeKm={evaluation.orbit.altitudeKm} />}
           <div className="flow-nav">

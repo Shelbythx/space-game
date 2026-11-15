@@ -69,7 +69,9 @@
       "budget": "{{used}} of {{limit}} k",
       "data": "{{expected}} of {{goal}} GB",
       "comms": "{{minutes}} min/day · {{contacts}} passes",
-      "time": "launch month {{launch}} of {{deadline}}"
+      "time": "launch month {{launch}} of {{deadline}}",
+      "cargo": "{{loaded}} of {{goal}} kg · science {{science}}%",
+      "commsRelay": "non-stop via TDRS"
     }
   },
   "role": {
@@ -87,7 +89,8 @@
     "time": "Time",
     "orbit": "Orbit",
     "propellant": "Propellant",
-    "rendezvous": "Rendezvous"
+    "rendezvous": "Rendezvous",
+    "cargo": "Cargo"
   },
   "side": {
     "earth": "to Earth",
@@ -123,7 +126,8 @@
     "instruments": "Instruments",
     "stations": "Ground stations",
     "orbit": "Orbit",
-    "launch": "Launch"
+    "launch": "Launch",
+    "cargo": "Cargo"
   },
   "mission": {
     "satOrbit": {
@@ -174,7 +178,11 @@
     "propNone": "No engine",
     "propCold": "Cold gas",
     "propChem": "Chemical (green monoprop)",
-    "propElec": "Electric (ion)"
+    "propElec": "Electric (ion)",
+    "shipSmall": "Small cargo ship",
+    "shipPressurized": "Pressurized cargo ship",
+    "propBiprop": "Bipropellant engine",
+    "propBipropXl": "Bipropellant, large tank"
   },
   "instrument": {
     "magnetometer": "Magnetometer",
@@ -194,6 +202,9 @@
     },
     "cubesatLearn": {
       "first": "First CubeSat"
+    },
+    "issCargo": {
+      "capeMedium": "Canaveral, medium launcher"
     }
   },
   "check": {
@@ -370,6 +381,20 @@
         "title": "Propellant",
         "summary": "Δv {{deltaVms}} m/s with Isp {{ispS}} s needs {{neededKg}} kg of propellant"
       }
+    },
+    "rendezvous": {
+      "hohmann": {
+        "title": "Hohmann transfer",
+        "summary": "{{fromKm}} → {{toKm}} km takes {{deltaVms}} m/s"
+      },
+      "phasing": {
+        "title": "Phasing",
+        "summary": "Gains {{degPerOrbit}}° per orbit → up to {{phasingDays}} days to catch up"
+      },
+      "planeChange": {
+        "title": "Plane change",
+        "summary": "Turning the plane by {{deltaInclinationDeg}}° takes {{deltaVms}} m/s"
+      }
     }
   },
   "flow": {
@@ -379,7 +404,6 @@
     "newGame": "New game",
     "continue": "Continue",
     "needsServer": "Needs the mission server — not available in the demo.",
-    "issSoon": "The cargo ship screens are still in progress. Try the satellite mission for now.",
     "loadFailed": "Could not load the mission. Check the server and reload.",
     "creditsButton": "NASA sources",
     "kind": {
@@ -409,7 +433,10 @@
       "margin": "Mass margin (NASA)",
       "sources": "Mass margin: GSFC-STD-1000 Gold Rules, Table 1.06-1 (Pre-Phase A).",
       "rolesTitle": "Who decides what",
-      "conflict": "Resources are shared, so the roles pull in different directions — there is no single perfect design."
+      "conflict": "Resources are shared, so the roles pull in different directions — there is no single perfect design.",
+      "science": "Science in the cargo",
+      "docking": "Dock within",
+      "dockingValue": "{{days}} days"
     },
     "roles": {
       "planner": "Orbit, launcher and ground stations. Answers for budget, comms and schedule.",
@@ -426,7 +453,13 @@
       "shadow": "Shadow per orbit",
       "lifetime": "Orbit lasts",
       "years": "{{years}} yr",
-      "hint": "A higher orbit lasts longer and stations see the spacecraft for longer, but the signal is weaker and launchers lift less mass there."
+      "hint": "A higher orbit lasts longer and stations see the spacecraft for longer, but the signal is weaker and launchers lift less mass there.",
+      "issFacts": "The way to the station",
+      "hohmann": "Climb to the ISS (Hohmann)",
+      "phasing": "Catching up, worst case",
+      "planeChange": "Plane change",
+      "days": "{{days}} d",
+      "hintIss": "The ship goes into a low orbit in the station's plane, waits until the ISS is the right angle ahead, then climbs with two engine burns (Hohmann transfer)."
     },
     "flight": {
       "loading": "Simulating the flight on the mission server…",
@@ -642,7 +675,8 @@
     "kms": "km/s",
     "min": "min",
     "s": "s",
-    "slots": "slots"
+    "slots": "slots",
+    "ms": "m/s"
   },
   "tutorial": {
     "title": "Training",
@@ -745,5 +779,62 @@
         "text": "A number that fixes the random events. The same design and seed give the same flight."
       }
     }
+  },
+  "iss": {
+    "site": "Launch site",
+    "insertion": "Insertion orbit",
+    "relay": "TDRS relay",
+    "plannerHint": "A launch site above 51.6° latitude needs a plane change. From a lower insertion orbit the ship catches up with the station faster but needs more Δv to climb. The relay keeps the ship in contact all the time.",
+    "science": "science",
+    "cargoTotal": "Loaded {{loaded}} of {{goal}} kg · science {{science}}% (need at least {{min}}%)",
+    "route": "Route to the station"
+  },
+  "rendezvous": {
+    "title": "Rendezvous with the ISS",
+    "hour": "Hour {{hour}} of {{total}}",
+    "step": {
+      "phasing": "Phasing",
+      "transfer": "Hohmann transfer",
+      "approach": "Approach",
+      "docked": "Docked",
+      "missed": "Did not dock"
+    },
+    "explain": {
+      "phasing": "On the lower orbit the ship flies faster and gains on the station every orbit.",
+      "transfer": "The first burn lifts the far side of the orbit up to the station; the second makes the orbit round there.",
+      "approach": "The last metres: a slow approach and waiting for a contact with the ground.",
+      "docked": "The cargo is on board the station.",
+      "missed": "The ship ran out of propellant or time before docking."
+    },
+    "mapLabel": "Schematic of the ship and ISS orbits, not to scale",
+    "earth": "Earth",
+    "iss": "ISS",
+    "ship": "ship",
+    "dockedAt": "Docked after {{hours}} h ({{days}} days)",
+    "behind": "The ISS is {{deg}}° ahead",
+    "fact": {
+      "initial": "Angle at start",
+      "hohmann": "Hohmann Δv",
+      "planeChange": "Plane change Δv",
+      "deadline": "Deadline"
+    },
+    "gauge": {
+      "phase": "Angle to the ISS",
+      "altitude": "Ship altitude",
+      "propellant": "Propellant"
+    },
+    "atStation": "At the station"
+  },
+  "site": {
+    "capeCanaveral": "Cape Canaveral",
+    "wallops": "Wallops",
+    "kodiak": "Kodiak"
+  },
+  "cargo": {
+    "crewSupplies": "Crew supplies",
+    "science": "Science investigations",
+    "vehicleHardware": "Station hardware",
+    "spacewalk": "Spacewalk equipment",
+    "computer": "Computer resources"
   }
 }

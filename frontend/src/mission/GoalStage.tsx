@@ -16,8 +16,18 @@ export function GoalStage() {
   const g = mission.goal
   const l = mission.limits
 
+  // The ISS mission's end product is cargo delivered in time, not data (docs/api.md «goal»).
+  const product =
+    mission.kind === 'iss'
+      ? [
+          { label: t('flow.goal.product'), value: `${num(g.cargoKg ?? 0, 0)} ${unit('kg')}` },
+          { label: t('flow.goal.science'), value: `≥ ${num(g.scienceCargoMinPct ?? 0, 0)}%` },
+          { label: t('flow.goal.docking'), value: t('flow.goal.dockingValue', { days: g.dockingDeadlineDays ?? 0 }) },
+        ]
+      : [{ label: t('flow.goal.product'), value: t('flow.goal.productValue', { gb: num(g.dataGb ?? 0, 0), months: g.operationMonths }) }]
+
   const tiles = [
-    { label: t('flow.goal.product'), value: t('flow.goal.productValue', { gb: num(g.dataGb, 0), months: g.operationMonths }) },
+    ...product,
     { label: t('flow.goal.budget'), value: `${num(l.budgetK, 0)} ${unit('k')}` },
     { label: t('flow.goal.deadline'), value: t('flow.goal.deadlineValue', { month: l.launchDeadlineMonth }) },
     { label: t('flow.goal.margin'), value: `≥ ${l.massReserveRecommendedPct}%` },
@@ -31,7 +41,7 @@ export function GoalStage() {
         <p className="bp-note">{t('flow.goal.why')}</p>
       </section>
 
-      <div className="flow-tiles">
+      <div className={tiles.length > 4 ? 'flow-tiles flow-tiles-3' : 'flow-tiles'}>
         {tiles.map((tile) => (
           <div key={tile.label} className="flow-tile">
             <span className="flow-tile-label">{tile.label}</span>

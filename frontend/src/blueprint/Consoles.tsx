@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import type { Design, Evaluation, GroundStation, Instrument, Mission, Part, PartCategory, Role, Side, Source } from '../api/types'
 import { useGameText } from './format'
 import type { BlueprintActions } from './useBlueprint'
+import { CargoManifest, IssPlanner } from '../rendezvous/IssControls'
 
 // Advanced version (D46, D92): one console per role, each with only that role's decisions;
 // parts are catalog cards with every number and its source (D95).
@@ -149,7 +150,12 @@ export function Consoles({ mission, design, evaluation, actions, role, onRole, h
       <div className="bp-console" role="tabpanel">
         {role === 'planner' && (
           <>
-            {group(
+            {mission.kind === 'iss' ? (
+              <section className="bp-group" key="iss-route">
+                <h3>{t('iss.route')}</h3>
+                <IssPlanner mission={mission} design={design} actions={actions} />
+              </section>
+            ) : group(
               t('category.orbit'),
               'orbit',
               <>
@@ -235,7 +241,14 @@ export function Consoles({ mission, design, evaluation, actions, role, onRole, h
 
         {role === 'engineer' && ENGINEER.map(partGroup)}
 
-        {role === 'scientist' &&
+        {role === 'scientist' && mission.kind === 'iss' && (
+          <section className="bp-group">
+            <h3>{t('category.cargo')}</h3>
+            <CargoManifest mission={mission} design={design} actions={actions} />
+          </section>
+        )}
+
+        {role === 'scientist' && mission.kind !== 'iss' &&
           group(
             t('category.instruments'),
             'instruments',

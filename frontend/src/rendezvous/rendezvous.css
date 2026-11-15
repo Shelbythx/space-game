@@ -1,0 +1,129 @@
+/* Rendezvous with the ISS (task 024): a schematic of two orbits next to the facts, in the
+   flight screen's blueprint palette (flight.css variables). */
+
+.rv-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 700px) {
+  .rv-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.rv-map {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  background: var(--fl-paper);
+  border: 1px solid var(--fl-line);
+}
+
+.rv-earth {
+  fill: #0d2c4f;
+  stroke: var(--fl-accent);
+  stroke-width: 1;
+}
+
+.rv-orbit {
+  fill: none;
+  stroke-width: 1.2;
+}
+
+.rv-orbit--iss {
+  stroke: var(--fl-muted);
+  stroke-dasharray: 4 3;
+}
+
+.rv-orbit--ship {
+  stroke: var(--fl-accent);
+}
+
+.rv-arc {
+  fill: none;
+  stroke: var(--fl-warn);
+  stroke-width: 3;
+  opacity: 0.7;
+}
+
+.rv-iss {
+  fill: var(--fl-ink);
+  stroke: var(--fl-paper);
+}
+
+.rv-ship {
+  fill: var(--fl-accent);
+  stroke: var(--fl-paper);
+  stroke-width: 1.5;
+}
+
+.rv-ship--docked {
+  fill: var(--fl-ok);
+}
+
+.rv-label {
+  font: 11px var(--fl-mono);
+  fill: var(--fl-muted);
+}
+
+.rv-label--iss {
+  fill: var(--fl-ink);
+}
+
+.rv-label--ship {
+  fill: var(--fl-accent);
+}
+
+.rv-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.rv-phase {
+  margin: 0;
+  font: 500 18px var(--fl-mono);
+  color: var(--fl-ink);
+}
+
+.rv-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+  margin: 0;
+}
+
+.rv-facts dt {
+  font-size: 12px;
+  color: var(--fl-muted);
+}
+
+.rv-facts dd {
+  margin: 0;
+  font: 15px var(--fl-mono);
+  color: var(--fl-ink);
+}
+
+.rv-step--docked {
+  color: var(--fl-ok);
+  border-color: var(--fl-ok);
+}
+
+.rv-step--missed {
+  color: var(--fl-fail);
+  border-color: var(--fl-fail);
+}
+
+.rv-gauges {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 600px) {
+  .rv-gauges {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -117,6 +117,29 @@ export interface GroundStation {
   source: Source
 }
 
+/** Launch site, ISS mission only (D104). */
+export interface LaunchSite {
+  id: string
+  nameCode: string
+  latitudeDeg: number
+  longitudeDeg: number
+  source: Source
+}
+
+/** Cargo category, ISS mission only; value as in Instrument. */
+export interface CargoCategory {
+  id: string
+  nameCode: string
+  value: 'low' | 'medium' | 'high' | 'highest'
+  typicalMassKg: number
+  source: Source
+}
+
+export interface CargoItem {
+  categoryId: string
+  massKg: number
+}
+
 export type OrbitChoice = { presetId: string } | { altitudeKm: number; inclinationDeg: number }
 
 export type DesignParts = Record<PartCategory, string>
@@ -133,6 +156,11 @@ export interface Design {
   layout?: Partial<Record<string, Side>> | null
   /** Advanced version only (D93): 0–50; null — recommended from mission limits. */
   massReservePct?: number | null
+  /** ISS mission only: launch site, insertion orbit, cargo manifest and the TDRS relay. */
+  launchSiteId?: string
+  insertionAltitudeKm?: number
+  cargo?: CargoItem[]
+  relay?: boolean
 }
 
 export interface Preset {
@@ -146,7 +174,14 @@ export interface Mission {
   kind: MissionKind
   titleCode: string
   briefingCode: string
-  goal: { dataGb: number; operationMonths: number }
+  /** `tutorial`, `orbit`: dataGb and operationMonths; `iss`: cargoKg, scienceCargoMinPct, dockingDeadlineDays. */
+  goal: {
+    dataGb?: number
+    operationMonths?: number
+    cargoKg?: number
+    scienceCargoMinPct?: number
+    dockingDeadlineDays?: number
+  }
   limits: { budgetK: number; launchDeadlineMonth: number; massReserveRecommendedPct: number }
   timing: {
     buildMonths: Record<Tier, number>
@@ -160,8 +195,8 @@ export interface Mission {
     parts: Part[]
     instruments: Instrument[]
     groundStations: GroundStation[]
-    launchSites: unknown[]
-    cargoCategories: unknown[]
+    launchSites: LaunchSite[]
+    cargoCategories: CargoCategory[]
   }
   presets: Preset[]
 }
@@ -244,9 +279,10 @@ export interface Evaluation {
     comms: { contactsPerDay: number; contactMinutesPerDay: number }
     time: { readyMonth: number; launchMonth: number; deadlineMonth: number }
     propellant: { neededKg: number; capacityKg: number; deltaVms: number }
-    cargo: unknown | null
+    cargo: { loadedKg: number; scienceKg: number; sciencePct: number; goalKg: number; scienceMinPct: number } | null
   }
-  rendezvous: unknown | null
+  /** ISS only: the transfer and phasing estimate (plan 2.10). */
+  rendezvous: { hohmannDeltaVms: number; phasingDays: number; planeChangeDeltaVms: number } | null
   layout: Partial<Record<string, Side>>
   orbitStrip: OrbitStrip
   calc: Calc[]

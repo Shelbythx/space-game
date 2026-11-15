@@ -69,6 +69,8 @@ export function FlightView({ simulation, stations, goalGb, onFinish, gauges, tit
 
   const delivered = sampleSeries(timeline.dataDeliveredGb, index)
   const expected = goalGb && lastDay > 0 ? (goalGb * day) / lastDay : 0
+  // Small goals (the CubeSat's 2 GB) need decimals to show progress.
+  const goalDigits = goalGb !== undefined && goalGb < 10 ? 2 : 0
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -185,14 +187,14 @@ export function FlightView({ simulation, stations, goalGb, onFinish, gauges, tit
             <span className="fl-goal__value">
               {delivered >= goalGb
                 ? t('goal.reached')
-                : t('goal.data', { delivered: number(delivered, 0), goal: number(goalGb, 0) })}
+                : t('goal.data', { delivered: number(delivered, goalDigits), goal: number(goalGb, 0) })}
             </span>
           </div>
           <div className="fl-goal__bar">
             <div className="fl-goal__fill" style={{ width: `${Math.min(100, (delivered / goalGb) * 100)}%` }} />
             <div className="fl-goal__pace" style={{ left: `${Math.min(100, (expected / goalGb) * 100)}%` }} />
           </div>
-          <div className="fl-goal__note">{t('goal.pace', { expected: number(expected, 0) })}</div>
+          <div className="fl-goal__note">{t('goal.pace', { expected: number(expected, goalDigits) })}</div>
         </div>
       )}
 

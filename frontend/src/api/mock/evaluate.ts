@@ -12,6 +12,7 @@ import type {
   Side,
   Source,
 } from '../types'
+import { mockEvaluateIss } from './evaluateIss'
 
 // DEMO STAND-IN for POST /api/evaluate, used only when the mission server is unreachable.
 // The game's physics belongs to the backend (D59, task 004); this file only keeps the
@@ -62,6 +63,7 @@ function stationPasses(st: GroundStation, altitudeKm: number, inclinationDeg: nu
 }
 
 export function mockEvaluate(design: Design, mission: Mission): Evaluation {
+  if (mission.kind === 'iss') return mockEvaluateIss(design, mission)
   const cat = mission.catalogs
   const part = (category: PartCategory): Part =>
     cat.parts.find((p) => p.id === design.parts[category]) ?? cat.parts.find((p) => p.category === category)!
@@ -134,8 +136,8 @@ export function mockEvaluate(design: Design, mission: Mission): Evaluation {
     .filter((i) => !wrong.has(i.id))
     .reduce((a, i) => a + (i.dataRateKbps * 86400 * lit) / 8e6, 0)
   const storageGb = part('computer').specs.storageGb ?? 0
-  const goalGb = mission.goal.dataGb
-  const months = mission.goal.operationMonths
+  const goalGb = mission.goal.dataGb ?? 0
+  const months = mission.goal.operationMonths ?? 12
   const expectedTotalGb = Math.min(generatedGbPerDay, downlinkGbPerDay) * 30.4 * months
 
   // ---------- power (plan 2.4) ----------

@@ -73,9 +73,9 @@ export function MissionSelect() {
 
       <div className="flow-missions">
         {missions?.map((m) => {
-          const playable = m.available && m.kind !== 'iss'
+          const playable = m.available
           const saved = playable && hasSave(m.id)
-          const reason = m.kind === 'iss' ? t('flow.issSoon') : t('flow.needsServer')
+          const reason = t('flow.needsServer')
           return (
             <article key={m.id} className="flow-mission">
               <span className="flow-mission-kind">{t(`flow.kind.${m.kind}`)}</span>

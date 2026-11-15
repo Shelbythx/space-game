@@ -53,7 +53,7 @@ export function demoReport(evaluation: Evaluation, mission: Mission): DemoReport
     },
   ]
   if (r.data) {
-    const neededPerDay = r.data.goalGb / Math.max(1, mission.goal.operationMonths * DAYS_PER_MONTH)
+    const neededPerDay = r.data.goalGb / Math.max(1, (mission.goal.operationMonths ?? 0) * DAYS_PER_MONTH)
     margins.push(
       {
         resource: 'data',
@@ -66,6 +66,14 @@ export function demoReport(evaluation: Evaluation, mission: Mission): DemoReport
         params: { usedGbPerDay: round(neededPerDay, 3), limitGbPerDay: round(r.data.downlinkGbPerDay, 3) },
       },
     )
+  }
+  if (r.cargo) {
+    // ISS mission: the «data» resource is the cargo against the goal (as in ReportBuilder.cs).
+    margins.push({
+      resource: 'data',
+      margin: ratio(r.cargo.goalKg, r.cargo.loadedKg),
+      params: { usedKg: r.cargo.goalKg, limitKg: round(r.cargo.loadedKg) },
+    })
   }
   const smallest = margins.reduce<(typeof margins)[number] | null>(
     (min, m) => (!min || m.margin < min.margin ? m : min),

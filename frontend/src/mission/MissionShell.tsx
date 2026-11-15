@@ -64,9 +64,7 @@ export function MissionShell() {
           </p>
         )}
 
-        {mission?.kind === 'iss' ? (
-          <p className="bp-loading">{t('flow.issSoon')}</p>
-        ) : !mission || !design ? (
+        {!mission || !design ? (
           <p className="bp-loading">{failed ? t('flow.loadFailed') : t('bp.loading')}</p>
         ) : (
           <div className="flow-stage" key={stage}>
