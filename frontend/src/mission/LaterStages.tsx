@@ -25,7 +25,8 @@ export function FlightStage() {
     const stations = mission.catalogs.groundStations.filter((s) => design.groundStationIds.includes(s.id))
     return (
       <div className="flow-page flow-page-wide">
-        {result.rendezvous && <RendezvousView profile={result.rendezvous} mission={mission} evaluation={result.evaluation} />}
+        {/* TheAdvental's RendezvousView (task 024, team decision at integration 15.11.2026). */}
+        {result.rendezvous && <RendezvousView profile={result.rendezvous} deadlineDays={mission.goal.dockingDeadlineDays} />}
         <FlightView
           simulation={result}
           stations={stations}
