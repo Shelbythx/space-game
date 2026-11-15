@@ -3,7 +3,7 @@
 Статус: done
 Виконавець: Stiluss
 Гілка: task/040-docs-nasa-links
-Частина: Бекенд (посилання N2 у розрахункових листах) і документи
+Частина: Документи (і константа посилання N2 у бекенді)
 Залежить від: 029, 034 (каталоги з числами SOA 2026 і NASA для МКС)
 Коротко: Усі посилання на джерела перевірено, биті замінено, ключові числа звірено з документами
 
@@ -19,8 +19,9 @@
 - Биті й виправлені:
   - N2 «Drag Equation» (NASA Glenn): `…/drag-equation-2/` → 404; правильна адреса
     `…/beginners-guide-to-aeronautics/drag-equation/` (заголовок «Drag Equation | Glenn Research
-    Center», формула з Cd і ρ). Виправлено в `NasaSources.cs` (бекенд віддає її в розрахункових
-    листах — гравець бачив 404) і в `docs/physics-sources.md`.
+    Center», формула з Cd і ρ). Виправлено в `docs/physics-sources.md` і в константі `NasaSources.N2`.
+    Уточнення: `N2` ніде не потрапляє у відповіді API (розрахунковий лист часу життя має джерело
+    без посилання), тож гравець цього 404 не бачив — бите посилання було лише в документах і коді.
   - `spotthestation.nasa.gov/trajectory_data.cfm` → 404; самі дані (OEM на S3 NASA) відкриваються,
     у `docs/catalogs-iss.md` додано примітку й розділ <https://www.nasa.gov/spot-the-station/>.
   - `www.orbitaldebris.jsc.nasa.gov` не відповідає; без `www` — 200 (`docs/resources.md`).
