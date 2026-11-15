@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SpaceGame.Api.Catalogs;
 using SpaceGame.Api.Data;
 using SpaceGame.Api.Endpoints;
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString);
 });
 
+builder.Services.AddCatalogs();
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 
@@ -24,9 +26,9 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
+    // camelCase; null пишеться (контракт вимагає, напр., "epochDate": null), а поля, яких
+    // за контрактом немає, позначені [JsonIgnore(WhenWritingNull)] у моделях.
     options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-    options.SerializerOptions.DefaultIgnoreCondition =
-        System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
 });
 
 var app = builder.Build();
@@ -37,6 +39,7 @@ app.UseCors();
 
 app.MapOpenApi(); // /openapi/v1.json — з нього фронтенд генерує типи (docs/api.md)
 app.MapHealthEndpoints();
+app.MapMissionEndpoints();
 
 if (app.Configuration.GetValue("Database:MigrateOnStartup", false) && !string.IsNullOrWhiteSpace(connectionString))
 {
