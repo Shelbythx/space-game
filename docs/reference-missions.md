@@ -102,133 +102,90 @@
 ## Еталонні проєкти гри
 
 Для кожної місії — від найдешевшого до найкращого, що вміщується в обмеження, плюс аналоги
-справжніх місій. Усі використовують лише деталі з каталогів `MissionData.cs` і проходять
-статичні перевірки оцінювача:
+справжніх місій. Усі використовують лише деталі з каталогів `MissionData.cs`.
 
-- деталі й прилади є в каталозі місії, вимоги деталей виконано;
-- маса з запасом 15 % вміщується в корпус і в носій, вистачає місць, клас корпусу підходить
-  носію;
-- бюджет і місяць старту в межах лімітів;
-- запас енергії ≥ 25 %, батарея витримує тінь;
-- на МКС вистачає палива.
-
-Перевірено на двох версіях каталогу: `main` (48b3533) і гілці `task/029-back-catalog-soa`, що
-змінює масу панелей і двигунів. Деградацію орбіти, сеанси зв'язку й обсяг даних тут не
-рахували — це результат польоту, його рахує симуляція (023).
+**Перевірено 15.11.2026 після задачі 031 (D107: третій попутний рейс на 15-му місяці, 7 місць у
+`bus-s`)** — прогоном `POST /api/simulate` на розгорнутому бекенді (seed 42). Жоден еталон не має
+`fail` у сегментах `mission`, `launch` і `space`; «Ціль» — чи досягнуто ціль місії (`success`).
+Перша версія (до 031) перевірялась лише статичними правилами; після прогону шість еталонів
+замінено: розкладні панелі в CubeSat згоряли за 2 місяці, UHF із Фербенксом не мав жодного
+сеансу, `orbit-cheapest` без двигуна порушував правило 25 років, а `orbit-own-launch` замінено
+камерним проєктом, що досягає цілі місії 1.
 
 ### `cubesat-learn` — рівень CubeSat
 
-| id | Задум | Маса з запасом, кг | Бюджет, к | Старт, міс. | Запас енергії |
-| --- | --- | --- | --- | --- | --- |
-| `cubesat-cheapest` | Найдешевший: магнітометр, UHF | 5,2 | 96 / 150 | 6 | 60 % |
-| `cubesat-icecube-like` | Як IceCube: радіометр, S-діапазон | 6,5 | 118 / 150 | 12 | 39 % |
-| `cubesat-balanced` | Розкладні панелі для запасу енергії | 11,0 | 131 / 150 | 12 | 91 % |
-| `cubesat-best` | Більша батарея, майже межа маси 12 кг | 11,9 | 136 / 150 | 12 | 91 % |
-| `cubesat-dellingr-like` | Як Dellingr: магнітометр, більша батарея | 6,1 | 101 / 150 | 12 | 60 % |
+| id | Задум | Маса з запасом, кг | Бюджет, к | Старт, міс. | Передано за 6 міс. | Ціль |
+| --- | --- | --- | --- | --- | --- | --- |
+| `cubesat-cheapest` | Найдешевший: магнітометр, S-діапазон, Вайт-Сендс | 5,6 | 93 / 150 | 12 | 1,3 ГБ | ні (ціль 2 ГБ) |
+| `cubesat-icecube-like` | Як IceCube: радіометр, S-діапазон | 6,5 | 118 / 150 | 12 | 26,1 ГБ | так |
+| `cubesat-balanced` | Радіометр і більша батарея | 7,4 | 123 / 150 | 12 | 26,2 ГБ | так |
+| `cubesat-best` | Радіометр, більша батарея й холодний газ — орбіта тримається | 9,3 | 138 / 150 | 12 | 26,4 ГБ | так |
+| `cubesat-dellingr-like` | Як Dellingr: магнітометр, двигун | 8,4 | 113 / 150 | 12 | 1,3 ГБ | ні (ціль 2 ГБ) |
 
 ### `sat-orbit` — «Супутник на орбіту»
 
-| id | Задум | Маса з запасом, кг | Бюджет, к | Старт, міс. | Запас енергії |
-| --- | --- | --- | --- | --- | --- |
-| `orbit-cheapest` | Попутний запуск, радіометр | 6,5 | 138 / 450 | 9 | 41 % |
-| `orbit-tropics-like` | Як TROPICS: свій малий носій на 500 км | 6,5 | 348 / 450 | 12 | 39 % |
-| `orbit-balanced` | Середній корпус, двигун, два прилади, попутний запуск | 45,5 (53,4 у 029) | 266 / 450 | 9 | 91 % |
-| `orbit-own-launch` | Те саме, але на власному малому носії на 500 км | 45,5 (53,4 у 029) | 446 / 450 | 12 | 91 % |
+| id | Задум | Маса з запасом, кг | Бюджет, к | Старт, міс. | Передано за 12 міс. | Ціль |
+| --- | --- | --- | --- | --- | --- | --- |
+| `orbit-cheapest` | Попутний запуск, радіометр, холодний газ для зведення з орбіти | 8,4 | 153 / 450 | 9 | 51 ГБ | ні |
+| `orbit-tropics-like` | Як TROPICS: свій малий носій на 500 км | 6,5 | 348 / 450 | 12 | 52 ГБ | ні |
+| `orbit-balanced` | Середній корпус, двигун, два прилади, попутний запуск | 45,5 | 266 / 450 | 9 | 44 ГБ | ні |
+| `orbit-camera-rideshare` | Як Landsat: камера, X-діапазон, рейс 15-го місяця | 60,0 | 381 / 450 | 15 | 6016 ГБ | так |
 
 ### `iss-cargo` — «Вантаж на МКС»
 
-| id | Задум | Вантаж, кг (наука) | Бюджет, к | Старт, міс. | Паливо: треба / є, кг |
+| id | Задум | Вантаж, кг (наука) | Бюджет, к | Старт, міс. | Ціль |
 | --- | --- | --- | --- | --- | --- |
-| `iss-cheapest` | Малий корабель; навмисно недовозить 500 кг до цілі | 2000 (40 %) | 1101 / 1500 | 14 | 347 / 600 |
-| `iss-crs29-like` | Як CRS-29: розбивка вантажу за маніфестом, ретранслятор | 2500 (40 %) | 1321 / 1500 | 17 | 479 / 600 |
-| `iss-ng-wallops-like` | Старт з Воллопса (37,8° пн. ш.), без ретранслятора | 2600 (35 %) | 1251 / 1500 | 17 | 466 / 600 |
-| `iss-best` | Великий бак, X-діапазон, 3000 кг, половина — наука | 3000 (50 %) | 1421 / 1500 | 17 | 515 / 1200 |
+| `iss-cheapest` | Малий корабель; навмисно недовозить 500 кг до цілі | 2000 (40 %) | 1101 / 1500 | 14 | ні |
+| `iss-crs29-like` | Як CRS-29: розбивка вантажу за маніфестом, ретранслятор | 2500 (40 %) | 1321 / 1500 | 17 | так |
+| `iss-ng-wallops-like` | Старт з Воллопса (37,8° пн. ш.), без ретранслятора | 2600 (35 %) | 1251 / 1500 | 17 | так |
+| `iss-best` | Великий бак, X-діапазон, 3000 кг, половина — наука | 3000 (50 %) | 1421 / 1500 | 17 | так |
+
+Якщо задача 034 знизить вантажопідйомність `medium` до 6100 кг (Antares, `catalogs-iss.md`),
+`iss-best` (6992 кг із запасом) перестане вміщатися — тоді зменшити його вантаж до ~2600 кг.
 
 ```json reference-missions-modeled
 [
   { "id": "cubesat-cheapest", "kind": "modeled", "nameCode": "reference.modeled.cubesatCheapest", "design": {
-    "missionId": "cubesat-learn", "version": "simple", "orbit": { "presetId": "iss-deploy" }, "launchId": "iss-deploy",
-    "parts": { "bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-uhf", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none" },
-    "instrumentIds": ["magnetometer"], "groundStationIds": ["fairbanks"] } },
+    "missionId": "cubesat-learn", "version": "simple", "orbit": {"presetId": "iss-deploy"}, "launchId": "iss-deploy", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none"}, "instrumentIds": ["magnetometer"], "groundStationIds": ["white-sands"] } },
   { "id": "cubesat-icecube-like", "kind": "modeled", "nameCode": "reference.modeled.cubesatIcecubeLike", "design": {
-    "missionId": "cubesat-learn", "version": "simple", "orbit": { "presetId": "iss-deploy" }, "launchId": "iss-deploy",
-    "parts": { "bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none" },
-    "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
+    "missionId": "cubesat-learn", "version": "simple", "orbit": {"presetId": "iss-deploy"}, "launchId": "iss-deploy", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none"}, "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
   { "id": "cubesat-balanced", "kind": "modeled", "nameCode": "reference.modeled.cubesatBalanced", "design": {
-    "missionId": "cubesat-learn", "version": "simple", "orbit": { "presetId": "iss-deploy" }, "launchId": "iss-deploy",
-    "parts": { "bus": "bus-s", "solar": "solar-deploy", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none" },
-    "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
+    "missionId": "cubesat-learn", "version": "simple", "orbit": {"presetId": "iss-deploy"}, "launchId": "iss-deploy", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none"}, "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
   { "id": "cubesat-best", "kind": "modeled", "nameCode": "reference.modeled.cubesatBest", "design": {
-    "missionId": "cubesat-learn", "version": "simple", "orbit": { "presetId": "iss-deploy" }, "launchId": "iss-deploy",
-    "parts": { "bus": "bus-s", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none" },
-    "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
+    "missionId": "cubesat-learn", "version": "simple", "orbit": {"presetId": "iss-deploy"}, "launchId": "iss-deploy", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-cold"}, "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
   { "id": "cubesat-dellingr-like", "kind": "modeled", "nameCode": "reference.modeled.cubesatDellingrLike", "design": {
-    "missionId": "cubesat-learn", "version": "simple", "orbit": { "presetId": "iss-deploy" }, "launchId": "iss-deploy",
-    "parts": { "bus": "bus-s", "solar": "solar-body", "battery": "bat-m", "radio": "radio-uhf", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none" },
-    "instrumentIds": ["magnetometer"], "groundStationIds": ["fairbanks"] } },
-
+    "missionId": "cubesat-learn", "version": "simple", "orbit": {"presetId": "iss-deploy"}, "launchId": "iss-deploy", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-cold"}, "instrumentIds": ["magnetometer"], "groundStationIds": ["white-sands"] } },
   { "id": "orbit-cheapest", "kind": "modeled", "nameCode": "reference.modeled.orbitCheapest", "design": {
-    "missionId": "sat-orbit", "version": "simple", "orbit": { "presetId": "sso" }, "launchId": "rideshare",
-    "parts": { "bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none" },
-    "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
+    "missionId": "sat-orbit", "version": "simple", "orbit": {"presetId": "sso"}, "launchId": "rideshare", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-cold"}, "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
   { "id": "orbit-tropics-like", "kind": "modeled", "nameCode": "reference.modeled.orbitTropicsLike", "design": {
-    "missionId": "sat-orbit", "version": "simple", "orbit": { "presetId": "leo" }, "launchId": "small",
-    "parts": { "bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none" },
-    "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands", "guam"] } },
+    "missionId": "sat-orbit", "version": "simple", "orbit": {"presetId": "leo"}, "launchId": "small", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none"}, "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands", "guam"] } },
   { "id": "orbit-balanced", "kind": "modeled", "nameCode": "reference.modeled.orbitBalanced", "design": {
-    "missionId": "sat-orbit", "version": "simple", "orbit": { "presetId": "sso" }, "launchId": "rideshare",
-    "parts": { "bus": "bus-m", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-chem" },
-    "instrumentIds": ["radiometer", "magnetometer"], "groundStationIds": ["fairbanks", "white-sands"] } },
-  { "id": "orbit-own-launch", "kind": "modeled", "nameCode": "reference.modeled.orbitOwnLaunch", "design": {
-    "missionId": "sat-orbit", "version": "simple", "orbit": { "presetId": "leo" }, "launchId": "small",
-    "parts": { "bus": "bus-m", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-chem" },
-    "instrumentIds": ["radiometer", "magnetometer"], "groundStationIds": ["white-sands", "guam"] } },
-
+    "missionId": "sat-orbit", "version": "simple", "orbit": {"presetId": "sso"}, "launchId": "rideshare", "parts": {"bus": "bus-m", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-chem"}, "instrumentIds": ["radiometer", "magnetometer"], "groundStationIds": ["fairbanks", "white-sands"] } },
+  { "id": "orbit-camera-rideshare", "kind": "modeled", "nameCode": "reference.modeled.orbitCameraRideshare", "design": {
+    "missionId": "sat-orbit", "version": "simple", "orbit": {"presetId": "sso"}, "launchId": "rideshare", "parts": {"bus": "bus-m", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-x", "computer": "cpu-power", "adcs": "adcs-fine", "propulsion": "prop-chem"}, "instrumentIds": ["camera"], "groundStationIds": ["fairbanks", "white-sands"] } },
   { "id": "iss-cheapest", "kind": "modeled", "nameCode": "reference.modeled.issCheapest", "design": {
-    "missionId": "iss-cargo", "version": "simple", "launchId": "medium",
-    "parts": { "bus": "ship-small", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-biprop" },
-    "instrumentIds": [], "groundStationIds": ["white-sands"],
-    "launchSiteId": "cape-canaveral", "insertionAltitudeKm": 200,
-    "cargo": [{ "categoryId": "crew-supplies", "massKg": 1200 }, { "categoryId": "science", "massKg": 800 }], "relay": false } },
+    "missionId": "iss-cargo", "version": "simple", "launchId": "medium", "parts": {"bus": "ship-small", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-biprop"}, "instrumentIds": [], "groundStationIds": ["white-sands"], "launchSiteId": "cape-canaveral", "insertionAltitudeKm": 200, "cargo": [{"categoryId": "crew-supplies", "massKg": 1200}, {"categoryId": "science", "massKg": 800}], "relay": false } },
   { "id": "iss-crs29-like", "kind": "modeled", "nameCode": "reference.modeled.issCrs29Like", "design": {
-    "missionId": "iss-cargo", "version": "simple", "launchId": "medium",
-    "parts": { "bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-biprop" },
-    "instrumentIds": [], "groundStationIds": ["white-sands"],
-    "launchSiteId": "cape-canaveral", "insertionAltitudeKm": 200,
-    "cargo": [{ "categoryId": "science", "massKg": 1000 }, { "categoryId": "crew-supplies", "massKg": 700 }, { "categoryId": "vehicle-hardware", "massKg": 700 },
-              { "categoryId": "computer", "massKg": 50 }, { "categoryId": "spacewalk", "massKg": 50 }], "relay": true } },
+    "missionId": "iss-cargo", "version": "simple", "launchId": "medium", "parts": {"bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-biprop"}, "instrumentIds": [], "groundStationIds": ["white-sands"], "launchSiteId": "cape-canaveral", "insertionAltitudeKm": 200, "cargo": [{"categoryId": "science", "massKg": 1000}, {"categoryId": "crew-supplies", "massKg": 700}, {"categoryId": "vehicle-hardware", "massKg": 700}, {"categoryId": "computer", "massKg": 50}, {"categoryId": "spacewalk", "massKg": 50}], "relay": true } },
   { "id": "iss-ng-wallops-like", "kind": "modeled", "nameCode": "reference.modeled.issNgWallopsLike", "design": {
-    "missionId": "iss-cargo", "version": "simple", "launchId": "medium",
-    "parts": { "bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-biprop" },
-    "instrumentIds": [], "groundStationIds": ["white-sands", "fairbanks"],
-    "launchSiteId": "wallops", "insertionAltitudeKm": 220,
-    "cargo": [{ "categoryId": "crew-supplies", "massKg": 1300 }, { "categoryId": "science", "massKg": 900 }, { "categoryId": "vehicle-hardware", "massKg": 400 }], "relay": false } },
+    "missionId": "iss-cargo", "version": "simple", "launchId": "medium", "parts": {"bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-biprop"}, "instrumentIds": [], "groundStationIds": ["white-sands", "fairbanks"], "launchSiteId": "wallops", "insertionAltitudeKm": 220, "cargo": [{"categoryId": "crew-supplies", "massKg": 1300}, {"categoryId": "science", "massKg": 900}, {"categoryId": "vehicle-hardware", "massKg": 400}], "relay": false } },
   { "id": "iss-best", "kind": "modeled", "nameCode": "reference.modeled.issBest", "design": {
-    "missionId": "iss-cargo", "version": "simple", "launchId": "medium",
-    "parts": { "bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-x", "computer": "cpu-power", "adcs": "adcs-fine", "propulsion": "prop-biprop-xl" },
-    "instrumentIds": [], "groundStationIds": ["white-sands"],
-    "launchSiteId": "cape-canaveral", "insertionAltitudeKm": 250,
-    "cargo": [{ "categoryId": "science", "massKg": 1500 }, { "categoryId": "crew-supplies", "massKg": 1200 }, { "categoryId": "vehicle-hardware", "massKg": 300 }], "relay": true } }
+    "missionId": "iss-cargo", "version": "simple", "launchId": "medium", "parts": {"bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-x", "computer": "cpu-power", "adcs": "adcs-fine", "propulsion": "prop-biprop-xl"}, "instrumentIds": [], "groundStationIds": ["white-sands"], "launchSiteId": "cape-canaveral", "insertionAltitudeKm": 250, "cargo": [{"categoryId": "science", "massKg": 1500}, {"categoryId": "crew-supplies", "massKg": 1200}, {"categoryId": "vehicle-hardware", "massKg": 300}], "relay": true } }
 ]
 ```
 
 ## Що виявила перевірка каталогів
 
-Ці три пункти стосуються каталогів у `MissionData.cs`, а не бібліотеки. Їх треба вирішити
-окремою задачею (каталоги — зона бекенду).
-
-1. **Ціль місії 1 (500 ГБ за 12 місяців) недосяжна жодним проєктом, що проходить
-   перевірки.** 500 ГБ дає лише камера (40 000 кбіт/с). Радіометр дає ~20 кбіт/с, тобто
-   ~50 ГБ на рік навіть без втрат. Камера потребує деталей рівня `best` (`cpu-power`,
-   `adcs-fine`), тому апарат готовий на 12-й місяць. Попутний рейс тоді — лише на 21-й (пізно,
-   ліміт 18), а власний малий носій коштує 250 к, і разом виходить ≥ 481 к при ліміті 450 к.
-   Перебір усіх 63 504 проєктів із камерою не знайшов жодного валідного, на обох версіях
-   каталогу. Пресет `camera-small` коштує 551 к, тобто сам перевищує бюджет.
-2. **У CubeSat двигун `prop-cold` не вміщується разом із приладом.** `bus-s` має 6 місць:
-   п'ять деталей ненульової маси плюс прилад займають усі шість, двигун був би сьомим.
-3. **Старт МКС з Кодьяка (57,4°) потребує ~780 м/с на зміну площини орбіти**, і палива не
-   вистачає навіть з `prop-biprop-xl`. Це очікуваний урок про широту космодрому, не помилка;
-   тому еталона з Кодьяка в бібліотеці немає.
+1. ~~Ціль місії 1 (500 ГБ) недосяжна; пресет `camera-small` перевищує бюджет.~~ **Виправлено в
+   031 (D107):** третій попутний рейс на 15-му місяці; камерний проєкт тепер досягає цілі
+   (`orbit-camera-rideshare`, 381 к).
+2. ~~У CubeSat `prop-cold` не вміщується разом із приладом.~~ **Виправлено в 031:** `bus-s` має
+   7 місць.
+3. **Фербенкс не бачить орбіту МКС** (0 сеансів), тож UHF у CubeSat непридатне, а пресет
+   `first-cubesat` передає 0 ГБ — задача 034.
+4. **Старт МКС з Кодьяка (57,4°) потребує ~780 м/с на зміну площини**, і палива не вистачає
+   навіть з `prop-biprop-xl`. Це очікуваний урок про широту космодрому, тому еталона з Кодьяка
+   немає.
 
 ## Як перевірити знову
 
