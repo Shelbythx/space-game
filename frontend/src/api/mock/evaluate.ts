@@ -13,11 +13,11 @@ import type {
   Source,
 } from '../types'
 
-// DEMO STAND-IN for POST /api/evaluate while the backend does not exist (tasks 002, 004).
-// The game's physics belongs to the backend (D59); this file only keeps the blueprint
-// screen alive in a demo and is used when the server is unreachable. Formulas follow
-// docs/development-plan.md §2 in simplified form; contact counts, orbit lifetime and
-// disposal Δv are rough estimates. Delete once task 004 is merged.
+// DEMO STAND-IN for POST /api/evaluate, used only when the mission server is unreachable.
+// The game's physics belongs to the backend (D59, task 004); this file only keeps the
+// blueprint screen alive offline. Formulas follow docs/development-plan.md §2 in simplified
+// form; contact counts, orbit lifetime and disposal Δv are rough estimates. Whether the
+// offline demo stays is an open question in docs/decisions.md.
 
 const MU = 398600 // km³/s², NASA Earth Fact Sheet
 const R_EARTH = 6378.137 // km, NASA Earth Fact Sheet

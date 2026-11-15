@@ -34,7 +34,7 @@ export function SimpleControls({
   /** Concept stage shows only presets and the planner's choices (task 008). */
   only?: 'planner'
 }) {
-  const { t, name, num } = useGameText()
+  const { t, name, num, unit } = useGameText()
   const cat = mission.catalogs
   const step = <T,>(list: T[], current: number, delta: number) => list[(current + delta + list.length) % list.length]
 
@@ -48,12 +48,12 @@ export function SimpleControls({
     if (!p) return ''
     const s = p.specs
     const key =
-      category === 'solar' ? `${num(s.powerW ?? 0)} W`
-      : category === 'battery' ? `${num(s.capacityWh ?? 0)} Wh`
-      : category === 'radio' ? `${num(s.rateKbps ?? 0)} kbps`
-      : category === 'computer' ? `${num(s.storageGb ?? 0)} GB`
-      : category === 'bus' ? `≤ ${num(s.maxMassKg ?? 0)} kg`
-      : category === 'propulsion' && s.ispS ? `Isp ${num(s.ispS)} s`
+      category === 'solar' ? `${num(s.powerW ?? 0)} ${unit('w')}`
+      : category === 'battery' ? `${num(s.capacityWh ?? 0)} ${unit('wh')}`
+      : category === 'radio' ? `${num(s.rateKbps ?? 0)} ${unit('kbps')}`
+      : category === 'computer' ? `${num(s.storageGb ?? 0)} ${unit('gb')}`
+      : category === 'bus' ? `≤ ${num(s.maxMassKg ?? 0)} ${unit('kg')}`
+      : category === 'propulsion' && s.ispS ? `Isp ${num(s.ispS)} ${unit('s')}`
       : ''
     return key ? `${name(id)} · ${key}` : name(id)
   }

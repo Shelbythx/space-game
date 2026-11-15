@@ -9,7 +9,7 @@ import { useMission } from './context'
 const ROLES: Role[] = ['planner', 'scientist', 'engineer', 'designer']
 
 export function GoalStage() {
-  const { t, num } = useGameText()
+  const { t, num, unit } = useGameText()
   const navigate = useNavigate()
   const { mission } = useMission()
   if (!mission) return null
@@ -18,7 +18,7 @@ export function GoalStage() {
 
   const tiles = [
     { label: t('flow.goal.product'), value: t('flow.goal.productValue', { gb: num(g.dataGb, 0), months: g.operationMonths }) },
-    { label: t('flow.goal.budget'), value: `${num(l.budgetK, 0)} k` },
+    { label: t('flow.goal.budget'), value: `${num(l.budgetK, 0)} ${unit('k')}` },
     { label: t('flow.goal.deadline'), value: t('flow.goal.deadlineValue', { month: l.launchDeadlineMonth }) },
     { label: t('flow.goal.margin'), value: `≥ ${l.massReserveRecommendedPct}%` },
   ]

@@ -57,9 +57,10 @@ async function request<T>(path: string, init?: RequestInit & { timeoutMs?: numbe
 const post = <T>(path: string, body: unknown, timeoutMs?: number) =>
   request<T>(path, { method: 'POST', body: JSON.stringify(body), timeoutMs })
 
-// Demo fallback while the backend does not exist (tasks 002–004). VITE_API_MOCK:
+// Offline demo when the mission server cannot be reached (the backend exists since tasks
+// 002–006; keeping the demo is an open question in docs/decisions.md). VITE_API_MOCK:
 // "always" — never call the server; "never" — no fallback; default "auto" — use the demo
-// when the server is unreachable. The UI shows a "demo calculation" badge (useDemoMode).
+// when the server is unreachable. The UI shows a "demo calculation" badge.
 const MOCK_MODE = (import.meta.env.VITE_API_MOCK ?? 'auto') as 'always' | 'never' | 'auto'
 let demo = MOCK_MODE === 'always'
 const demoListeners = new Set<() => void>()

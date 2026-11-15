@@ -17,7 +17,7 @@ import { useMission } from './context'
 const PLANNER: Role[] = ['planner']
 
 export function ConceptStage() {
-  const { t, num } = useGameText()
+  const { t, num, unit } = useGameText()
   const navigate = useNavigate()
   const { mission, design, evaluation, actions } = useMission()
   const [sheet, setSheet] = useState<ResourceKind | null>(null)
@@ -27,10 +27,10 @@ export function ConceptStage() {
 
   const facts = o
     ? [
-        [t('flow.concept.altitude'), `${num(o.altitudeKm, 0)} km`],
+        [t('flow.concept.altitude'), `${num(o.altitudeKm, 0)} ${unit('km')}`],
         [t('flow.concept.inclination'), `${num(o.inclinationDeg)}°`],
-        [t('flow.concept.period'), `${num(o.periodMin)} min`],
-        [t('flow.concept.speed'), `${num(o.speedKmS, 2)} km/s`],
+        [t('flow.concept.period'), `${num(o.periodMin)} ${unit('min')}`],
+        [t('flow.concept.speed'), `${num(o.speedKmS, 2)} ${unit('kms')}`],
         [t('flow.concept.shadow'), `${num(o.eclipseFraction * 100, 0)}%`],
         [t('flow.concept.lifetime'), o.lifetimeYears == null ? '—' : t('flow.concept.years', { years: num(o.lifetimeYears, 0) })],
       ]

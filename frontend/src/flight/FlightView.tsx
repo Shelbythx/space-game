@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useReportText } from '../report/reportText'
 import { EventStrip } from './EventStrip'
 import { FlightMap } from './FlightMap'
 import { Gauge } from './Gauge'
@@ -41,6 +42,9 @@ function endsMission(event: FlightEvent): boolean {
  */
 export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
   const { t, i18n } = useTranslation([FLIGHT_NS, 'translation'])
+  // Event texts are the game's (same wording as the report), with part names and numbers
+  // formatted for the language.
+  const { say } = useReportText()
   const { timeline, groundTrack, contacts, events } = simulation
 
   const lastDay = timeline.days[timeline.days.length - 1] ?? 0
@@ -151,7 +155,7 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
               <span className="fl-event__type">{t(`eventType.${latest.type}`)}</span>
               <span className="fl-event__day">{t('events.dayLabel', { day: latest.day })}</span>
             </div>
-            <div className="fl-event__text">{t(latest.message.code, latest.message.params)}</div>
+            <div className="fl-event__text">{say(latest.message)}</div>
             <div className="fl-event__source">
               {latest.source.kind === 'donki' && latest.source.observedAt
                 ? t('events.donki', {
@@ -208,7 +212,7 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
             const name =
               contact.stationId === 'tdrs'
                 ? t('stations.tdrs')
-                : t(station?.nameCode ?? contact.stationId, { defaultValue: contact.stationId })
+                : t(station?.nameCode ?? contact.stationId, { ns: 'translation', defaultValue: contact.stationId })
             return (
               <li key={contact.stationId} className={contact.contactsPerDay > 0 ? undefined : 'fl-stations__silent'}>
                 <span className="fl-stations__name">{name}</span>

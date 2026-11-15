@@ -1,6 +1,6 @@
 // Types for the API contract v2.1 in docs/api.md (D60, task 015).
-// Hand-written until the backend publishes OpenAPI (task 002); then they are replaced by
-// types generated from /openapi/v1.json. If this file and docs/api.md disagree, the doc wins.
+// Hand-written; the backend publishes OpenAPI at /openapi/v1.json, and these types may be
+// generated from it later. If this file and docs/api.md disagree, the doc wins.
 
 export type Segment = 'launch' | 'space' | 'ground' | 'user'
 export type CheckSegment = Segment | 'mission'

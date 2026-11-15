@@ -40,8 +40,8 @@
     "title": "Mission events",
     "none": "No events so far",
     "dayLabel": "Day {{day}}",
-    "donki": "Real storm from NASA DONKI, observed {{date}}",
-    "seeded": "Generated for this run's seed",
+    "donki": "Real NASA DONKI storm, observed {{date}}",
+    "seeded": "Random event from the flight seed",
     "jump": "Jump to day {{day}}: {{type}}"
   },
   "eventType": {
@@ -64,19 +64,5 @@
   "status": {
     "complete": "Mission time is over",
     "lost": "Spacecraft lost"
-  },
-  "station": {
-    "fairbanks": "Alaska (Fairbanks)",
-    "whiteSands": "White Sands",
-    "guam": "Guam"
-  },
-  "event": {
-    "solarStorm": "Kp {{kp}} storm: {{lostContacts}} contact sessions lost.",
-    "solarStormComputerReset": "Kp {{kp}} storm reset the computer: {{lostGb}} GB of stored data lost.",
-    "debrisAvoidance": "Avoidance manoeuvre: Δv {{deltaVms}} m/s, {{propellantKg}} kg of propellant burned.",
-    "debrisLoss": "Debris on a collision course and no engine to dodge it: the spacecraft is lost.",
-    "failure": "A part stopped working: {{partId}}.",
-    "reentry": "The orbit decayed to {{altitudeKm}} km: the spacecraft re-entered the atmosphere.",
-    "spaceWeatherUnavailable": "NASA DONKI could not be reached: this run has no storms."
   }
 }

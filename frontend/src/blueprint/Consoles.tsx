@@ -32,23 +32,23 @@ function SourceBadge({ source }: { source: Source }) {
   )
 }
 
-function specLine(item: Part | Instrument, num: (v: number, d?: number) => string): string {
+function specLine(item: Part | Instrument, num: (v: number, d?: number) => string, unit: (k: string) => string): string {
   const bits: string[] = []
   if ('specs' in item) {
     const s = item.specs
-    if (s.powerW && item.category === 'solar') bits.push(`${num(s.powerW)} W`)
-    if (s.capacityWh) bits.push(`${num(s.capacityWh)} Wh`)
-    if (s.rateKbps) bits.push(`${num(s.rateKbps)} kbps ${s.band?.toUpperCase() ?? ''}`)
-    if (s.storageGb) bits.push(`${num(s.storageGb)} GB`)
+    if (s.powerW && item.category === 'solar') bits.push(`${num(s.powerW)} ${unit('w')}`)
+    if (s.capacityWh) bits.push(`${num(s.capacityWh)} ${unit('wh')}`)
+    if (s.rateKbps) bits.push(`${num(s.rateKbps)} ${unit('kbps')} ${s.band?.toUpperCase() ?? ''}`)
+    if (s.storageGb) bits.push(`${num(s.storageGb)} ${unit('gb')}`)
     if (s.accuracyDeg) bits.push(`${num(s.accuracyDeg, 3)}°`)
-    if (s.ispS) bits.push(`Isp ${num(s.ispS)} s · ${num(s.propellantKg ?? 0, 2)} kg`)
-    if (s.slots) bits.push(`${s.slots} slots · ≤ ${num(s.maxMassKg ?? 0)} kg`)
+    if (s.ispS) bits.push(`Isp ${num(s.ispS)} ${unit('s')} · ${num(s.propellantKg ?? 0, 2)} ${unit('kg')}`)
+    if (s.slots) bits.push(`${s.slots} ${unit('slots')} · ≤ ${num(s.maxMassKg ?? 0)} ${unit('kg')}`)
   } else {
-    bits.push(`${num(item.dataRateKbps)} kbps`)
+    bits.push(`${num(item.dataRateKbps)} ${unit('kbps')}`)
   }
-  bits.push(`${num(item.massKg, 2)} kg`)
-  if (item.consumptionW) bits.push(`${num(item.consumptionW)} W`)
-  bits.push(`${item.priceK} k`)
+  bits.push(`${num(item.massKg, 2)} ${unit('kg')}`)
+  if (item.consumptionW) bits.push(`${num(item.consumptionW)} ${unit('w')}`)
+  bits.push(`${item.priceK} ${unit('k')}`)
   return bits.join(' · ')
 }
 
@@ -65,7 +65,7 @@ function Card({
   months?: number
   multi?: boolean
 }) {
-  const { t, name, num } = useGameText()
+  const { t, name, num, unit } = useGameText()
   const isStation = 'bands' in item
   return (
     <button
@@ -83,8 +83,8 @@ function Card({
       </span>
       <span className="bp-card-specs">
         {isStation
-          ? `${num(item.latitudeDeg)}° · ${item.bands.map((b) => b.toUpperCase()).join(', ')} · ${item.priceK} k`
-          : specLine(item, num)}
+          ? `${num(item.latitudeDeg)}° · ${item.bands.map((b) => b.toUpperCase()).join(', ')} · ${item.priceK} ${unit('k')}`
+          : specLine(item, num, unit)}
       </span>
       {!isStation && 'requires' in item && item.requires.length > 0 && (
         <span className="bp-card-req">{t('bp.requires', { part: item.requires.map((r) => name(r.partId)).join(', ') })}</span>
@@ -96,7 +96,7 @@ function Card({
 }
 
 export function Consoles({ mission, design, evaluation, actions, role, onRole, highlight, roles = ROLE_ORDER }: Props) {
-  const { t, name, num } = useGameText()
+  const { t, name, num, unit } = useGameText()
   const cat = mission.catalogs
   const months = (tier: Part['tier']) => mission.timing.buildMonths[tier]
   const launch = cat.launches.find((l) => l.id === design.launchId)
@@ -167,7 +167,7 @@ export function Consoles({ mission, design, evaluation, actions, role, onRole, h
                       <SourceBadge source={o.source} />
                     </span>
                     <span className="bp-card-specs">
-                      {num(o.altitudeKm, 0)} km · {num(o.inclinationDeg)}°
+                      {num(o.altitudeKm, 0)} {unit('km')} · {num(o.inclinationDeg)}°
                     </span>
                   </button>
                 ))}
@@ -216,9 +216,9 @@ export function Consoles({ mission, design, evaluation, actions, role, onRole, h
                   </span>
                   <span className="bp-card-specs">
                     {Object.entries(l.capacityKg)
-                      .map(([o, kg]) => `${o.toUpperCase()} ${num(kg, 0)} kg`)
+                      .map(([o, kg]) => `${o.toUpperCase()} ${num(kg, 0)} ${unit('kg')}`)
                       .join(' · ')}{' '}
-                    · {l.priceK} k · ≤ {t(`busSize.${l.maxBusSize}`)}
+                    · {l.priceK} {unit('k')} · ≤ {t(`busSize.${l.maxBusSize}`)}
                   </span>
                 </button>
               )),

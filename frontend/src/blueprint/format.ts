@@ -47,7 +47,10 @@ export function useGameText() {
     [t, num, name],
   )
 
-  return { t, num, name, msg, lang: i18n.language }
+  /** Unit in the player's language («kg» / «кг»), keys in game.*.json «unit». */
+  const unit = useCallback((key: string) => t(`unit.${key}`), [t])
+
+  return { t, num, name, msg, unit, lang: i18n.language }
 }
 
 /** Role that owns a design decision (D92, docs/api.md «Хто власник рішення»). */

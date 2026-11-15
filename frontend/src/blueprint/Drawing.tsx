@@ -195,7 +195,7 @@ function Wings({ partId, busW }: { partId: string; busW: number }) {
 }
 
 export function Drawing({ mission, design, evaluation, selected, onSelect }: Props) {
-  const { t, name, num } = useGameText()
+  const { t, name, num, unit } = useGameText()
   const cat = mission.catalogs
   const bus = cat.parts.find((p) => p.id === design.parts.bus)
   const size = BUS_SIZE[bus?.specs.busSize ?? 'medium']
@@ -225,7 +225,7 @@ export function Drawing({ mission, design, evaluation, selected, onSelect }: Pro
   const partTitle = (key: string, partId: string) => {
     const item = cat.parts.find((p) => p.id === partId) ?? cat.instruments.find((i) => i.id === partId)
     if (!item) return name(partId)
-    return `${name(partId)} · ${num(item.massKg, 2)} kg · ${num(item.consumptionW)} W · ${t('bp.owner', { role: t(`role.${ownerOf(key)}`) })}`
+    return `${name(partId)} · ${num(item.massKg, 2)} ${unit('kg')} · ${num(item.consumptionW)} ${unit('w')} · ${t('bp.owner', { role: t(`role.${ownerOf(key)}`) })}`
   }
 
   const renderSide = (side: Side, dir: Dir) => {

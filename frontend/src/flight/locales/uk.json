@@ -40,8 +40,8 @@
     "title": "Події місії",
     "none": "Подій поки не було",
     "dayLabel": "День {{day}}",
-    "donki": "Справжня буря з NASA DONKI, зафіксована {{date}}",
-    "seeded": "Згенеровано для seed цієї спроби",
+    "donki": "Справжня буря NASA DONKI, зафіксована {{date}}",
+    "seeded": "Випадкова подія із зерна польоту",
     "jump": "Перейти до дня {{day}}: {{type}}"
   },
   "eventType": {
@@ -64,19 +64,5 @@
   "status": {
     "complete": "Час місії вийшов",
     "lost": "Апарат втрачено"
-  },
-  "station": {
-    "fairbanks": "Аляска (Фербенкс)",
-    "whiteSands": "Вайт-Сендс",
-    "guam": "Гуам"
-  },
-  "event": {
-    "solarStorm": "Буря Kp {{kp}}: втрачено сеансів зв'язку — {{lostContacts}}.",
-    "solarStormComputerReset": "Буря Kp {{kp}} перезавантажила комп'ютер: втрачено {{lostGb}} ГБ збережених даних.",
-    "debrisAvoidance": "Маневр ухилення: Δv {{deltaVms}} м/с, витрачено {{propellantKg}} кг палива.",
-    "debrisLoss": "Сміття на курсі зіткнення, а двигуна для ухилення немає: апарат втрачено.",
-    "failure": "Деталь перестала працювати: {{partId}}.",
-    "reentry": "Орбіта знизилась до {{altitudeKm}} км: апарат увійшов в атмосферу.",
-    "spaceWeatherUnavailable": "NASA DONKI недоступний: у цій спробі бур немає."
   }
 }

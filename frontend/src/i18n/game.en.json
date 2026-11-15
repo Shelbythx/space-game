@@ -15,7 +15,7 @@
       "advanced": "Advanced"
     },
     "demo": "Demo calculation — the mission server is offline",
-    "demoHint": "Numbers are approximate until the backend (task 004) is connected.",
+    "demoHint": "Numbers are approximate: the game calculates them in the browser until the mission server is running.",
     "loading": "Loading the catalog…",
     "evaluating": "Calculating…",
     "error": "The calculation failed. Change any part to try again.",
@@ -31,7 +31,6 @@
     "contact": "Contact: {{station}}",
     "noContact": "no contact on this orbit",
     "launchButton": "Launch mission",
-    "launchSoon": "Flight comes with task 010.",
     "calcOpen": "How is this calculated?",
     "calcTitle": "Calculation sheet: {{resource}}",
     "calcEmpty": "No calculations for this resource.",
@@ -207,18 +206,18 @@
     "launch": {
       "capacity": "The launcher lifts {{capacityKg}} kg, the spacecraft is {{massKg}} kg",
       "overCapacity": "Too heavy: {{massKg}} kg, the launcher lifts {{capacityKg}} kg",
-      "orbitUnreachable": "{{launchId}} cannot reach {{orbitId}}",
+      "orbitUnreachable": "{{launchId}} cannot reach this orbit ({{orbitId}})",
       "siteInclination": "Launch site at {{latitudeDeg}}° needs a plane change of {{planeChangeDeltaVms}} m/s",
-      "busTooLarge": "A {{busSize}} bus does not fit the fairing (max {{maxBusSize}})"
+      "busTooLarge": "The bus is too big for the fairing: {{busSize}}, the fairing takes up to {{maxBusSize}}"
     },
     "space": {
       "busOverMass": "{{massKg}} kg — more than the bus carries ({{busMaxKg}} kg)",
       "slots": "Not enough slots: {{slotsUsed}} of {{slots}}",
       "powerMargin": "Power margin {{marginPct}}%",
       "powerDeficit": "Power deficit: margin {{marginPct}}%",
-      "batteryShort": "Shadow needs {{neededWh}} Wh, battery {{capacityWh}} Wh",
+      "batteryShort": "The shadow needs {{neededWh}} Wh, the battery holds {{capacityWh}} Wh",
       "missingRequirement": "{{partId}} needs {{requiredPartId}}",
-      "wrongSide": "{{partId}} faces {{side}}, should face {{expectedSide}}",
+      "wrongSide": "{{partId}} faces {{side}} but should face {{expectedSide}}",
       "massReserveLow": "Mass margin {{reservePct}}% — below {{recommendedPct}}%",
       "propellantMargin": "Propellant: needs {{neededKg}} kg, tank {{capacityKg}} kg",
       "propellantShort": "Not enough propellant: needs {{neededKg}} kg, tank {{capacityKg}} kg",
@@ -260,10 +259,10 @@
       "storageSmall": "Memory is {{storageGb}} GB, the backlog grows by {{backlogGbPerDay}} GB a day."
     },
     "designer": {
-      "overMass": "{{massKg}} kg — the bus carries {{limitKg}} kg.",
-      "noSlots": "{{slotsUsed}} parts for {{slots}} slots.",
-      "propellantMass": "Propellant {{propellantKg}} kg against a {{capacityKg}} kg tank.",
-      "busTooLarge": "A {{busSize}} bus does not fit; the fairing takes {{maxBusSize}}.",
+      "overMass": "The spacecraft is {{massKg}} kg; the bus carries {{limitKg}} kg.",
+      "noSlots": "{{slotsUsed}} parts but only {{slots}} slots.",
+      "propellantMass": "{{propellantKg}} kg of propellant for a {{capacityKg}} kg tank.",
+      "busTooLarge": "The {{busSize}} bus does not fit; the fairing takes at most {{maxBusSize}}.",
       "wrongSide": "{{partId}} faces {{side}}; it works facing {{expectedSide}}.",
       "massReserveLow": "Mass margin {{reservePct}}% is below the recommended {{recommendedPct}}%."
     },
@@ -277,9 +276,9 @@
   "advice": {
     "planner": {
       "cheaperLaunchOrParts": "Pick a cheaper launch or simpler parts.",
-      "simplerParts": "Simpler parts are built faster.",
+      "simplerParts": "Take simpler parts — they are built faster.",
       "groundOnly": "Try ground stations only.",
-      "lowerLatitudeSite": "Launch from a site closer to the station's inclination."
+      "lowerLatitudeSite": "Pick a launch site at a latitude no higher than the station's inclination."
     },
     "engineer": {
       "biggerPanels": "Take bigger solar arrays.",
@@ -289,18 +288,18 @@
       "biggerStorage": "Take the computer with more memory."
     },
     "designer": {
-      "lighterParts": "Lighter parts or a bigger bus.",
+      "lighterParts": "Take lighter parts or a bigger bus.",
       "biggerBus": "Take a bigger bus.",
       "lowerInsertion": "Lower the insertion orbit.",
-      "smallerBusOrLaunch": "A smaller bus or a bigger launcher.",
+      "smallerBusOrLaunch": "Take a smaller bus or a bigger launcher.",
       "turnPart": "Turn the part to its working side.",
       "raiseReserve": "Raise the mass margin."
     },
     "scientist": {
-      "fasterRadioOrStations": "A faster radio or more stations.",
-      "betterInstrument": "A better instrument or a faster radio.",
+      "fasterRadioOrStations": "Take a faster radio or add stations.",
+      "betterInstrument": "Take a better instrument or a faster radio.",
       "moreScienceCargo": "Load more science cargo.",
-      "matchStationBand": "Choose stations with the radio's band."
+      "matchStationBand": "Choose stations that support your radio's band."
     }
   },
   "calc": {
@@ -362,7 +361,7 @@
         "summary": "At {{altitudeKm}} km the orbit lasts {{lifetimeYears}} yr"
       },
       "disposal": {
-        "title": "Disposal",
+        "title": "Leaving orbit",
         "summary": "Leaves orbit in {{disposalYears}} yr (limit {{limitYears}})"
       }
     },
@@ -380,7 +379,7 @@
     "newGame": "New game",
     "continue": "Continue",
     "needsServer": "Needs the mission server — not available in the demo.",
-    "issSoon": "The cargo ship screen comes with task 024. Try the satellite mission for now.",
+    "issSoon": "The cargo ship screens are still in progress. Try the satellite mission for now.",
     "loadFailed": "Could not load the mission. Check the server and reload.",
     "creditsButton": "NASA sources",
     "kind": {
@@ -401,7 +400,7 @@
     },
     "goal": {
       "title": "Goal and requirements",
-      "why": "NASA starts every mission from the end product and turns it into measurable requirements; each decision later is checked against them.",
+      "why": "NASA starts every mission from the end product and turns it into measurable requirements; every later decision is checked against them.",
       "product": "End product",
       "productValue": "{{gb}} GB in {{months}} months",
       "budget": "Budget",
@@ -427,7 +426,7 @@
       "shadow": "Shadow per orbit",
       "lifetime": "Orbit lasts",
       "years": "{{years}} yr",
-      "hint": "Higher orbits live longer and see stations longer, but the radio is weaker and launchers lift less."
+      "hint": "A higher orbit lasts longer and stations see the spacecraft for longer, but the signal is weaker and launchers lift less mass there."
     },
     "flight": {
       "loading": "Simulating the flight on the mission server…",
@@ -442,7 +441,7 @@
     "fonts": "Fonts",
     "ai": "AI",
     "aiText": "Code and documents were written with Claude (Anthropic) agents under the team’s direction.",
-    "noLogo": "NASA logos and insignia are not used. Every formula and number in the game links to its NASA document.",
+    "noLogo": "NASA logos and insignia are not used. Every formula has a NASA source; numbers without one are marked as game estimates.",
     "use": {
       "constants": "Earth constants: GM, radius, J2, rotation, solar constant",
       "orbit": "Orbit period and speed, Hohmann transfer, plane change, J2 precession, sun-synchronous orbit, beta angle, shadow",
@@ -523,7 +522,7 @@
     "retry": "Try again",
     "success": "Mission success",
     "failure": "Mission failed",
-    "lead": "Each NASA segment shows how your decisions turned into physics and the physics into a result.",
+    "lead": "Each NASA segment shows the chain: your decision → physics → result.",
     "seed": "Flight seed {{seed}}: the same design and seed always give the same flight.",
     "flyAgain": "Fly again: new seed",
     "back": "Back to any stage",
@@ -631,5 +630,18 @@
       "serverTitle": "Full report — with the mission server",
       "needsServer": "Causal chains «decision → physics → result», the four scores with their formulas, flight events with real NASA DONKI storms, the similar mission and the comparison with your previous attempt come from the backend simulation. Start the server (docker compose up in backend/) to see them."
     }
+  },
+  "unit": {
+    "k": "k",
+    "kg": "kg",
+    "w": "W",
+    "wh": "Wh",
+    "kbps": "kbit/s",
+    "gb": "GB",
+    "km": "km",
+    "kms": "km/s",
+    "min": "min",
+    "s": "s",
+    "slots": "slots"
   }
 }

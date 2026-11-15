@@ -5,7 +5,7 @@ import { useSfx } from '../settings/sfx'
 import { PixelButton } from './PixelControls'
 import { useMenuKeys } from './useMenuKeys'
 
-type Mode = 'solo' | 'coop' | 'arcade'
+type Mode = 'coop' | 'arcade'
 
 export function MainMenu() {
   const { t } = useTranslation()
@@ -21,7 +21,7 @@ export function MainMenu() {
     return () => window.clearTimeout(id)
   }, [notice])
 
-  // The three modes are built in later tasks; until then they say so.
+  // Co-op and Arcade come after the solo mode (D78, D96); until then they say so.
   const openMode = (mode: Mode) => {
     sfx('deny')
     setNotice(mode)
