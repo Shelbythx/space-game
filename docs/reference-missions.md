@@ -116,11 +116,11 @@
 
 | id | Задум | Маса з запасом, кг | Бюджет, к | Старт, міс. | Передано за 6 міс. | Ціль |
 | --- | --- | --- | --- | --- | --- | --- |
-| `cubesat-cheapest` | Найдешевший: магнітометр, S-діапазон, Вайт-Сендс | 5,6 | 93 / 150 | 12 | 1,3 ГБ | ні (ціль 2 ГБ) |
+| `cubesat-cheapest` | Найдешевший: магнітометр, S-діапазон, Вайт-Сендс | 5,6 | 93 / 150 | 12 | 1,3 ГБ | так (ціль 1 ГБ, D108) |
 | `cubesat-icecube-like` | Як IceCube: радіометр, S-діапазон | 6,5 | 118 / 150 | 12 | 26,1 ГБ | так |
 | `cubesat-balanced` | Радіометр і більша батарея | 7,4 | 123 / 150 | 12 | 26,2 ГБ | так |
 | `cubesat-best` | Радіометр, більша батарея й холодний газ — орбіта тримається | 9,3 | 138 / 150 | 12 | 26,4 ГБ | так |
-| `cubesat-dellingr-like` | Як Dellingr: магнітометр, двигун | 8,4 | 113 / 150 | 12 | 1,3 ГБ | ні (ціль 2 ГБ) |
+| `cubesat-dellingr-like` | Як Dellingr: магнітометр, двигун | 8,4 | 113 / 150 | 12 | 1,3 ГБ | так (ціль 1 ГБ, D108) |
 
 ### `sat-orbit` — «Супутник на орбіту»
 
@@ -138,10 +138,11 @@
 | `iss-cheapest` | Малий корабель; навмисно недовозить 500 кг до цілі | 2000 (40 %) | 1101 / 1500 | 14 | ні |
 | `iss-crs29-like` | Як CRS-29: розбивка вантажу за маніфестом, ретранслятор | 2500 (40 %) | 1321 / 1500 | 17 | так |
 | `iss-ng-wallops-like` | Старт з Воллопса (37,8° пн. ш.), без ретранслятора | 2600 (35 %) | 1251 / 1500 | 17 | так |
-| `iss-best` | Великий бак, X-діапазон, 3000 кг, половина — наука | 3000 (50 %) | 1421 / 1500 | 17 | так |
+| `iss-best` | X-діапазон, точна орієнтація, ретранслятор; 2700 кг, половина — наука | 2700 (50 %) | 1391 / 1500 | 17 | так |
 
-Якщо задача 034 знизить вантажопідйомність `medium` до 6100 кг (Antares, `catalogs-iss.md`),
-`iss-best` (6992 кг із запасом) перестане вміщатися — тоді зменшити його вантаж до ~2600 кг.
+Після задачі 034 (D108) `medium` — 6100 кг (Antares, `catalogs-iss.md`). Колишній `iss-best` із
+великим баком (3000 кг вантажу, 6992 кг із запасом) перестав вміщатися; тепер він зі звичайним
+`prop-biprop` і везе 2700 кг (6012 кг із запасом). Перевірено прогоном `simulate` після D108.
 
 ```json reference-missions-modeled
 [
@@ -170,7 +171,7 @@
   { "id": "iss-ng-wallops-like", "kind": "modeled", "nameCode": "reference.modeled.issNgWallopsLike", "design": {
     "missionId": "iss-cargo", "version": "simple", "launchId": "medium", "parts": {"bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-biprop"}, "instrumentIds": [], "groundStationIds": ["white-sands", "fairbanks"], "launchSiteId": "wallops", "insertionAltitudeKm": 220, "cargo": [{"categoryId": "crew-supplies", "massKg": 1300}, {"categoryId": "science", "massKg": 900}, {"categoryId": "vehicle-hardware", "massKg": 400}], "relay": false } },
   { "id": "iss-best", "kind": "modeled", "nameCode": "reference.modeled.issBest", "design": {
-    "missionId": "iss-cargo", "version": "simple", "launchId": "medium", "parts": {"bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-x", "computer": "cpu-power", "adcs": "adcs-fine", "propulsion": "prop-biprop-xl"}, "instrumentIds": [], "groundStationIds": ["white-sands"], "launchSiteId": "cape-canaveral", "insertionAltitudeKm": 250, "cargo": [{"categoryId": "science", "massKg": 1500}, {"categoryId": "crew-supplies", "massKg": 1200}, {"categoryId": "vehicle-hardware", "massKg": 300}], "relay": true } }
+    "missionId": "iss-cargo", "version": "simple", "launchId": "medium", "parts": {"bus": "ship-pressurized", "solar": "solar-deploy", "battery": "bat-m", "radio": "radio-x", "computer": "cpu-power", "adcs": "adcs-fine", "propulsion": "prop-biprop"}, "instrumentIds": [], "groundStationIds": ["white-sands"], "launchSiteId": "cape-canaveral", "insertionAltitudeKm": 250, "cargo": [{"categoryId": "science", "massKg": 1350}, {"categoryId": "crew-supplies", "massKg": 1050}, {"categoryId": "vehicle-hardware", "massKg": 300}], "relay": true } }
 ]
 ```
 
@@ -181,8 +182,8 @@
    (`orbit-camera-rideshare`, 381 к).
 2. ~~У CubeSat `prop-cold` не вміщується разом із приладом.~~ **Виправлено в 031:** `bus-s` має
    7 місць.
-3. **Фербенкс не бачить орбіту МКС** (0 сеансів), тож UHF у CubeSat непридатне, а пресет
-   `first-cubesat` передає 0 ГБ — задача 034.
+3. ~~Фербенкс не бачить орбіту МКС, пресет `first-cubesat` передає 0 ГБ.~~ **Виправлено в 034
+   (D108):** пресет із S-діапазоном і Вайт-Сендс, ціль 1 ГБ.
 4. **Старт МКС з Кодьяка (57,4°) потребує ~780 м/с на зміну площини**, і палива не вистачає
    навіть з `prop-biprop-xl`. Це очікуваний урок про широту космодрому, тому еталона з Кодьяка
    немає.

@@ -395,7 +395,7 @@
         "radio": "radio-x",
         "computer": "cpu-power",
         "adcs": "adcs-fine",
-        "propulsion": "prop-biprop-xl"
+        "propulsion": "prop-biprop"
       },
       "instrumentIds": [],
       "groundStationIds": [
@@ -406,11 +406,11 @@
       "cargo": [
         {
           "categoryId": "science",
-          "massKg": 1500
+          "massKg": 1350
         },
         {
           "categoryId": "crew-supplies",
-          "massKg": 1200
+          "massKg": 1050
         },
         {
           "categoryId": "vehicle-hardware",
