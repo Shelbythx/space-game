@@ -7,10 +7,11 @@ import { SettingsScreen } from './menu/SettingsScreen'
 import { ConceptStage } from './mission/ConceptStage'
 import { CreditsScreen } from './mission/CreditsScreen'
 import { GoalStage } from './mission/GoalStage'
-import { FlightStage, ReportStage } from './mission/LaterStages'
+import { FlightStage } from './mission/LaterStages'
 import { MissionSelect } from './mission/MissionSelect'
 import { MissionShell } from './mission/MissionShell'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { ReportStage } from './report/ReportStage'
 import { SettingsProvider } from './settings/SettingsProvider'
 
 // HashRouter: deep links live after "#", so the build runs from any static path.

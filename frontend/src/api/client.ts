@@ -54,7 +54,8 @@ async function request<T>(path: string, init?: RequestInit & { timeoutMs?: numbe
   return (await response.json()) as T
 }
 
-const post = <T>(path: string, body: unknown) => request<T>(path, { method: 'POST', body: JSON.stringify(body) })
+const post = <T>(path: string, body: unknown, timeoutMs?: number) =>
+  request<T>(path, { method: 'POST', body: JSON.stringify(body), timeoutMs })
 
 // Demo fallback while the backend does not exist (tasks 002–004). VITE_API_MOCK:
 // "always" — never call the server; "never" — no fallback; default "auto" — use the demo
@@ -111,9 +112,10 @@ export const api = {
         return mockEvaluate(design, mockMission)
       },
     ),
-  simulate: (body: SimulationRequest) => post<SimulationResult>('/api/simulate', body),
+  // Simulation may wait for NASA DONKI on the first call (task 021), so it gets more time.
+  simulate: (body: SimulationRequest) => post<SimulationResult>('/api/simulate', body, 45000),
   saveAttempt: (body: { playerId: string; design: Design; seed: number }) =>
-    post<AttemptSummary>('/api/attempts', body),
+    post<AttemptSummary>('/api/attempts', body, 45000),
   attempts: (playerId: string) =>
     request<AttemptSummary[]>(`/api/attempts?playerId=${encodeURIComponent(playerId)}`),
   attempt: (id: string) => request<Attempt>(`/api/attempts/${encodeURIComponent(id)}`),

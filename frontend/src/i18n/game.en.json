@@ -431,12 +431,6 @@
     },
     "flight": {
       "soon": "The flight on a map of the Earth comes with task 010. You can open the report already."
-    },
-    "report": {
-      "soon": "The full report with simulation, causal chains and scores comes with task 011. For now — the checks of your design.",
-      "ready": "No failed checks — the design is ready for launch.",
-      "notReady": "{{count}} checks failed:",
-      "back": "Back to any stage"
     }
   },
   "credits": {
@@ -461,6 +455,180 @@
       "stations": "Ground stations and elevation angles",
       "battery": "Battery depth of discharge",
       "donki": "Real geomagnetic storms during the flight"
+    }
+  },
+  "chain": {
+    "decision": {
+      "orbit": "You chose an orbit at {{altitudeKm}} km with an inclination of {{inclinationDeg}}°.",
+      "radio": "You chose a radio rated at {{rateKbps}} kbit/s at a distance of 1000 km.",
+      "instrument": "Your instruments produce {{dataRateKbps}} kbit/s of data while they work.",
+      "battery": "You chose a battery of {{capacityWh}} Wh.",
+      "propulsion": "Engine: specific impulse {{ispS}} s, {{propellantKg}} kg of propellant in the tank.",
+      "propulsion_zero": "You flew without an engine — nothing can lift the orbit back or dodge debris.",
+      "launchSite": "You launch from latitude {{latitudeDeg}}°.",
+      "insertion": "The launcher leaves the ship at {{insertionAltitudeKm}} km.",
+      "relay_on": "You rent the NASA TDRS relay satellites for the link.",
+      "relay_off": "No relay — the ship talks only to ground stations."
+    },
+    "physics": {
+      "orbit": "One orbit takes {{periodMin}} min at {{speedKmS}} km/s: the higher the orbit, the slower and longer it is.",
+      "eclipse": "The Earth's shadow covers {{eclipseFraction}}% of every orbit; the panels give nothing there and the battery carries the load.",
+      "power": "On average the panels give {{generationW}} W and the spacecraft uses {{consumptionW}} W.",
+      "downlink": "The stations hear the spacecraft {{minutesPerDay}} min a day — {{gbPerDay}} GB a day reach the Earth.",
+      "linkBudget": "At {{distanceKm}} km the signal fades with the square of the distance, so the radio really sends {{rateKbps}} kbit/s.",
+      "storage": "The on-board memory holds {{storageGb}} GB; {{lostGb}} GB did not fit before the next pass and were overwritten.",
+      "storage_zero": "The on-board memory holds {{storageGb}} GB — enough to keep every byte until the next pass.",
+      "drag": "Thin air at this height (density {{densityKgM3}} kg/m³) brakes the spacecraft: the orbit sinks {{altitudeLossKmPerYear}} km a year.",
+      "rocketEquation": "The mission needs Δv {{deltaVms}} m/s; by the rocket equation that burns {{propellantKg}} kg of propellant.",
+      "hohmann": "Climbing to the station takes two engine burns: {{deltaV1ms}} m/s and {{deltaV2ms}} m/s (Hohmann transfer).",
+      "phasing": "The ship gains {{degPerOrbit}}° on the station every orbit — {{phasingDays}} days of phasing to catch up.",
+      "planeChange": "The orbit plane has to turn by {{deltaInclinationDeg}}°, which costs {{deltaVms}} m/s.",
+      "earthRotation": "The Earth's spin gives {{bonusMs}} m/s for free along the orbit."
+    },
+    "consequence": {
+      "goal": "{{deliveredGb}} GB of data reached the Earth; the goal was {{goalGb}} GB.",
+      "dataLost": "{{lostGb}} GB of data were lost before they reached the Earth.",
+      "reentry": "On day {{day}} the orbit decayed and the spacecraft burned up in the atmosphere.",
+      "disposal": "After the mission the spacecraft leaves orbit in {{disposalYears}} years (the limit is {{limitYears}}).",
+      "docking": "The ship docked with the ISS after {{dockedAtHours}} hours.",
+      "cargoDelivered": "{{cargoKg}} kg of cargo delivered; the goal was {{goalKg}} kg."
+    }
+  },
+  "bottleneck": {
+    "mass": "Mass: {{usedKg}} kg with the margin, the launcher lifts {{limitKg}} kg.",
+    "power": "Power: the spacecraft uses {{usedW}} W of the {{limitW}} W the panels give on average.",
+    "budget": "Budget: {{usedK}} k spent of {{limitK}} k.",
+    "time": "Time: launch in month {{usedMonths}}, the deadline is month {{limitMonths}}.",
+    "data": "Data: the goal is {{usedGb}} GB, {{limitGb}} GB reached the Earth.",
+    "data_cargo": "Cargo: the goal is {{usedKg}} kg, {{limitKg}} kg are on board.",
+    "comms": "Comms: the goal needs {{usedGbPerDay}} GB a day, the stations take {{limitGbPerDay}} GB a day.",
+    "comms_docking": "Docking took {{usedHours}} h of the {{limitHours}} h allowed."
+  },
+  "event": {
+    "solarStorm": "Geomagnetic storm, Kp {{kp}}: {{lostContacts}} station passes lost.",
+    "solarStormComputerReset": "Storm Kp {{kp}} reset the computer: {{lostGb}} GB in memory were lost.",
+    "debrisAvoidance": "Debris warning: an avoidance burn of {{deltaVms}} m/s used {{propellantKg}} kg of propellant.",
+    "debrisLoss": "A piece of space debris hit the spacecraft — without an engine it could not dodge. The spacecraft is lost.",
+    "failure": "Failure: {{partId}} stopped working.",
+    "reentry": "The orbit fell to {{altitudeKm}} km — the spacecraft re-entered the atmosphere.",
+    "spaceWeatherUnavailable": "NASA DONKI space weather was unavailable, so this flight has no storms."
+  },
+  "reference": {
+    "landsat9": "Landsat 9"
+  },
+  "report": {
+    "loading": "Flying the mission in accelerated time…",
+    "error": "The server could not simulate the mission: {{problem}}",
+    "retry": "Try again",
+    "success": "Mission success",
+    "failure": "Mission failed",
+    "lead": "Each NASA segment shows how your decisions turned into physics and the physics into a result.",
+    "seed": "Flight seed {{seed}}: the same design and seed always give the same flight.",
+    "flyAgain": "Fly again: new seed",
+    "back": "Back to any stage",
+    "limits": "Mission limits",
+    "status": {
+      "ok": "OK",
+      "warn": "Risk",
+      "fail": "Fail"
+    },
+    "kind": {
+      "decision": "Decision",
+      "physics": "Physics",
+      "consequence": "Result"
+    },
+    "bottleneck": {
+      "title": "Bottleneck",
+      "hint": "The resource with the smallest margin m = 1 − used / limit. Fix it first."
+    },
+    "segments": {
+      "title": "Four NASA segments",
+      "hint": "NASA splits a mission into launch, space, ground and user segments; one weak link fails the mission."
+    },
+    "segmentWhat": {
+      "launch": "Launcher and the way to orbit",
+      "space": "The spacecraft in orbit",
+      "ground": "Stations and the radio link",
+      "user": "The product for the people who need it"
+    },
+    "scores": {
+      "title": "Scores",
+      "source": "Margins M: mass 15%, power 25% — NASA GSFC-STD-1000 Gold Rules, Table 1.06-1 (Pre-Phase A); the other margins, weights and penalties are game estimates.",
+      "missionSuccess": {
+        "name": "Mission success",
+        "explain": "Each NASA segment weighs 20 and each mission limit 10; OK counts 1, risk 0.5, fail 0."
+      },
+      "scienceValue": {
+        "name": "Science value",
+        "explain": "Data that reached the Earth, weighted by the value of the instrument (low 0.25 … highest 1.2), against the goal.",
+        "explain_cargo": "Cargo delivered to the ISS, weighted by its value (science 1.2), against the goal."
+      },
+      "resourceEfficiency": {
+        "name": "Resource efficiency",
+        "explain": "For each of six resources m = 1 − used / limit: over the limit gives 0, below the NASA margin is risky, a huge margin is overpaying."
+      },
+      "decisionQuality": {
+        "name": "Decision quality",
+        "explain": "Minus 15 for each role warning left unresolved at launch, minus 30 for each failed check."
+      }
+    },
+    "events": {
+      "title": "Flight events",
+      "none": "A quiet flight: no storms, debris or failures.",
+      "day": "Day {{day}}",
+      "donki": "Real NASA DONKI storm: {{date}}, Kp {{kp}} (id {{id}})",
+      "donkiMissing": "NASA DONKI",
+      "seeded": "Random event from the flight seed",
+      "period": "Space weather: real NASA DONKI geomagnetic storms from {{start}} – {{end}}, replayed on your mission."
+    },
+    "comparison": {
+      "title": "Similar mission",
+      "none": "The library of similar missions is not filled yet, so there is nothing to compare with.",
+      "kind": {
+        "real": "a real NASA mission",
+        "modeled": "a reference design run through our simulation"
+      },
+      "delta": {
+        "altitudeKm": "Altitude",
+        "inclinationDeg": "Inclination",
+        "massKg": "Mass",
+        "dataGb": "Data",
+        "cargoKg": "Cargo",
+        "budgetK": "Budget"
+      },
+      "deltaHint": "Numbers are your design minus the similar mission.",
+      "source": "Source",
+      "unit": {
+        "altitudeKm": "km",
+        "inclinationDeg": "°",
+        "massKg": "kg",
+        "dataGb": "GB",
+        "cargoKg": "kg",
+        "budgetK": "k"
+      }
+    },
+    "attempts": {
+      "title": "Previous attempt",
+      "saving": "Saving the attempt…",
+      "failed": "Attempts could not be saved — the comparison needs the mission server.",
+      "first": "This is your first saved attempt at this mission. Change the design and fly again to compare.",
+      "previous": "Previous attempt: {{when}}.",
+      "wasSuccess": "It was a success.",
+      "wasFailure": "It failed.",
+      "score": "Score",
+      "before": "Before",
+      "now": "Now",
+      "change": "Change",
+      "bottleneckWas": "Its bottleneck was {{resource}}."
+    },
+    "demo": {
+      "tag": "Demo report",
+      "ready": "No failed checks — the design is ready for launch.",
+      "notReady": "Some checks failed — this design would not fly well.",
+      "note": "Without the mission server the flight is not simulated: here are the checks of your design by NASA segment and the resource with the smallest margin.",
+      "noChecks": "No checks in this segment yet.",
+      "serverTitle": "Full report — with the mission server",
+      "needsServer": "Causal chains «decision → physics → result», the four scores with their formulas, flight events with real NASA DONKI storms, the similar mission and the comparison with your previous attempt come from the backend simulation. Start the server (docker compose up in backend/) to see them."
     }
   }
 }

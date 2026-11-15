@@ -1,4 +1,4 @@
-// Types for the API contract v2 in docs/api.md (D60, task 015).
+// Types for the API contract v2.1 in docs/api.md (D60, task 015).
 // Hand-written until the backend publishes OpenAPI (task 002); then they are replaced by
 // types generated from /openapi/v1.json. If this file and docs/api.md disagree, the doc wins.
 
@@ -266,19 +266,91 @@ export interface Score {
   formula: string
 }
 
+export type ComparisonDeltaKey = 'altitudeKm' | 'inclinationDeg' | 'massKg' | 'dataGb' | 'cargoKg' | 'budgetK'
+
+/** The closest similar mission (D85): a real NASA mission or a reference design we simulated. */
+export interface Comparison {
+  kind: 'real' | 'modeled'
+  missionId: string
+  nameCode: string
+  /** Player design minus the similar mission; only keys both have. */
+  deltas: Partial<Record<ComparisonDeltaKey, number>>
+  source: Source | null
+}
+
 export interface Report {
   success: boolean
   scores: { missionSuccess: Score; scienceValue: Score; resourceEfficiency: Score; decisionQuality: Score }
   limits: Array<Omit<Check, 'segment'>>
   segments: Array<{ segment: Segment; status: Status; chain: ChainLink[] }>
   bottleneck: { resource: ResourceKind; code: string; params: Message['params'] }
+  /** null while the library of similar missions is empty (tasks 019, 023). */
+  comparison?: Comparison | null
 }
+
+export type EventType = 'solarStorm' | 'debris' | 'failure' | 'reentry' | 'spaceWeatherUnavailable'
+
+/** Where an event comes from: the seed generator or a real NASA DONKI storm (D83). */
+export type EventSource =
+  | { kind: 'seeded' }
+  | {
+      kind: 'donki'
+      eventId: string | null
+      observedAt: string | null
+      kp: number | null
+      periodStart: string
+      periodEnd: string
+    }
 
 export interface MissionEvent {
   day: number
-  type: string
+  type: EventType
   segment: Segment
   message: Message
+  source: EventSource
+}
+
+/** Daily series from launch to the end of operations; all arrays have the same length. */
+export interface Timeline {
+  stepDays: number
+  days: number[]
+  batteryMinPct: number[]
+  dataStoredGb: number[]
+  dataDeliveredGb: number[]
+  altitudeKm: number[]
+  propellantKg: number[]
+}
+
+export interface TrackPoint {
+  latDeg: number
+  lonDeg: number
+  /** false — the spacecraft is in the Earth's shadow. */
+  sunlit: boolean
+}
+
+/** The first orbits for the flight map (task 010). */
+export interface GroundTrack {
+  stepSeconds: number
+  orbitCount: number
+  points: TrackPoint[]
+}
+
+export interface ContactSummary {
+  stationId: string
+  contactsPerDay: number
+  minutesPerDay: number
+  /** Angular radius of the station's visibility zone at a 10° mask; null for the TDRS relay. */
+  visibilityRadiusDeg: number | null
+}
+
+export interface RendezvousProfile {
+  initialPhaseAngleDeg: number
+  stepHours: number
+  hours: number[]
+  phaseAngleDeg: number[]
+  altitudeKm: number[]
+  propellantKg: number[]
+  dockedAtHours: number | null
 }
 
 export interface SimulationRequest {
@@ -289,7 +361,10 @@ export interface SimulationRequest {
 export interface SimulationResult {
   seed: number
   evaluation: Evaluation
-  timeline: Record<string, number[] | number>
+  timeline: Timeline
+  groundTrack: GroundTrack
+  contacts: ContactSummary[]
+  rendezvous: RendezvousProfile | null
   events: MissionEvent[]
   report: Report
 }
