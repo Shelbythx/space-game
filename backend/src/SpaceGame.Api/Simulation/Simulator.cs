@@ -1,4 +1,5 @@
 using SpaceGame.Api.Catalogs;
+using SpaceGame.Api.References;
 using SpaceGame.Api.Simulation.Model;
 using SpaceGame.Api.Simulation.Physics;
 using static SpaceGame.Api.Simulation.Physics.Constants;
@@ -43,7 +44,7 @@ public static class Simulator
 
     public static readonly DateTime BaseEpoch = new(2027, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-    public static SimulationResult Simulate(Design design, Mission mission, long seed, SpaceWeatherData weather)
+    public static SimulationResult Simulate(Design design, Mission mission, long seed, SpaceWeatherData weather, bool withComparison = true)
     {
         var (evaluation, state) = Evaluator.Evaluate(design, mission);
         var rng = new Random(unchecked((int)(seed ^ (seed >> 32))));
@@ -81,6 +82,11 @@ public static class Simulator
         var groundTrack = BuildGroundTrack(state, raan0, startDate);
         var contacts = BuildContacts(state, design, mission);
         var report = ReportBuilder.Build(state, evaluation, outcome, instruments);
+        if (withComparison)
+            report = report with
+            {
+                Comparison = ReferenceLibrary.Closest(mission, ReferenceLibrary.Metrics(design, mission, evaluation, outcome.DeliveredGb)),
+            };
 
         return new SimulationResult(seed, evaluation, timeline.Build(), groundTrack, contacts, rendezvous,
             events.OrderBy(e => e.Day).ToList(), report);

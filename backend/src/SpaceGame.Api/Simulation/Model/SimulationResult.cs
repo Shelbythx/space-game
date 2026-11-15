@@ -69,7 +69,7 @@ public sealed record Report(
     IReadOnlyList<LimitResult> Limits,
     IReadOnlyList<SegmentReport> Segments,
     Bottleneck Bottleneck,
-    object? Comparison);
+    References.Comparison? Comparison);
 
 public sealed record SimulationResult(
     long Seed,
