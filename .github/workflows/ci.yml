@@ -36,7 +36,8 @@ jobs:
       - name: Check that backend exists
         id: check
         run: |
-          if ls backend/*.sln backend/*.slnx >/dev/null 2>&1; then
+          # ls with two globs fails if either is missing; check each pattern separately.
+          if ls backend/*.sln >/dev/null 2>&1 || ls backend/*.slnx >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
