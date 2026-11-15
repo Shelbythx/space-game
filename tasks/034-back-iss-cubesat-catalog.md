@@ -59,3 +59,8 @@
 - Документ каталогу `docs/catalogs.md` (016, PR #22) звірено з тими ж числами SmallSat SOA,
   що й гілка бекенду `task/029-back-catalog-soa`; поточний `MissionData.cs` у `main` має старі
   маси панелей і двигунів. Узгодити 029 з 031 і злити, щоб документ і код збігались.
+- 15.11.2026 (019, після 031): еталони в `docs/reference-missions.md` і копія
+  `References/reference-missions-modeled.json` оновлені; тепер жоден не має `fail` у сегменті
+  `space`, тож у `ReferenceTests.ModeledDesign_IsValidForCurrentCatalog` можна перевіряти й
+  `space` (коментар про «три падають за орбітою» застарів). Для назв еталонів у звіті потрібні
+  ключі i18n `reference.*` — у фронтенді їх ще немає.
