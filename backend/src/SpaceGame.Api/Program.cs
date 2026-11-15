@@ -16,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddCatalogs();
+builder.Services.AddSingleton<ISpaceWeatherSource, NoSpaceWeather>();
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 
@@ -42,6 +43,7 @@ app.MapOpenApi(); // /openapi/v1.json — з нього фронтенд ген�
 app.MapHealthEndpoints();
 app.MapMissionEndpoints();
 app.MapEvaluateEndpoints();
+app.MapSimulateEndpoints();
 
 if (app.Configuration.GetValue("Database:MigrateOnStartup", false) && !string.IsNullOrWhiteSpace(connectionString))
 {
