@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react'
+import { createContext, useContext, useEffect, useReducer } from 'react'
 import { ApiError, api, demoMode } from '../api/client'
 import type { AttemptSummary, Design, SimulationResult } from '../api/types'
 import { getPlayerId, readStorage, writeStorage } from '../lib/storage'
@@ -119,9 +119,22 @@ async function start(entry: Entry, design: Design, key: string, seed?: number) {
   }
 }
 
+export interface SimulationSource {
+  simulation: SimulationState
+  attempts: AttemptsState
+  flyAgain: () => void
+}
+
+/**
+ * Co-op (task 045): the room already holds the launched flight, computed once by the backend
+ * for every player — the flight and report stages show it instead of simulating again.
+ */
+export const RoomSimulationContext = createContext<SimulationSource | null>(null)
+
 /** Simulation of the current design; starts it on first use and shares it between stages. */
-export function useSimulation(design: Design | null) {
-  const key = design ? keyOf(design) : null
+export function useSimulation(design: Design | null): SimulationSource {
+  const room = useContext(RoomSimulationContext)
+  const key = design && !room ? keyOf(design) : null
   const [, rerender] = useReducer((x: number) => x + 1, 0)
 
   useEffect(() => {
@@ -140,6 +153,7 @@ export function useSimulation(design: Design | null) {
     }
   }, [key, design])
 
+  if (room) return room
   const entry = key ? entries.get(key) : undefined
   return {
     simulation: entry?.sim ?? ({ status: 'loading' } as SimulationState),

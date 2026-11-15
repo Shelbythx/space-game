@@ -5,7 +5,7 @@ import { useSfx } from '../settings/sfx'
 import { PixelButton } from './PixelControls'
 import { useMenuKeys } from './useMenuKeys'
 
-type Mode = 'coop' | 'arcade'
+type Mode = 'arcade'
 
 export function MainMenu() {
   const { t } = useTranslation()
@@ -21,7 +21,7 @@ export function MainMenu() {
     return () => window.clearTimeout(id)
   }, [notice])
 
-  // Co-op and Arcade come after the solo mode (D78, D96); until then they say so.
+  // Arcade comes after the science mode (D78); until then it says so. Co-op — D109, task 045.
   const openMode = (mode: Mode) => {
     sfx('deny')
     setNotice(mode)
@@ -47,7 +47,7 @@ export function MainMenu() {
           {t('menu.scienceMode')}
         </p>
         <PixelButton onClick={() => go('/missions')}>{t('menu.solo')}</PixelButton>
-        <PixelButton onClick={() => openMode('coop')}>{t('menu.coop')}</PixelButton>
+        <PixelButton onClick={() => go('/coop')}>{t('menu.coop')}</PixelButton>
         <p className="mm-group" aria-hidden="true">
           {t('menu.arcadeMode')}
         </p>

@@ -9,8 +9,8 @@ import { launchedDesign, loadDesign, saveDesign, saveLaunch, startVersion } from
 
 const EVALUATE_DELAY_MS = 300
 
-/** Keeps a design inside the contract rules (docs/api.md «Design»). */
-function normalize(design: Design, mission: Mission): Design {
+/** Keeps a design inside the contract rules (docs/api.md «Design»). Also used by co-op (task 045). */
+export function normalize(design: Design, mission: Mission): Design {
   const launch = mission.catalogs.launches.find((l) => l.id === design.launchId)
   const next: Design = { ...design }
   if (launch?.fixedOrbitId) next.orbit = { presetId: launch.fixedOrbitId }
@@ -37,17 +37,63 @@ function normalize(design: Design, mission: Mission): Design {
  * do, the checks fail and the mission cannot be launched — it is the players' decisions that
  * fly, not a ready-made answer.
  */
-function firstDesign(mission: Mission): Design {
-  const saved = loadDesign(mission.id)
-  if (saved) return saved
+export function freshDesign(mission: Mission, version: GameVersion): Design {
   const preset =
     mission.presets.find((p) => p.id === 'camera-small') ?? mission.presets[mission.presets.length - 1] ?? mission.presets[0]
-  const empty: Design = { ...preset.design, version: startVersion(mission.id), instrumentIds: [], groundStationIds: [] }
+  const empty: Design = { ...preset.design, version, instrumentIds: [], groundStationIds: [] }
   if (mission.kind === 'iss') {
     empty.cargo = []
     empty.relay = false
   }
-  return empty
+  return normalize(empty, mission)
+}
+
+function firstDesign(mission: Mission): Design {
+  return loadDesign(mission.id) ?? freshDesign(mission, startVersion(mission.id))
+}
+
+/** Editing actions over one design; solo and co-op (task 045) pass their own `update` and `launch`. */
+export function designActions(update: (change: (d: Design) => Design) => void, mission: Mission | null, launch: () => void) {
+  return {
+    setPart: (category: PartCategory, id: string) => update((d) => ({ ...d, parts: { ...d.parts, [category]: id } })),
+    toggleInstrument: (id: string) =>
+      update((d) => ({
+        ...d,
+        instrumentIds: d.instrumentIds.includes(id) ? d.instrumentIds.filter((x) => x !== id) : [...d.instrumentIds, id],
+      })),
+    toggleStation: (id: string) =>
+      update((d) => ({
+        ...d,
+        groundStationIds: d.groundStationIds.includes(id)
+          ? d.groundStationIds.filter((x) => x !== id)
+          : [...d.groundStationIds, id],
+      })),
+    setLaunch: (id: string) => update((d) => ({ ...d, launchId: id })),
+    setOrbit: (orbit: OrbitChoice) => update((d) => ({ ...d, orbit })),
+    setVersion: (version: GameVersion) => update((d) => ({ ...d, version })),
+    setSide: (key: string, side: Side) => update((d) => ({ ...d, layout: { ...(d.layout ?? {}), [key]: side } })),
+    setReserve: (pct: number) => update((d) => ({ ...d, massReservePct: pct })),
+    // ISS mission (task 024): planner — launch site, insertion orbit, relay; scientist — cargo.
+    setLaunchSite: (id: string) => update((d) => ({ ...d, launchSiteId: id })),
+    setInsertion: (altitudeKm: number) => update((d) => ({ ...d, insertionAltitudeKm: altitudeKm })),
+    setRelay: (relay: boolean) => update((d) => ({ ...d, relay })),
+    setCargo: (categoryId: string, massKg: number) =>
+      update((d) => {
+        const rest = (d.cargo ?? []).filter((c) => c.categoryId !== categoryId)
+        const items = massKg > 0 ? [...rest, { categoryId, massKg }] : rest
+        // Keep the catalog order so the design (and its saved seed) does not depend on clicks.
+        const order = mission?.catalogs.cargoCategories.map((c) => c.id) ?? []
+        return { ...d, cargo: items.sort((a, b) => order.indexOf(a.categoryId) - order.indexOf(b.categoryId)) }
+      }),
+    applyPreset: (presetId: string) =>
+      update((d) => {
+        const preset = mission?.presets.find((p) => p.id === presetId)
+        return preset ? { ...preset.design, version: d.version } : d
+      }),
+
+    /** «Start mission» on the Design stage. */
+    launch,
+  }
 }
 
 export function useBlueprint(missionId: string) {
@@ -106,47 +152,10 @@ export function useBlueprint(missionId: string) {
     [mission],
   )
 
-  const actions = {
-    setPart: (category: PartCategory, id: string) => update((d) => ({ ...d, parts: { ...d.parts, [category]: id } })),
-    toggleInstrument: (id: string) =>
-      update((d) => ({
-        ...d,
-        instrumentIds: d.instrumentIds.includes(id) ? d.instrumentIds.filter((x) => x !== id) : [...d.instrumentIds, id],
-      })),
-    toggleStation: (id: string) =>
-      update((d) => ({
-        ...d,
-        groundStationIds: d.groundStationIds.includes(id)
-          ? d.groundStationIds.filter((x) => x !== id)
-          : [...d.groundStationIds, id],
-      })),
-    setLaunch: (id: string) => update((d) => ({ ...d, launchId: id })),
-    setOrbit: (orbit: OrbitChoice) => update((d) => ({ ...d, orbit })),
-    setVersion: (version: GameVersion) => update((d) => ({ ...d, version })),
-    setSide: (key: string, side: Side) => update((d) => ({ ...d, layout: { ...(d.layout ?? {}), [key]: side } })),
-    setReserve: (pct: number) => update((d) => ({ ...d, massReservePct: pct })),
-    // ISS mission (task 024): planner — launch site, insertion orbit, relay; scientist — cargo.
-    setLaunchSite: (id: string) => update((d) => ({ ...d, launchSiteId: id })),
-    setInsertion: (altitudeKm: number) => update((d) => ({ ...d, insertionAltitudeKm: altitudeKm })),
-    setRelay: (relay: boolean) => update((d) => ({ ...d, relay })),
-    setCargo: (categoryId: string, massKg: number) =>
-      update((d) => {
-        const rest = (d.cargo ?? []).filter((c) => c.categoryId !== categoryId)
-        const items = massKg > 0 ? [...rest, { categoryId, massKg }] : rest
-        // Keep the catalog order so the design (and its saved seed) does not depend on clicks.
-        const order = mission?.catalogs.cargoCategories.map((c) => c.id) ?? []
-        return { ...d, cargo: items.sort((a, b) => order.indexOf(a.categoryId) - order.indexOf(b.categoryId)) }
-      }),
-    applyPreset: (presetId: string) =>
-      update((d) => {
-        const preset = mission?.presets.find((p) => p.id === presetId)
-        return preset ? { ...preset.design, version: d.version } : d
-      }),
-    /** «Start mission» on the Design stage: remembers this design as the one that flies. */
-    launch: () => {
-      if (design) setLaunchedKey(saveLaunch(design))
-    },
-  }
+  const actions = designActions(update, mission, () => {
+    // Remembers this design as the one that flies.
+    if (design) setLaunchedKey(saveLaunch(design))
+  })
 
   const designKey = design ? JSON.stringify(design) : null
   const evaluationFresh = designKey !== null && evaluatedFor === designKey

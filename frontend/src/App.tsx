@@ -1,6 +1,10 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { MusicDirector } from './audio/MusicDirector'
 import { BlueprintPage } from './blueprint/BlueprintPage'
+import { CoopCreate } from './coop/CoopCreate'
+import { CoopLobby } from './coop/CoopLobby'
+import { CoopPlay } from './coop/CoopPlay'
+import { CoopRoom } from './coop/CoopRoom'
 import { LanguageScreen } from './menu/LanguageScreen'
 import { MainMenu } from './menu/MainMenu'
 import { MenuLayout } from './menu/MenuLayout'
@@ -31,11 +35,26 @@ export default function App() {
             <Route path="flight" element={<FlightStage />} />
             <Route path="report" element={<ReportStage />} />
           </Route>
+          {/* Co-op by link (task 045, D109): lobby in the menu sky, then the same five stages. */}
+          <Route path="coop/:code" element={<CoopRoom />}>
+            <Route element={<MenuLayout />}>
+              <Route index element={<CoopLobby />} />
+            </Route>
+            <Route path="play" element={<CoopPlay />}>
+              <Route index element={<Navigate to="goal" replace />} />
+              <Route path="goal" element={<GoalStage />} />
+              <Route path="concept" element={<ConceptStage />} />
+              <Route path="design" element={<BlueprintPage />} />
+              <Route path="flight" element={<FlightStage />} />
+              <Route path="report" element={<ReportStage />} />
+            </Route>
+          </Route>
           {/* Old link from task 009. */}
           <Route path="blueprint" element={<Navigate to="/mission/sat-orbit/design" replace />} />
           <Route element={<MenuLayout />}>
             <Route index element={<MainMenu />} />
             <Route path="missions" element={<MissionSelect />} />
+            <Route path="coop" element={<CoopCreate />} />
             <Route path="credits" element={<CreditsScreen />} />
             <Route path="settings" element={<SettingsScreen />} />
             <Route path="language" element={<LanguageScreen />} />
