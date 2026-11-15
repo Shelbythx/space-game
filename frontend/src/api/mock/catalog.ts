@@ -104,7 +104,7 @@ export const mockMission: Mission = {
         ...base,
         version: 'simple',
         launchId: 'rideshare',
-        parts: { bus: 'bus-s', solar: 'solar-body', battery: 'bat-s', radio: 'radio-s', computer: 'cpu-basic', adcs: 'adcs-basic', propulsion: 'prop-none' },
+        parts: { bus: 'bus-s', solar: 'solar-deploy', battery: 'bat-s', radio: 'radio-s', computer: 'cpu-basic', adcs: 'adcs-basic', propulsion: 'prop-cold' },
       },
     },
     {

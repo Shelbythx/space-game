@@ -152,7 +152,7 @@ public static class MissionData
                 new("radiometer-rideshare", "preset.satOrbit.radiometerRideshare", new Design
                 {
                     MissionId = "sat-orbit", Orbit = OrbitChoice.Preset("sso"), LaunchId = "rideshare",
-                    Parts = new("bus-s", "solar-body", "bat-s", "radio-s", "cpu-basic", "adcs-basic", "prop-cold"),
+                    Parts = new("bus-s", "solar-deploy", "bat-s", "radio-s", "cpu-basic", "adcs-basic", "prop-cold"),
                     InstrumentIds = ["radiometer"], GroundStationIds = ["fairbanks"],
                 }),
                 new("camera-small", "preset.satOrbit.cameraSmall", new Design

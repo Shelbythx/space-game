@@ -152,7 +152,7 @@
       "launchId": "rideshare",
       "parts": {
         "bus": "bus-s",
-        "solar": "solar-body",
+        "solar": "solar-deploy",
         "battery": "bat-s",
         "radio": "radio-s",
         "computer": "cpu-basic",

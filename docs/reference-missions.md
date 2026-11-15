@@ -126,7 +126,7 @@
 
 | id | Задум | Маса з запасом, кг | Бюджет, к | Старт, міс. | Передано за 12 міс. | Ціль |
 | --- | --- | --- | --- | --- | --- | --- |
-| `orbit-cheapest` | Попутний запуск, радіометр, холодний газ для зведення з орбіти | 8,4 | 153 / 450 | 9 | 51 ГБ | ні |
+| `orbit-cheapest` | Попутний запуск, радіометр, розкладні панелі (їхня площа прискорює сходження з орбіти) і холодний газ | 8,4 | 153 / 450 | 9 | 51 ГБ | ні |
 | `orbit-tropics-like` | Як TROPICS: свій малий носій на 500 км | 6,5 | 348 / 450 | 12 | 52 ГБ | ні |
 | `orbit-balanced` | Середній корпус, двигун, два прилади, попутний запуск | 45,5 | 266 / 450 | 9 | 44 ГБ | ні |
 | `orbit-camera-rideshare` | Як Landsat: камера, X-діапазон, рейс 15-го місяця | 60,0 | 381 / 450 | 15 | 6016 ГБ | так |
@@ -157,7 +157,7 @@
   { "id": "cubesat-dellingr-like", "kind": "modeled", "nameCode": "reference.modeled.cubesatDellingrLike", "design": {
     "missionId": "cubesat-learn", "version": "simple", "orbit": {"presetId": "iss-deploy"}, "launchId": "iss-deploy", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-m", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-cold"}, "instrumentIds": ["magnetometer"], "groundStationIds": ["white-sands"] } },
   { "id": "orbit-cheapest", "kind": "modeled", "nameCode": "reference.modeled.orbitCheapest", "design": {
-    "missionId": "sat-orbit", "version": "simple", "orbit": {"presetId": "sso"}, "launchId": "rideshare", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-cold"}, "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
+    "missionId": "sat-orbit", "version": "simple", "orbit": {"presetId": "sso"}, "launchId": "rideshare", "parts": {"bus": "bus-s", "solar": "solar-deploy" "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-cold"}, "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands"] } },
   { "id": "orbit-tropics-like", "kind": "modeled", "nameCode": "reference.modeled.orbitTropicsLike", "design": {
     "missionId": "sat-orbit", "version": "simple", "orbit": {"presetId": "leo"}, "launchId": "small", "parts": {"bus": "bus-s", "solar": "solar-body", "battery": "bat-s", "radio": "radio-s", "computer": "cpu-basic", "adcs": "adcs-basic", "propulsion": "prop-none"}, "instrumentIds": ["radiometer"], "groundStationIds": ["white-sands", "guam"] } },
   { "id": "orbit-balanced", "kind": "modeled", "nameCode": "reference.modeled.orbitBalanced", "design": {
