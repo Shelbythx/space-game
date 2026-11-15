@@ -1,4 +1,5 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
+import { MusicDirector } from './audio/MusicDirector'
 import { LanguageScreen } from './menu/LanguageScreen'
 import { MainMenu } from './menu/MainMenu'
 import { MenuLayout } from './menu/MenuLayout'
@@ -10,6 +11,7 @@ import { SettingsProvider } from './settings/SettingsProvider'
 export default function App() {
   return (
     <SettingsProvider>
+      <MusicDirector />
       <HashRouter>
         <Routes>
           <Route element={<MenuLayout />}>
