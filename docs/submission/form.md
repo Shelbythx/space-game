@@ -53,7 +53,7 @@ and university students without a technical background — in English and Ukrain
 
 - Play: <https://shelbythx.github.io/space-game/>
 - Code: <https://github.com/Shelbythx/space-game>
-- Demo (slides): _add link after upload_
+- Demo (slides, 7 pages PDF): <https://github.com/Shelbythx/space-game/blob/main/docs/submission/slides.pdf>
 
 ## NASA data and resources
 

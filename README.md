@@ -1,6 +1,6 @@
 # Space Mission Design Game
 
-**Play in the browser: <https://shelbythx.github.io/space-game/>**
+**Play in the browser: <https://shelbythx.github.io/space-game/>** · Demo slides: [`docs/submission/slides.pdf`](docs/submission/slides.pdf)
 
 Team entry for the **NASA Space Apps Challenge 2026** (14–15 November 2026), challenge
 [**"Space Mission Design Game"**](https://www.spaceappschallenge.org/2026/challenges/space-mission-design-game/).

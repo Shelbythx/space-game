@@ -1,5 +1,8 @@
 # Demo slides (7)
 
+Generated deck: [`slides.pdf`](slides.pdf) (v1, 15.11.2026). Внутрішня примітка: v1 зібрано зі
+скриншотів Stiluss (політ і звіт — тестові дані, підписано); перезібрати після злиття 008/009.
+
 Space Apps allows a demo of up to 7 slides including the title and intro (D67). Texts are
 final English; `[SCREENSHOT: …]` marks the image for each slide; four are already in
 `screenshots/` (flight and report were taken on sample data — retake on the live backend). Внутрішня примітка: людей до 18 років на скриншотах і в GIF бути не
