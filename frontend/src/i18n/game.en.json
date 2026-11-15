@@ -472,6 +472,13 @@
       "flight": "Watch the mission fly",
       "report": "Find out why"
     },
+    "locked": {
+      "title": "The mission has not launched yet",
+      "text": "The flight and the report open after the launch. Choose the ground stations and the payload, make every check pass on the Design stage, then press «Start mission».",
+      "changed": "You changed the design after the launch. Check it on the Design stage and press «Start mission» again — the flight and the report are for the design that flies.",
+      "rail": "Opens after «Start mission» on the Design stage",
+      "button": "Fix the failed checks first — then the mission can start"
+    },
     "plan": {
       "title": "Flight plan",
       "goalData": "{{gb}} GB in {{months}} months",
@@ -483,7 +490,8 @@
       "status": {
         "done": "done",
         "now": "current stage",
-        "todo": "ahead"
+        "todo": "ahead",
+        "locked": "locked until launch"
       },
       "fold": "Fold the plan",
       "unfold": "Unfold the plan",
@@ -725,7 +733,7 @@
     },
     "design": {
       "title": "Build the satellite",
-      "do": "Start from the ready-made set, then change one part at a time: panels, battery, radio. Watch the six bars at the top and the role comments.",
+      "do": "Choose the instrument the scientist needs, then change one part at a time: panels, battery, radio. Watch the six bars at the top and the role comments. When every check passes, press «Start mission».",
       "why": "Every part costs mass, power and money. A green bar has a margin; a red one means a limit is broken."
     },
     "flight": {

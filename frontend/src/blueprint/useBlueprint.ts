@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { api, demoMode } from '../api/client'
 import type { Design, Evaluation, GameVersion, Mission, OrbitChoice, PartCategory, Side } from '../api/types'
-import { loadDesign, saveDesign, startVersion } from '../mission/saves'
+import { launchedDesign, loadDesign, saveDesign, saveLaunch, startVersion } from '../mission/saves'
 
 // Mission state shared by all stages (tasks 008, 009): the design the player edits, the
 // mission catalog and the latest evaluation from the backend (D59 — the frontend computes
@@ -31,12 +31,23 @@ function normalize(design: Design, mission: Mission): Design {
   return next
 }
 
+/**
+ * A new game starts from a preset's bus and parts but without the payload: the planner picks
+ * the ground stations (or the relay), the scientist the instruments or the cargo. Until they
+ * do, the checks fail and the mission cannot be launched — it is the players' decisions that
+ * fly, not a ready-made answer.
+ */
 function firstDesign(mission: Mission): Design {
   const saved = loadDesign(mission.id)
   if (saved) return saved
   const preset =
     mission.presets.find((p) => p.id === 'camera-small') ?? mission.presets[mission.presets.length - 1] ?? mission.presets[0]
-  return { ...preset.design, version: startVersion(mission.id) }
+  const empty: Design = { ...preset.design, version: startVersion(mission.id), instrumentIds: [], groundStationIds: [] }
+  if (mission.kind === 'iss') {
+    empty.cargo = []
+    empty.relay = false
+  }
+  return empty
 }
 
 export function useBlueprint(missionId: string) {
@@ -45,6 +56,9 @@ export function useBlueprint(missionId: string) {
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null)
   const [evaluating, setEvaluating] = useState(false)
   const [failed, setFailed] = useState(false)
+  /** The design the latest evaluation belongs to (JSON), so a stale result cannot launch. */
+  const [evaluatedFor, setEvaluatedFor] = useState<string | null>(null)
+  const [launchedKey, setLaunchedKey] = useState<string | null>(null)
   const demo = useSyncExternalStore(demoMode.subscribe, demoMode.get)
   const requestId = useRef(0)
 
@@ -56,6 +70,7 @@ export function useBlueprint(missionId: string) {
         if (cancelled) return
         setMission(m)
         setDesign(normalize(firstDesign(m), m))
+        setLaunchedKey(launchedDesign(m.id))
       })
       .catch(() => !cancelled && setFailed(true))
     return () => {
@@ -67,6 +82,7 @@ export function useBlueprint(missionId: string) {
     if (!design || !mission) return
     saveDesign(design)
     const id = ++requestId.current
+    const key = JSON.stringify(design)
     const timer = window.setTimeout(() => {
       setEvaluating(true)
       api
@@ -74,6 +90,7 @@ export function useBlueprint(missionId: string) {
         .then((e) => {
           if (id !== requestId.current) return
           setEvaluation(e)
+          setEvaluatedFor(key)
           setFailed(false)
         })
         .catch(() => id === requestId.current && setFailed(true))
@@ -125,9 +142,24 @@ export function useBlueprint(missionId: string) {
         const preset = mission?.presets.find((p) => p.id === presetId)
         return preset ? { ...preset.design, version: d.version } : d
       }),
+    /** «Start mission» on the Design stage: remembers this design as the one that flies. */
+    launch: () => {
+      if (design) setLaunchedKey(saveLaunch(design))
+    },
   }
 
-  return { mission, design, evaluation, evaluating, failed, demo, actions }
+  const designKey = design ? JSON.stringify(design) : null
+  const evaluationFresh = designKey !== null && evaluatedFor === designKey
+  const launch = {
+    /** The current design passed every check (warnings allowed) and can be launched. */
+    ready: evaluationFresh && !evaluating && !!evaluation && evaluation.checks.every((c) => c.status !== 'fail'),
+    /** Flight and report open only for the design the player launched. */
+    launched: designKey !== null && launchedKey === designKey,
+    /** A design was launched before, but the player changed it since. */
+    changed: launchedKey !== null && launchedKey !== designKey,
+  }
+
+  return { mission, design, evaluation, evaluating, failed, demo, launch, actions }
 }
 
 export type BlueprintState = ReturnType<typeof useBlueprint>

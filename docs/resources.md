@@ -65,7 +65,7 @@
 | Джерело | Що там | Де в грі |
 | --- | --- | --- |
 | [DONKI — геомагнітні бурі](https://ccmc.gsfc.nasa.gov/tools/DONKI) | База подій космічної погоди. Запит `https://api.nasa.gov/DONKI/GST` з параметрами `startDate`, `endDate`, `api_key` | Магнітні бурі як реальні події в польоті |
-| [Orbital Debris Quarterly News](https://www.orbitaldebris.jsc.nasa.gov/quarterly-news/) | Квартальний бюлетень NASA: кількість об'єктів на орбіті, руйнування, моделі сміття | Імовірність і пояснення подій із космічним сміттям |
+| [Orbital Debris Quarterly News](https://orbitaldebris.jsc.nasa.gov/quarterly-news/) | Квартальний бюлетень NASA: кількість об'єктів на орбіті, руйнування, моделі сміття | Імовірність і пояснення подій із космічним сміттям |
 | [Near Space Network](https://www.nasa.gov/technology/space-comms/near-space-network/) | Мережа зв'язку NASA: понад 40 антен (White Sands, Гуам, Аляска, Свальбард, Чилі тощо) і супутники-ретранслятори TDRS | **Наземний сегмент:** станції, які обирає Планувальник; вікна зв'язку |
 
 ### Графіка, моделі, звук

@@ -53,7 +53,7 @@ function useDecisions(mission: Mission | null, design: Design | null, evaluation
 export function MissionShell() {
   const { missionId = 'sat-orbit' } = useParams()
   const state = useBlueprint(missionId)
-  const { mission, design, evaluation, failed, demo, actions } = state
+  const { mission, design, evaluation, failed, demo, launch, actions } = state
   const { t } = useGameText()
   const navigate = useNavigate()
   const location = useLocation()
@@ -76,6 +76,13 @@ export function MissionShell() {
   const warns = evaluation?.checks.filter((c) => c.status === 'warn').length ?? 0
   const showReadiness = evaluation && (stage === 'concept' || stage === 'design')
   const readiness = fails > 0 ? 'fail' : warns > 0 ? 'warn' : 'ok'
+  // Flight and report belong to a launched design: the mission flies only after the players'
+  // decisions passed every check and they pressed «Start mission» on the Design stage.
+  const locked = (s: Stage) => (s === 'flight' || s === 'report') && !launch.launched
+  const startMission = () => {
+    actions.launch()
+    navigate('flight')
+  }
 
   return (
     <MissionContext.Provider value={state}>
@@ -89,22 +96,33 @@ export function MissionShell() {
           <nav aria-label={t('flow.process')}>
             <ol className="fp-plan">
               {STAGES.map((s, i) => {
-                const status = i < index ? 'done' : i === index ? 'now' : 'todo'
+                const status = i === index ? 'now' : locked(s) ? 'locked' : i < index ? 'done' : 'todo'
                 const lines = status === 'done' ? decisions(s) : []
+                const inner = (
+                  <>
+                    <span className="fp-box" aria-hidden="true">
+                      <span className="fp-num">{i + 1}</span>
+                    </span>
+                    <span className="fp-step-text">
+                      <span className="fp-step-name">{t(`bp.stage.${s}`)}</span>
+                      <span className="bp-sr">
+                        {' '}
+                        {t(`flow.plan.status.${status}`)}
+                      </span>
+                    </span>
+                  </>
+                )
                 return (
-                  <li key={s} className={`fp-step fp-step-${status}`}>
-                    <NavLink to={s} aria-current={status === 'now' ? 'step' : undefined} className="fp-step-link">
-                      <span className="fp-box" aria-hidden="true">
-                        <span className="fp-num">{i + 1}</span>
+                  <li key={s} className={`fp-step fp-step-${status === 'locked' ? 'todo fp-step-locked' : status}`}>
+                    {status === 'locked' ? (
+                      <span className="fp-step-link" aria-disabled="true" title={t('flow.locked.rail')}>
+                        {inner}
                       </span>
-                      <span className="fp-step-text">
-                        <span className="fp-step-name">{t(`bp.stage.${s}`)}</span>
-                        <span className="bp-sr">
-                          {' '}
-                          {t(`flow.plan.status.${status}`)}
-                        </span>
-                      </span>
-                    </NavLink>
+                    ) : (
+                      <NavLink to={s} aria-current={status === 'now' ? 'step' : undefined} className="fp-step-link">
+                        {inner}
+                      </NavLink>
+                    )}
                     {lines.length > 0 && (
                       <ul className="fp-decisions">
                         {lines.map((line) => (
@@ -154,6 +172,16 @@ export function MissionShell() {
 
           {!mission || !design ? (
             <p className="bp-loading">{failed ? t('flow.loadFailed') : t('bp.loading')}</p>
+          ) : locked(stage) ? (
+            <section className="bp-group flow-brief flow-locked" role="status">
+              <h2>{t('flow.locked.title')}</h2>
+              <p className="flow-lead">{launch.changed ? t('flow.locked.changed') : t('flow.locked.text')}</p>
+              <div className="flow-nav flow-nav-wrap">
+                <button type="button" className="mm-btn fp-next" onClick={() => navigate('design')}>
+                  {'<'} {t('bp.stage.design')}
+                </button>
+              </div>
+            </section>
           ) : (
             <div className="flow-stage" key={stage}>
               {mission.kind === 'tutorial' && <TutorialPanel stage={stage} />}
@@ -161,7 +189,7 @@ export function MissionShell() {
             </div>
           )}
 
-          {mission && design && (
+          {mission && design && !locked(stage) && (
             <footer className="fp-footer">
               {showReadiness ? (
                 <p className={`fp-ready fp-ready-${readiness}`} role="status">
@@ -181,9 +209,20 @@ export function MissionShell() {
                     {'<'} {t(`bp.stage.${prev}`)}
                   </button>
                 )}
-                {next && (
+                {next && stage === 'design' && (
+                  <button
+                    type="button"
+                    className="mm-btn fp-next"
+                    onClick={startMission}
+                    disabled={!launch.ready}
+                    title={launch.ready ? undefined : t('flow.locked.button')}
+                  >
+                    {t('bp.launchButton')} {'>'}
+                  </button>
+                )}
+                {next && stage !== 'design' && !locked(stage) && !locked(next) && (
                   <button type="button" className="mm-btn fp-next" onClick={() => navigate(next)}>
-                    {stage === 'design' ? t('bp.launchButton') : t(`bp.stage.${next}`)} {'>'}
+                    {t(`bp.stage.${next}`)} {'>'}
                   </button>
                 )}
               </div>

@@ -156,7 +156,7 @@ Cygnus працює в S-діапазоні і через TDRS, і через н
    <https://www.nasa.gov/missions/station/overview-for-nasas-northrop-grumman-20th-commercial-resupply-mission/>
 5. NASA JSC, ISS Trajectory Data (OEM, EME2000), створено 13.11.2026.
    <https://nasa-public-data.s3.amazonaws.com/iss-coords/current/ISS_OEM/ISS.OEM_J2K_EPH.txt>
-   (сторінка: <https://spotthestation.nasa.gov/trajectory_data.cfm>)
+   (стара сторінка `spotthestation.nasa.gov/trajectory_data.cfm` більше не відкривається — 404 на 15.11.2026; розділ NASA: <https://www.nasa.gov/spot-the-station/>)
 6. Те саме, що [3]: Dragon — 6000 кг на старт, 3000 кг назад, капсула 9,3 м³, відсік 37 м³.
 7. NASA, TDRS fact sheet — покриття з 15 % до понад 95 %.
    <https://www.nasa.gov/wp-content/uploads/2022/04/tdrsfactsheet_3.pdf>
