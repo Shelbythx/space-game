@@ -21,7 +21,7 @@ requests that a team member opened and merged, with CI (build, lint, tests) on e
 | Physics and numbers | Required that every formula and number come from a NASA document (D89) and approved how derived formulas and game estimates are marked (D103) | Found and read the NASA documents, wrote [`physics-sources.md`](physics-sources.md) with sections and pages, checked catalog numbers against SmallSat State-of-the-Art 2026 |
 | Backend (C#, .NET 10) | Ran the agent on their machine, built and tested the code, reviewed and merged | Wrote the API, physics, simulation, report, DONKI client and 80+ unit tests |
 | Frontend (React) | Chose the visual style (pixel menu, blueprint look), reviewed screens in the browser, merged | Wrote the screens, the demo mode and the English and Ukrainian texts; checked each screen in a browser at desktop and phone widths |
-| Documents and submission | Reviewed and edited | Drafted the plan, the API contract, this README, this file and the slides |
+| Documents and submission | Reviewed and edited | Drafted the plan, the API contract, this README and this file |
 | Music | All seven tracks in `assets/audio/` were composed by team member Stiluss without AI | — |
 
 Commits written with an agent carry a `Co-Authored-By: Claude …` line, so the git history

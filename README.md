@@ -168,7 +168,7 @@ the flight and the full report say that they need the mission server.
 | `frontend/` | The game: menu, mission stages, blueprint, flight, report |
 | `assets/` | Music by the team; origin of every file in [`assets/CREDITS.md`](assets/CREDITS.md) |
 | `docs/` | Vision, decision log, API contract, physics sources, catalogs (mostly in Ukrainian) |
-| `docs/submission/` | Slides and screenshots for the submission |
+| `docs/submission/` | Screenshots for the submission |
 | `tasks/` | Development tasks, one file per task |
 
 ## Use of AI
