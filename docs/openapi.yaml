@@ -316,7 +316,7 @@ components:
       type: object
       required: [id, nameCode, latitudeDeg, longitudeDeg, source]
       properties:
-        id: { type: string, examples: [cape-canaveral, wallops] }
+        id: { type: string, examples: [cape-canaveral, wallops, kodiak] }
         nameCode: { type: string }
         latitudeDeg: { type: number }
         longitudeDeg: { type: number }
@@ -438,7 +438,7 @@ components:
           properties:
             budgetK: { type: number }
             launchDeadlineMonth: { type: integer }
-            massReserveRecommendedPct: { type: number, description: NASA early-phase mass reserve (D93) }
+            massReserveRecommendedPct: { type: number, description: 'NASA early-phase mass reserve, % of dry mass (D93): 15 per GSFC-STD-1000 Rev I, table 1.06-1' }
         timing:
           type: object
           required: [buildMonths, integrationMonths, rideshareMonths, launchLeadMonths]
@@ -578,8 +578,8 @@ components:
             periodMin: { type: number }
             speedKmS: { type: number }
             eclipseFraction: { type: number, minimum: 0, maximum: 1 }
-            lifetimeYears: { type: [number, 'null'], description: Orbit lifetime without manoeuvres; null for iss }
-            disposalYears: { type: [number, 'null'], description: Years to re-entry after end of mission with disposal burn; null for iss }
+            lifetimeYears: { type: [number, 'null'], description: 'Orbit lifetime without manoeuvres; 1000 = practically forever (above 1000 km); null for iss' }
+            disposalYears: { type: [number, 'null'], description: 'Years to re-entry after end of mission with disposal burn; null for iss and for orbits above 2000 km (25-year rule not applicable)' }
         resources:
           type: object
           required: [mass, power, budget, data, comms, time, propellant, cargo]
