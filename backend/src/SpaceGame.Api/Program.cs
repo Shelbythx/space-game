@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SpaceGame.Api.Attempts;
 using SpaceGame.Api.Catalogs;
 using SpaceGame.Api.Data;
 using SpaceGame.Api.Endpoints;
@@ -17,7 +18,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddCatalogs();
-builder.Services.AddSpaceWeather(hasDatabase: !string.IsNullOrWhiteSpace(connectionString));
+var hasDatabase = !string.IsNullOrWhiteSpace(connectionString);
+builder.Services.AddSpaceWeather(hasDatabase);
+builder.Services.AddAttempts(hasDatabase);
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 
@@ -45,6 +49,7 @@ app.MapHealthEndpoints();
 app.MapMissionEndpoints();
 app.MapEvaluateEndpoints();
 app.MapSimulateEndpoints();
+app.MapAttemptEndpoints();
 
 if (app.Configuration.GetValue("Database:MigrateOnStartup", false) && !string.IsNullOrWhiteSpace(connectionString))
 {
