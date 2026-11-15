@@ -9,7 +9,7 @@
 
 ## Мета
 
-Описати в контракті кімнати кооперативу, щоб бекенд (042) і фронтенд (043) робили їх
+Описати в контракті кімнати кооперативу, щоб бекенд (044) і фронтенд (043) робили їх
 паралельно за одним документом.
 
 ## Обсяг
@@ -18,13 +18,13 @@
 - `docs/openapi.yaml` — ті самі шляхи й схеми.
 - Рішення D109 у `docs/decisions.md`; D22, D96 — замінені, D78 — частково; оновлено
   `docs/vision.md`, `docs/development-plan.md`, `CLAUDE.md`.
-- Файли задач 042 і 043.
+- Файли задач 043 і 044.
 - Не входить: код бекенду й фронтенду.
 
 ## Зона файлів
 
 - `docs/api.md`, `docs/openapi.yaml`, `docs/decisions.md`, `docs/vision.md`,
-  `docs/development-plan.md`, `CLAUDE.md`, `tasks/041-*.md`, `tasks/042-*.md`, `tasks/043-*.md`.
+  `docs/development-plan.md`, `CLAUDE.md`, `tasks/041-*.md`, `tasks/044-*.md`, `tasks/043-*.md`.
 
 ## Критерії готовності
 

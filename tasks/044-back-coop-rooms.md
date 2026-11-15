@@ -1,8 +1,8 @@
-# 042 · Бекенд · Кооператив — кімнати
+# 044 · Бекенд · Кооператив — кімнати
 
 Статус: todo
 Виконавець: Khudashchov
-Гілка: task/042-back-coop-rooms
+Гілка: task/044-back-coop-rooms
 Частина: Бекенд
 Залежить від: 041
 Коротко: Кімнати кооперативу в пам'яті: ролі, спільний проєкт, старт (D109)
@@ -30,7 +30,7 @@
 - `backend/src/SpaceGame.Api/Rooms/` — новий модуль.
 - `backend/src/SpaceGame.Api/Program.cs` — підключення модуля.
 - `backend/tests/SpaceGame.Tests/RoomTests.cs`.
-- `tasks/042-back-coop-rooms.md`.
+- `tasks/044-back-coop-rooms.md`.
 
 ## Критерії готовності
 
