@@ -3,12 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import type { Role } from '../api/types'
 import { PixelButton } from '../menu/PixelControls'
-import { QrCode } from './QrCode'
 import { ROLES } from './types'
 import { savedName, useRoomContext } from './useRoom'
 import './coop.css'
 
-// Lobby of a co-op room (task 045, D109): the link and QR code for friends, the players and
+// Lobby of a co-op room (task 045, D109): the link for friends, the players and
 // who holds which role. The creator starts with all four roles and gives them away; a free
 // role, or one of a player who is not online, can be taken (docs/api.md 2.2).
 
@@ -79,7 +78,6 @@ export function CoopLobby() {
       </p>
 
       <section className="coop-share" aria-label={t('coop.shareTitle')}>
-        <QrCode text={link} label={t('coop.qr')} />
         <div className="coop-share-text">
           <p className="mm-group">{t('coop.shareTitle')}</p>
           <input className="coop-input" readOnly value={link} onFocus={(e) => e.currentTarget.select()} aria-label={t('coop.link')} />

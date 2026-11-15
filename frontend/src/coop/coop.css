@@ -56,14 +56,6 @@
   gap: 10px;
 }
 
-.coop-qr {
-  width: 168px;
-  height: 168px;
-  flex-shrink: 0;
-  border: 3px solid #000;
-  image-rendering: pixelated;
-}
-
 .coop-left {
   text-align: left;
 }
