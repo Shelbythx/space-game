@@ -1,0 +1,458 @@
+/* Flight stage (task 010). Blueprint look from theme.ts (D54): dark drafting paper,
+   thin cyan lines, mono numbers. Colours repeat the `blueprint` palette. */
+
+.fl {
+  --fl-paper: #0b1a2e;
+  --fl-panel: #10243d;
+  --fl-line: #2f5d8a;
+  --fl-ink: #e6f1ff;
+  --fl-muted: #8fb0d0;
+  --fl-accent: #5cc8ff;
+  --fl-ok: #5fd39a;
+  --fl-warn: #f2c14e;
+  --fl-fail: #ff6b6b;
+  --fl-storm: #c79bff;
+  --fl-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  color: var(--fl-ink);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.fl-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+}
+.fl-head__title {
+  margin: 0;
+  font: 500 20px var(--fl-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.fl-head__day {
+  font: 500 16px var(--fl-mono);
+  color: var(--fl-accent);
+  font-variant-numeric: tabular-nums;
+}
+.fl-head__status {
+  margin-left: auto;
+  padding: 2px 8px;
+  border: 1px solid var(--fl-ok);
+  color: var(--fl-ok);
+  font: 12px var(--fl-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.fl-head__status--lost {
+  border-color: var(--fl-fail);
+  color: var(--fl-fail);
+}
+
+/* ---- Map ---- */
+
+.fl-stage {
+  border: 1px solid var(--fl-line);
+  background: var(--fl-panel);
+}
+.fl-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 0.3s;
+}
+.fl-map--solarStorm { outline-color: var(--fl-storm); }
+.fl-map--debris { outline-color: var(--fl-warn); }
+.fl-map--failure,
+.fl-map--reentry { outline-color: var(--fl-fail); }
+.fl-map--spaceWeatherUnavailable { outline-color: var(--fl-muted); }
+
+.fl-map__sea { fill: var(--fl-paper); }
+.fl-map__grid line {
+  stroke: rgba(120, 180, 230, 0.16);
+  stroke-width: 0.25;
+  vector-effect: non-scaling-stroke;
+}
+.fl-map__grid .fl-map__equator {
+  stroke: rgba(120, 180, 230, 0.45);
+  stroke-dasharray: 4 3;
+}
+.fl-map__ticks text {
+  fill: var(--fl-muted);
+  font: 3.2px var(--fl-mono);
+  opacity: 0.7;
+}
+
+.fl-track polyline {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+.fl-track__lit {
+  stroke: var(--fl-accent);
+  stroke-width: 1.6;
+}
+.fl-track__shadow {
+  stroke: #4a6a8c;
+  stroke-width: 1.6;
+  stroke-dasharray: 3 4;
+}
+
+.fl-station__zone {
+  fill: rgba(95, 211, 154, 0.07);
+  stroke: var(--fl-ok);
+  stroke-width: 1;
+  stroke-dasharray: 5 4;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.2s;
+}
+.fl-station__dot { fill: var(--fl-ok); }
+.fl-station__name {
+  fill: var(--fl-ink);
+  font: 3.6px var(--fl-mono);
+  paint-order: stroke;
+  stroke: var(--fl-paper);
+  stroke-width: 0.8;
+}
+.fl-station__link {
+  stroke: var(--fl-ok);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+.fl-station--contact .fl-station__zone {
+  fill: rgba(95, 211, 154, 0.24);
+  stroke-dasharray: none;
+}
+.fl-station--silent .fl-station__zone {
+  fill: none;
+  stroke: var(--fl-muted);
+  opacity: 0.5;
+}
+.fl-station--silent .fl-station__dot { fill: var(--fl-muted); }
+
+.fl-craft__halo {
+  fill: rgba(92, 200, 255, 0.16);
+  stroke: var(--fl-accent);
+  stroke-width: 0.8;
+  vector-effect: non-scaling-stroke;
+}
+.fl-craft__body { fill: var(--fl-ink); }
+.fl-craft__panel { fill: var(--fl-accent); }
+.fl-craft--shadow .fl-craft__halo {
+  fill: rgba(74, 106, 140, 0.25);
+  stroke: #4a6a8c;
+}
+.fl-craft--shadow .fl-craft__body { fill: var(--fl-muted); }
+.fl-craft--shadow .fl-craft__panel { fill: #4a6a8c; }
+
+.fl-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  padding: 6px 10px;
+  border-top: 1px solid var(--fl-line);
+  color: var(--fl-muted);
+  font: 12px var(--fl-mono);
+}
+.fl-legend__item::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 0;
+  margin-right: 6px;
+  vertical-align: middle;
+  border-top: 2px solid var(--fl-accent);
+}
+.fl-legend__item--shadow::before { border-top: 2px dashed #4a6a8c; }
+.fl-legend__item--zone::before { border-top: 2px dashed var(--fl-ok); }
+.fl-legend__item--contact::before { border-top: 2px solid var(--fl-ok); }
+.fl-legend__note { margin-left: auto; }
+
+/* ---- Event card ---- */
+
+.fl-event {
+  padding: 10px 12px;
+  border: 1px solid var(--fl-line);
+  border-left-width: 4px;
+  background: var(--fl-panel);
+  min-height: 84px;
+  transition: background-color 0.4s;
+}
+.fl-event--solarStorm { border-left-color: var(--fl-storm); }
+.fl-event--debris { border-left-color: var(--fl-warn); }
+.fl-event--failure,
+.fl-event--reentry { border-left-color: var(--fl-fail); }
+.fl-event--flash { background: #17335a; }
+.fl-event__title,
+.fl-goal__title,
+.fl-stations__title {
+  color: var(--fl-muted);
+  font: 11px var(--fl-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.fl-event__head {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+  font: 500 14px var(--fl-mono);
+}
+.fl-event__day { color: var(--fl-muted); }
+.fl-event__text { margin-top: 2px; }
+.fl-event__text--none { color: var(--fl-muted); margin-top: 6px; }
+.fl-event__source {
+  margin-top: 2px;
+  color: var(--fl-muted);
+  font-size: 12px;
+}
+
+/* ---- Goal ---- */
+
+.fl-goal {
+  padding: 10px 12px;
+  border: 1px solid var(--fl-line);
+  background: var(--fl-panel);
+}
+.fl-goal__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+.fl-goal__value {
+  font: 500 14px var(--fl-mono);
+  font-variant-numeric: tabular-nums;
+}
+.fl-goal__bar {
+  position: relative;
+  height: 12px;
+  margin-top: 6px;
+  border: 1px solid var(--fl-line);
+  background: var(--fl-paper);
+}
+.fl-goal__fill {
+  height: 100%;
+  background: var(--fl-ok);
+}
+.fl-goal__pace {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--fl-warn);
+}
+.fl-goal__note {
+  margin-top: 6px;
+  color: var(--fl-muted);
+  font-size: 12px;
+}
+.fl-goal__note::before {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 10px;
+  margin-right: 6px;
+  vertical-align: -1px;
+  background: var(--fl-warn);
+}
+
+/* ---- Gauges ---- */
+
+.fl-gauges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+.fl-gauge {
+  padding: 8px 10px;
+  border: 1px solid var(--fl-line);
+  background: var(--fl-panel);
+}
+.fl-gauge__label {
+  color: var(--fl-muted);
+  font-size: 12px;
+}
+.fl-gauge__value {
+  font: 500 20px var(--fl-mono);
+  font-variant-numeric: tabular-nums;
+}
+.fl-gauge__unit {
+  margin-left: 4px;
+  color: var(--fl-muted);
+  font-size: 12px;
+}
+.fl-gauge__chart {
+  display: block;
+  width: 100%;
+  height: 26px;
+  margin-top: 4px;
+}
+.fl-gauge__line {
+  fill: none;
+  stroke: var(--fl-accent);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.fl-gauge__cursor {
+  stroke: var(--fl-ink);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---- Stations ---- */
+
+.fl-stations {
+  padding: 10px 12px;
+  border: 1px solid var(--fl-line);
+  background: var(--fl-panel);
+}
+.fl-stations__list {
+  display: grid;
+  gap: 4px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fl-stations__list li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 12px;
+}
+.fl-stations__name { font-family: var(--fl-mono); }
+.fl-stations__stat {
+  color: var(--fl-muted);
+  font-variant-numeric: tabular-nums;
+}
+.fl-stations__silent .fl-stations__name { color: var(--fl-muted); }
+
+/* ---- Controls ---- */
+
+.fl-controls {
+  padding: 12px;
+  border: 1px solid var(--fl-line);
+  background: var(--fl-panel);
+}
+.fl-strip__rail {
+  position: relative;
+  height: 28px;
+  border: 1px solid var(--fl-line);
+  background: var(--fl-paper);
+}
+.fl-strip__done {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: rgba(92, 200, 255, 0.22);
+  border-right: 2px solid var(--fl-accent);
+  pointer-events: none;
+}
+.fl-strip__scrub {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.fl-strip__scrub:focus-visible + .fl-strip__mark,
+.fl-strip__rail:focus-within {
+  outline: 2px solid var(--fl-accent);
+  outline-offset: 2px;
+}
+.fl-strip__mark {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  padding: 0;
+  border: 2px solid var(--fl-paper);
+  background: var(--fl-muted);
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+.fl-strip__mark--solarStorm { background: var(--fl-storm); }
+.fl-strip__mark--debris { background: var(--fl-warn); }
+.fl-strip__mark--failure,
+.fl-strip__mark--reentry { background: var(--fl-fail); }
+.fl-strip__mark--past { border-color: var(--fl-ink); }
+.fl-strip__scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  color: var(--fl-muted);
+  font: 11px var(--fl-mono);
+}
+
+.fl-controls__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.fl-controls__speed { display: flex; }
+.fl-controls__speed .fl-btn + .fl-btn { border-left: 0; }
+.fl-btn {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--fl-line);
+  background: var(--fl-paper);
+  color: var(--fl-ink);
+  font: 500 13px var(--fl-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.fl-btn:hover:not(:disabled) { border-color: var(--fl-accent); }
+.fl-btn:focus-visible {
+  outline: 2px solid var(--fl-accent);
+  outline-offset: 2px;
+}
+.fl-btn:disabled {
+  color: var(--fl-muted);
+  opacity: 0.5;
+  cursor: default;
+}
+.fl-btn--main {
+  min-width: 110px;
+  border-color: var(--fl-accent);
+  color: var(--fl-accent);
+}
+.fl-btn--on {
+  background: var(--fl-accent);
+  border-color: var(--fl-accent);
+  color: var(--fl-paper);
+}
+.fl-btn--report {
+  margin-left: auto;
+  border-color: var(--fl-ok);
+  color: var(--fl-ok);
+}
+.fl-controls__keys {
+  margin-top: 8px;
+  color: var(--fl-muted);
+  font-size: 12px;
+}
+
+@media (hover: none) {
+  .fl-controls__keys { display: none; }
+}
+@media (max-width: 600px) {
+  .fl { padding: 10px; }
+  /* Map units shrink with the screen: enlarge labels, drop the axis numbers. */
+  .fl-station__name { font-size: 8px; stroke-width: 1.6; }
+  .fl-map__ticks { display: none; }
+  .fl-legend__note { margin-left: 0; }
+  .fl-btn--report { margin-left: 0; }
+}

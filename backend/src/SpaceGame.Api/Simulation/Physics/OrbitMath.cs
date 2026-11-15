@@ -66,23 +66,6 @@ public static class OrbitMath
     public static double PlaneChangeKmS(double speedKmS, double deltaInclinationDeg) =>
         2 * speedKmS * Math.Sin(Rad(Math.Abs(deltaInclinationDeg)) / 2);
 
-    /// <summary>
-    /// Найменший нахил зі стартового майданчика на широті φ: i ≥ |φ| — ⇒ з i = cos⁻¹(h_z/h)
-    /// (N4, 4.2.20 (4.125), с. 46): у точці старту |h_z| ≤ h·cos φ.
-    /// </summary>
-    public static double MinimumInclinationDeg(double latitudeDeg) => Math.Abs(latitudeDeg);
 
-    /// <summary>
-    /// Швидкість обертання поверхні Землі на широті φ, м/с: ω·R·cos φ = 2πR/T_зор·cos φ
-    /// (⇒ з констант N1; на екваторі ≈ 465 м/с).
-    /// </summary>
-    public static double EarthRotationSpeedMs(double latitudeDeg) =>
-        EarthRotationRadS * EarthRadiusKm * 1000 * Math.Cos(Rad(latitudeDeg));
 
-    /// <summary>
-    /// Скільки градусів наздоганяє нижчий апарат за свій виток: Δθ = (n₁ − n₂)·T₁ — ⇒ з
-    /// n = √(μ/a³) (N4, 4.137, с. 48).
-    /// </summary>
-    public static double PhasingDegPerOrbit(double chaserRadiusKm, double targetRadiusKm) =>
-        Deg((MeanMotionRadS(chaserRadiusKm) - MeanMotionRadS(targetRadiusKm)) * PeriodS(chaserRadiusKm));
 }

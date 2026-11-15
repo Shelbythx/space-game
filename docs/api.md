@@ -1,6 +1,6 @@
 # Контракт API
 
-Статус: **чинний, версія 2** (задача 015; перша версія — задача 001, D60). Змінюється лише
+Статус: **чинний, версія 2.1** (задача 030: уточнення після бекенду; версія 2 — задача 015; перша версія — задача 001, D60). Змінюється лише
 окремою задачею: спершу цей файл, потім бекенд і фронтенд.
 
 Межа (D59): бекенд рахує все, фронтенд лише показує. Фронтенд не повторює формул.
@@ -100,7 +100,7 @@
   "titleCode": "mission.satOrbit.title",
   "briefingCode": "mission.satOrbit.briefing",
   "goal": { "dataGb": 500, "operationMonths": 12 },
-  "limits": { "budgetK": 450, "launchDeadlineMonth": 18, "massReserveRecommendedPct": 30 },
+  "limits": { "budgetK": 450, "launchDeadlineMonth": 18, "massReserveRecommendedPct": 15 },
   "timing": {
     "buildMonths": { "basic": 3, "medium": 5, "best": 8 },
     "integrationMonths": 4,
@@ -125,7 +125,8 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 непотрібні місії — порожні (`launchSites` і `cargoCategories` заповнені лише для `iss`).
 
 `limits.massReserveRecommendedPct` (D93) — рекомендований запас маси для ранньої фази
-проєкту за правилами NASA; число й документ — задача 026 (у прикладі — заглушка).
+проєкту за правилами NASA: 15 % — GSFC-STD-1000 Rev I, табл. 1.06-1, с. 10 (Pre-Phase A;
+задача 026). Запас рахується від сухої маси (без палива й вантажу).
 
 #### Ціль — `goal`
 
@@ -258,8 +259,8 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 { "id": "cape-canaveral", "nameCode": "site.capeCanaveral", "latitudeDeg": 28.5, "longitudeDeg": -80.6, "source": {…} }
 ```
 
-Космодроми з задачі 017: `cape-canaveral` (28,5°), `wallops` (37,8°) і ще один для
-контрасту. Широта задає найменший нахил `i ≥ φ` і бонус обертання Землі (розділ 2.9 плану).
+Космодроми з задачі 017: `cape-canaveral` (28,5°), `wallops` (37,8°) і для контрасту
+`kodiak` (57,4°) — вище нахилу МКС, тож потрібна зміна площини (D104). Широта задає найменший нахил `i ≥ φ` і бонус обертання Землі (розділ 2.9 плану).
 
 #### `CargoCategory` (лише `iss`)
 
@@ -410,7 +411,7 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
   },
   "resources": {
     "mass":   { "usedKg": 52.2, "busMaxKg": 150, "launchCapacityKg": 300, "slotsUsed": 8, "slots": 12,
-                "reservePct": 30, "reserveKg": 15.7, "withReserveKg": 67.9, "recommendedReservePct": 30 },
+                "reservePct": 15, "reserveKg": 7.3, "withReserveKg": 60, "recommendedReservePct": 15 },
     "power":  { "generationW": 135, "averageGenerationW": 86.4, "averageConsumptionW": 83, "eclipseNeedWh": 49.2, "batteryWh": 150 },
     "budget": { "usedK": 541, "limitK": 450 },
     "data":   { "generatedGbPerDay": 432, "downlinkGbPerDay": 30, "storageGb": 512, "expectedTotalGb": 10950, "goalGb": 500 },
@@ -438,7 +439,7 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
       ],
       "result": { "name": "E_ecl", "value": 49.2, "unit": "Wh" },
       "summary": { "code": "calc.power.eclipseBattery.summary", "params": { "eclipsePct": 36, "neededWh": 49.2 } },
-      "source": { "kind": "nasa", "note": "SmallSat State-of-the-Art, Power (сторінка — задача 026)", "url": null }
+      "source": { "kind": "nasa", "note": "DoD = E(removed)/E(rated)·100 — NASA/TM-2009-215751, Appendix A; допустима DoD 30 % / 70 % — ігрова оцінка", "url": null }
     }
   ],
   "checks": [
@@ -474,10 +475,14 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 Числа двигуна — ілюстрація до задач 016 і 004.
 
 - `orbit.lifetimeYears` — скільки протримається орбіта без маневрів, доки висота не впаде
-  нижче 180 км (розділ 2.8 плану).
+  нижче 180 км (розділ 2.8 плану). Вище 1000 км (кінець таблиці густини) — `1000`: межа
+  розрахунку, «практично вічно».
 - `orbit.disposalYears` — за скільки років апарат зійде з орбіти після кінця місії з
   урахуванням маневру відведення, на який вистачає палива; порівнюється з 25 роками.
-  Для `iss` обидва — `null` (корабель відводить сама місія).
+  Для `iss` обидва — `null` (корабель відводить сама місія). Для орбіт вище 2000 км
+  (`meo`, `geo`) `disposalYears` — `null` і перевірки відведення немає: правило 25 років
+  стосується гальмування в атмосфері, для високих орбіт NASA-STD-8719.14 дає інші способи
+  (орбіта захоронення).
 - `resources.data.storageGb` — бортова пам'ять із комп'ютера; що не влізло — втрачено.
 - `resources.propellant` — `deltaVms`: увесь потрібний Δv (підтримання орбіти, відведення,
   для `iss` — перехід, фазування, зміна площини, підхід, запас); `neededKg` — паливо за
@@ -851,6 +856,12 @@ CubeSat — `docs/catalogs-cubesat.md` (018). Усі сім масивів у `c
 | `event.failure` | failure | `partId` |
 | `event.reentry` **v2** | reentry | `altitudeKm` |
 | `event.spaceWeatherUnavailable` **v2** | spaceWeatherUnavailable | — |
+
+### Помилки спроб — `attempt.*` **v2.1**
+
+| Код | Коли |
+| --- | --- |
+| `attempt.playerIdRequired` | у `POST /api/attempts` або `GET /api/attempts` немає `playerId` чи він порожній UUID — `400` з полем `errors.playerId` |
 
 ### Помилки перевірки запиту — `design.*`
 

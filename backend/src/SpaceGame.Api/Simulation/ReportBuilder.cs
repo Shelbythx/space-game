@@ -199,11 +199,11 @@ public static class ReportBuilder
                     var site = m.Catalogs.LaunchSites.Single(x => x.Id == d.LaunchSiteId);
                     chain.Add(Decision("chain.decision.launchSite", new Params { ["latitudeDeg"] = site.LatitudeDeg }));
                     chain.Add(Physics("chain.physics.earthRotation",
-                        new Params { ["bonusMs"] = Evaluator.R(OrbitMath.EarthRotationSpeedMs(site.LatitudeDeg), 0) }, "465·cos φ"));
+                        new Params { ["bonusMs"] = Evaluator.R(LaunchGeometry.RotationBonusAlongOrbitMs(site.LatitudeDeg, s.InclinationDeg), 0) }, "465·cos φ"));
                     chain.Add(Physics("chain.physics.planeChange",
                         new Params
                         {
-                            ["deltaInclinationDeg"] = Evaluator.R(Math.Max(0, Math.Abs(site.LatitudeDeg) - s.InclinationDeg), 2),
+                            ["deltaInclinationDeg"] = Evaluator.R(LaunchGeometry.PlaneChangeNeededDeg(site.LatitudeDeg, s.InclinationDeg), 2),
                             ["deltaVms"] = e.Rendezvous!.PlaneChangeDeltaVms,
                         }, "Δv = 2v·sin(Δi/2)"));
                 }
