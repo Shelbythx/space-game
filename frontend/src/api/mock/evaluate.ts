@@ -189,7 +189,7 @@ export function mockEvaluate(design: Design, mission: Mission): Evaluation {
   const buildMonths = Math.max(...tiers)
   const readyMonth = buildMonths + mission.timing.integrationMonths
   const launchMonth =
-    launch.id === 'rideshare'
+    launch.fixedOrbitId && mission.timing.rideshareMonths.length > 0
       ? (mission.timing.rideshareMonths.find((m) => m >= readyMonth) ?? 99)
       : readyMonth + (mission.timing.launchLeadMonths[launch.id] ?? 3)
   const deadlineMonth = mission.limits.launchDeadlineMonth

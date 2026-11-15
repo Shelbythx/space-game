@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useBlueprint } from '../blueprint/useBlueprint'
 import { useGameText } from '../blueprint/format'
+import { TutorialPanel } from '../tutorial/TutorialPanel'
 import { MissionContext, STAGES } from './context'
 import '../menu/menu.css'
 import '../blueprint/blueprint.css'
@@ -69,6 +70,7 @@ export function MissionShell() {
           <p className="bp-loading">{failed ? t('flow.loadFailed') : t('bp.loading')}</p>
         ) : (
           <div className="flow-stage" key={stage}>
+            {mission.kind === 'tutorial' && <TutorialPanel stage={stage} />}
             <Outlet />
           </div>
         )}

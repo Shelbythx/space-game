@@ -19,6 +19,11 @@ interface Props {
   goalGb?: number
   /** Called from the "To the report" button once the replay has ended. */
   onFinish?: () => void
+  /** Which series to show as gauges and in what order (missions differ: the CubeSat watches
+   * its altitude, the ISS ship has no science data). Default — all five. */
+  gauges?: SeriesKey[]
+  /** Heading of the screen; default «Flight». */
+  title?: string
 }
 
 const GAUGES: Array<{ key: SeriesKey; unit: 'pct' | 'gb' | 'km' | 'kg'; digits: number }> = [
@@ -40,7 +45,7 @@ function endsMission(event: FlightEvent): boolean {
  * Flight stage (task 010): replays one simulation on a flat map of the Earth. Everything
  * shown — track, shadow, contacts, series, events — comes from the backend (D59).
  */
-export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
+export function FlightView({ simulation, stations, goalGb, onFinish, gauges, title }: Props) {
   const { t, i18n } = useTranslation([FLIGHT_NS, 'translation'])
   // Event texts are the game's (same wording as the report), with part names and numbers
   // formatted for the language.
@@ -87,9 +92,9 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
   }, [day, lastDay, nextEvent, seek, toggle, setSpeed])
 
   return (
-    <section className="fl" aria-label={t('title')}>
+    <section className="fl" aria-label={title ?? t('title')}>
       <header className="fl-head">
-        <h2 className="fl-head__title">{t('title')}</h2>
+        <h2 className="fl-head__title">{title ?? t('title')}</h2>
         <div className="fl-head__day">{t('day', { day: Math.floor(day), total: lastDay })}</div>
         {(playback.finished || lost) && (
           <div className={`fl-head__status${lost ? ' fl-head__status--lost' : ''}`}>
@@ -192,7 +197,7 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
       )}
 
       <div className="fl-gauges">
-        {GAUGES.map(({ key, unit, digits }) => (
+        {(gauges ? gauges.map((key) => GAUGES.find((g) => g.key === key)!) : GAUGES).map(({ key, unit, digits }) => (
           <Gauge
             key={key}
             label={t(`gauge.${key}`)}

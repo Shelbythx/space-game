@@ -1,6 +1,6 @@
 import type { Design, Instrument, Launch, Mission, MissionSummary, Orbit, Part, Source } from '../types'
 
-// Demo copy of GET /api/missions/sat-orbit (contract v2), used only when the backend is
+// Demo copies of GET /api/missions/sat-orbit and cubesat-learn (contract v2.1), used only when the backend is
 // unreachable. Mirrors backend/src/SpaceGame.Api/Catalogs/MissionData.cs (task 003 + 029:
 // SOA 2026 numbers); keep the two in step. The real catalog always comes from the backend.
 
@@ -120,9 +120,73 @@ export const mockMission: Mission = {
   ],
 }
 
-/** Demo list for GET /api/missions: without the server only the first mission can be played. */
+// ---------- Training mission «First CubeSat» (task 018 estimates in MissionData.cs) ----------
+
+const cubesatPart = (id: string, tier?: Part['tier']): Part => {
+  const p = parts.find((x) => x.id === id)
+  if (!p) throw new Error(`demo catalog: no part ${id}`)
+  return tier ? { ...p, tier } : p
+}
+
+const cubesatBase: Omit<Design, 'version'> = {
+  missionId: 'cubesat-learn',
+  orbit: { presetId: 'iss-deploy' },
+  launchId: 'iss-deploy',
+  parts: { bus: 'bus-s', solar: 'solar-body', battery: 'bat-s', radio: 'radio-uhf', computer: 'cpu-basic', adcs: 'adcs-basic', propulsion: 'prop-none' },
+  instrumentIds: ['magnetometer'],
+  groundStationIds: ['fairbanks'],
+}
+
+/** Demo copy of GET /api/missions/cubesat-learn: a small satellite released from the ISS. */
+export const mockCubesat: Mission = {
+  id: 'cubesat-learn',
+  kind: 'tutorial',
+  titleCode: 'mission.cubesatLearn.title',
+  briefingCode: 'mission.cubesatLearn.briefing',
+  goal: { dataGb: 2, operationMonths: 6 },
+  limits: { budgetK: 150, launchDeadlineMonth: 12, massReserveRecommendedPct: 15 },
+  timing: {
+    buildMonths: { basic: 3, medium: 5, best: 8 },
+    integrationMonths: 2,
+    rideshareMonths: [6, 12],
+    launchLeadMonths: {},
+  },
+  catalogs: {
+    orbits: [
+      { id: 'iss-deploy', nameCode: 'orbit.issDeploy', altitudeKm: 415, inclinationDeg: 51.64, epochDate: null, source: estimate('виведення з МКС: висота й нахил орбіти станції — оцінка до задачі 018') },
+    ],
+    launches: [
+      { id: 'iss-deploy', nameCode: 'launch.issDeploy', priceK: 40, capacityKg: { 'iss-deploy': 12 }, fixedOrbitId: 'iss-deploy', maxBusSize: 'small', source: estimate('доставка на МКС і виведення з неї — оцінка до задачі 018') },
+    ],
+    parts: [
+      cubesatPart('bus-s'),
+      cubesatPart('solar-body'),
+      cubesatPart('solar-deploy', 'best'),
+      cubesatPart('bat-s'),
+      cubesatPart('bat-m', 'best'),
+      cubesatPart('radio-uhf'),
+      cubesatPart('radio-s', 'best'),
+      cubesatPart('cpu-basic'),
+      cubesatPart('adcs-basic'),
+      cubesatPart('prop-none'),
+      cubesatPart('prop-cold'),
+    ],
+    instruments: instruments.filter((i) => i.id === 'magnetometer' || i.id === 'radiometer'),
+    groundStations: mockMission.catalogs.groundStations.filter((s) => s.id !== 'guam'),
+    launchSites: [],
+    cargoCategories: [],
+  },
+  presets: [{ id: 'first-cubesat', nameCode: 'preset.cubesatLearn.first', design: { ...cubesatBase, version: 'simple' } }],
+}
+
+const demoMissions: Record<string, Mission> = { 'sat-orbit': mockMission, 'cubesat-learn': mockCubesat }
+
+/** Demo mission by id; unknown ids fall back to mission 1. */
+export const mockMissionById = (id: string): Mission => demoMissions[id] ?? mockMission
+
+/** Demo list for GET /api/missions: the ISS mission needs the server. */
 export const mockMissions: MissionSummary[] = [
-  { id: 'cubesat-learn', kind: 'tutorial', titleCode: 'mission.cubesatLearn.title', available: false },
+  { id: 'cubesat-learn', kind: 'tutorial', titleCode: 'mission.cubesatLearn.title', available: true },
   { id: 'sat-orbit', kind: 'orbit', titleCode: 'mission.satOrbit.title', available: true },
   { id: 'iss-cargo', kind: 'iss', titleCode: 'mission.issCargo.title', available: false },
 ]

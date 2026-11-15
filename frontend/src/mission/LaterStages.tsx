@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGameText } from '../blueprint/format'
 import { FlightView } from '../flight/FlightView'
 import '../flight/i18n'
+import type { SeriesKey } from '../flight/types'
 import { useSimulation } from '../report/simulation'
 import { useMission } from './context'
 
@@ -29,6 +30,13 @@ export function FlightStage() {
 
   if (simulation.status === 'ready' && mission && design) {
     const stations = mission.catalogs.groundStations.filter((s) => design.groundStationIds.includes(s.id))
+    const engine = design.parts.propulsion !== 'prop-none'
+    // The training CubeSat has no engine and sinks: its altitude comes first (task 025).
+    const gauges: SeriesKey[] =
+      mission.kind === 'tutorial'
+        ? ['altitudeKm', 'dataDeliveredGb', 'batteryMinPct', 'dataStoredGb']
+        : ['batteryMinPct', 'dataStoredGb', 'dataDeliveredGb', 'altitudeKm']
+    if (engine) gauges.push('propellantKg')
     return (
       <div className="flow-page flow-page-wide">
         <FlightView
@@ -36,6 +44,7 @@ export function FlightStage() {
           stations={stations}
           goalGb={mission.goal.dataGb}
           onFinish={() => navigate('../report')}
+          gauges={gauges}
         />
         {nav}
       </div>

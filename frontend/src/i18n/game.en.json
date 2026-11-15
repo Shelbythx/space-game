@@ -643,5 +643,107 @@
     "min": "min",
     "s": "s",
     "slots": "slots"
+  },
+  "tutorial": {
+    "title": "Training",
+    "step": "Step {{n}} of {{total}}",
+    "do": "What to do:",
+    "why": "Why:",
+    "now": "Right now:",
+    "allGood": "No warnings from the roles — try a cheaper or lighter part and see what changes.",
+    "terms": "Terms:",
+    "hide": "Hide hints",
+    "show": "Show hints",
+    "goal": {
+      "title": "Your first CubeSat",
+      "do": "Read the goal: send 2 GB of measurements in 6 months, spend no more than 150 k and launch by month 12. Then go to Concept.",
+      "why": "Every NASA mission starts here: first what is needed, then the hardware. Later every choice is checked against these numbers."
+    },
+    "concept": {
+      "title": "Where it will fly",
+      "do": "The orbit is fixed: astronauts release your CubeSat from the ISS at 415 km. Pick a ground station that can hear your radio.",
+      "why": "At 415 km there is still a little air. It brakes the satellite, so it lives months, not decades — enough for a 6-month mission."
+    },
+    "design": {
+      "title": "Build the satellite",
+      "do": "Start from the ready-made set, then change one part at a time: panels, battery, radio. Watch the six bars at the top and the role comments.",
+      "why": "Every part costs mass, power and money. A green bar has a margin; a red one means a limit is broken."
+    },
+    "flight": {
+      "title": "Watch it fly",
+      "do": "Press play. Watch the orbit altitude and the data delivered against the goal line.",
+      "why": "Without an engine the CubeSat slowly sinks because air drags on it. Data reaches the Earth only while it flies over a station."
+    },
+    "report": {
+      "title": "What happened and why",
+      "do": "Read the bottleneck first, then the chain of the segment that failed. Go back to any stage, change one thing and fly again.",
+      "why": "Engineers learn the same way: every attempt is compared with the previous one."
+    },
+    "term": {
+      "cubesat": {
+        "name": "CubeSat",
+        "text": "A small satellite built from 10 cm cubes (1U). Universities build them, and NASA's CubeSat Launch Initiative gives selected ones a ride to space at no cost."
+      },
+      "iss": {
+        "name": "ISS",
+        "text": "The International Space Station flies at about 420 km. Small satellites go up to it as cargo and are released from it."
+      },
+      "budget": {
+        "name": "Budget, k",
+        "text": "Game credits in thousands: parts, the ride to orbit and ground stations all cost money."
+      },
+      "orbit": {
+        "name": "Orbit",
+        "text": "The path around the Earth. Its height sets the speed: at 415 km one orbit takes about 93 minutes."
+      },
+      "inclination": {
+        "name": "Inclination",
+        "text": "The angle between the orbit and the equator. The ISS orbit is tilted 51.6°, so the satellite flies over most inhabited places."
+      },
+      "shadow": {
+        "name": "Earth's shadow",
+        "text": "Part of every orbit is spent in the shadow of the Earth. The solar panels give nothing there, so the battery must last until sunlight."
+      },
+      "groundStation": {
+        "name": "Ground station",
+        "text": "An antenna on Earth that talks to the satellite while it is in view — a few minutes per pass. Its band must match your radio."
+      },
+      "margin": {
+        "name": "Margin",
+        "text": "Spare capacity kept on purpose. NASA asks for at least 15% extra mass at the concept stage, because designs always grow."
+      },
+      "slots": {
+        "name": "Slots",
+        "text": "Places for parts inside the bus. A small bus has 6."
+      },
+      "uhf": {
+        "name": "UHF radio",
+        "text": "A simple, slow radio (38.4 kbit/s). Enough for a magnetometer; a camera would need a faster band such as S or X."
+      },
+      "drag": {
+        "name": "Atmospheric drag",
+        "text": "Even very thin air slows a satellite down. It loses height, and below about 180 km it burns up."
+      },
+      "groundTrack": {
+        "name": "Ground track",
+        "text": "The line on the map under the satellite. The Earth turns beneath the orbit, so every pass is shifted west."
+      },
+      "contact": {
+        "name": "Contact",
+        "text": "The minutes when a station sees the satellite. Data goes down only then."
+      },
+      "bottleneck": {
+        "name": "Bottleneck",
+        "text": "The resource with the smallest margin. Improving it helps the most."
+      },
+      "segment": {
+        "name": "Segments",
+        "text": "NASA splits a mission into launch, space, ground and user segments. One weak segment fails the whole mission."
+      },
+      "seed": {
+        "name": "Seed",
+        "text": "A number that fixes the random events. The same design and seed give the same flight."
+      }
+    }
   }
 }

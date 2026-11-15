@@ -103,14 +103,14 @@ export const api = {
   mission: (id: string) =>
     withDemo(
       () => request<Mission>(`/api/missions/${encodeURIComponent(id)}`, { timeoutMs: 4000 }),
-      async () => (await import('./mock/catalog')).mockMission,
+      async () => (await import('./mock/catalog')).mockMissionById(id),
     ),
   evaluate: (design: Design) =>
     withDemo(
       () => post<Evaluation>('/api/evaluate', design),
       async () => {
-        const [{ mockEvaluate }, { mockMission }] = await Promise.all([import('./mock/evaluate'), import('./mock/catalog')])
-        return mockEvaluate(design, mockMission)
+        const [{ mockEvaluate }, { mockMissionById }] = await Promise.all([import('./mock/evaluate'), import('./mock/catalog')])
+        return mockEvaluate(design, mockMissionById(design.missionId))
       },
     ),
   // Simulation may wait for NASA DONKI on the first call (task 021), so it gets more time.
