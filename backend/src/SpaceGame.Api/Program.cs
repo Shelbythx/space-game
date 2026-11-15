@@ -3,6 +3,7 @@ using SpaceGame.Api.Catalogs;
 using SpaceGame.Api.Data;
 using SpaceGame.Api.Endpoints;
 using SpaceGame.Api.Simulation;
+using SpaceGame.Api.SpaceWeather;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddCatalogs();
-builder.Services.AddSingleton<ISpaceWeatherSource, NoSpaceWeather>();
+builder.Services.AddSpaceWeather(hasDatabase: !string.IsNullOrWhiteSpace(connectionString));
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 

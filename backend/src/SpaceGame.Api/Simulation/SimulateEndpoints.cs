@@ -7,14 +7,14 @@ namespace SpaceGame.Api.Simulation;
 /// <summary>Джерело магнітних бур для симуляції (D83). Реалізація з NASA DONKI — задача 021.</summary>
 public interface ISpaceWeatherSource
 {
-    Task<SpaceWeather> GetAsync(long seed, int days, CancellationToken ct);
+    Task<SpaceWeatherData> GetAsync(long seed, int days, CancellationToken ct);
 }
 
 /// <summary>Без бур — до готовності задачі 021.</summary>
 public sealed class NoSpaceWeather : ISpaceWeatherSource
 {
-    public Task<SpaceWeather> GetAsync(long seed, int days, CancellationToken ct) =>
-        Task.FromResult(SpaceWeather.None(DateOnly.FromDateTime(Simulator.BaseEpoch)));
+    public Task<SpaceWeatherData> GetAsync(long seed, int days, CancellationToken ct) =>
+        Task.FromResult(SpaceWeatherData.None(DateOnly.FromDateTime(Simulator.BaseEpoch)));
 }
 
 /// <summary><c>POST /api/simulate</c> — симуляція місії в часі та звіт (docs/api.md).</summary>

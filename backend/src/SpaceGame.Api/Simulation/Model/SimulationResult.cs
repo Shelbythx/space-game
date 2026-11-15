@@ -88,7 +88,7 @@ public sealed record Storm(int Day, double Kp, string EventId, DateTime Observed
 /// Космічна погода для симуляції: бурі з DONKI за історичний період, обраний seed (задача 021).
 /// <c>Available = false</c> — DONKI недоступний і кешу немає (подія spaceWeatherUnavailable).
 /// </summary>
-public sealed record SpaceWeather(IReadOnlyList<Storm> Storms, bool Available, DateOnly PeriodStart, DateOnly PeriodEnd)
+public sealed record SpaceWeatherData(IReadOnlyList<Storm> Storms, bool Available, DateOnly PeriodStart, DateOnly PeriodEnd)
 {
-    public static SpaceWeather None(DateOnly start) => new([], true, start, start.AddYears(1).AddDays(-1));
+    public static SpaceWeatherData None(DateOnly start) => new([], true, start, start.AddYears(1).AddDays(-1));
 }
