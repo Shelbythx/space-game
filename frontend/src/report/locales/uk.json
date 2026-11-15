@@ -1,0 +1,183 @@
+{
+  "title": "Звіт місії",
+  "success": "Місія вдалася",
+  "failure": "Місія провалилась",
+  "lead": "Чотири сегменти місії NASA: що сталося в кожному й чому.",
+  "segmentName": {
+    "launch": "Сегмент запуску",
+    "space": "Космічний сегмент",
+    "ground": "Наземний сегмент",
+    "user": "Користувацький сегмент",
+    "mission": "Уся місія"
+  },
+  "segmentHint": {
+    "launch": "Чи підняв носій цю масу на цю орбіту?",
+    "space": "Чи вистачило апарату енергії й палива на всю місію?",
+    "ground": "Чи встигли станції прийняти дані або провести стикування?",
+    "user": "Скільки цінного отримали науковці чи екіпаж?"
+  },
+  "status": { "ok": "Гаразд", "warn": "Ризиковано", "fail": "Провал" },
+  "kind": { "decision": "Ваше рішення", "physics": "Фізика", "consequence": "Наслідок" },
+  "formula": "Формула",
+  "noChain": "Для цього сегмента пояснення немає.",
+  "scores": {
+    "title": "Бали",
+    "missionSuccess": "Успіх місії",
+    "scienceValue": "Наукова цінність",
+    "resourceEfficiency": "Ефективність ресурсів",
+    "decisionQuality": "Якість рішень",
+    "outOf": "зі 100"
+  },
+  "limits": { "title": "Ліміти місії" },
+  "bottleneck": {
+    "title": "Вузьке місце",
+    "lead": "Ресурс, який найбільше обмежив цю місію:"
+  },
+  "resource": {
+    "mass": "Маса",
+    "power": "Енергія",
+    "budget": "Бюджет",
+    "data": "Дані",
+    "comms": "Зв'язок",
+    "time": "Час"
+  },
+  "comparison": {
+    "title": "Схожа місія",
+    "real": "Справжня місія NASA",
+    "modeled": "Еталонний проєкт, прорахований нашою симуляцією",
+    "none": "У бібліотеці поки немає схожої місії.",
+    "delta": "Ваш проєкт порівняно з нею",
+    "source": "Джерело: {{note}}",
+    "deltaKey": {
+      "altitudeKm": "Висота",
+      "inclinationDeg": "Нахил",
+      "massKg": "Маса",
+      "dataGb": "Передано даних",
+      "cargoKg": "Вантаж",
+      "budgetK": "Бюджет"
+    },
+    "unit": { "altitudeKm": "км", "inclinationDeg": "°", "massKg": "кг", "dataGb": "ГБ", "cargoKg": "кг", "budgetK": "к" },
+    "same": "так само"
+  },
+  "previous": {
+    "title": "Порівняно з попередньою спробою",
+    "none": "Це ваша перша спроба.",
+    "was": "було {{value}}",
+    "better": "краще",
+    "worse": "гірше",
+    "same": "так само"
+  },
+  "nav": {
+    "title": "Змінити проєкт",
+    "lead": "Поверніться на будь-який етап, змініть рішення й запустіть знову.",
+    "goal": "Ціль і вимоги",
+    "concept": "Концепт",
+    "design": "Проєкт",
+    "flight": "Політ"
+  },
+  "reference": {
+    "landsat9": "Landsat 9",
+    "aqua": "Aqua",
+    "pace": "PACE",
+    "icesat2": "ICESat-2",
+    "goes16": "GOES-16",
+    "tdrsM": "TDRS-M",
+    "tropics": "TROPICS",
+    "icecube": "IceCube",
+    "dellingr": "Dellingr",
+    "crs29": "SpaceX CRS-29",
+    "ng20": "Northrop Grumman NG-20"
+  },
+  "check": {
+    "mission": {
+      "overBudget": "Бюджет перевищено: витрачено {{usedK}} к за ліміту {{limitK}} к.",
+      "withinBudget": "У межах бюджету: {{usedK}} к із {{limitK}} к.",
+      "launchOnTime": "Старт вчасно: {{launchMonth}}-й місяць, крайній — {{deadlineMonth}}-й.",
+      "launchLate": "Старт запізнився: {{launchMonth}}-й місяць, крайній — {{deadlineMonth}}-й."
+    },
+    "launch": {
+      "capacity": "Носій піднімає масу: {{massKg}} кг із можливих {{capacityKg}} кг.",
+      "overCapacity": "Заважко для носія: {{massKg}} кг, а він піднімає лише {{capacityKg}} кг.",
+      "orbitUnreachable": "Цей носій не виводить на обрану орбіту.",
+      "siteInclination": "З космодрому на {{latitudeDeg}}° не вийти одразу на нахил {{targetInclinationDeg}}°: зміна площини коштує {{planeChangeDeltaVms}} м/с.",
+      "busTooLarge": "Корпус «{{busSize}}» не вміщається: цей запуск бере до «{{maxBusSize}}»."
+    },
+    "space": {
+      "busOverMass": "Корпус перевантажено: {{massKg}} кг за межі {{busMaxKg}} кг.",
+      "slots": "На корпусі бракує місця: {{slotsUsed}} деталей на {{slots}} місць.",
+      "powerMargin": "Енергії досить, запас {{marginPct}} %.",
+      "powerDeficit": "Брак енергії: запас {{marginPct}} %.",
+      "batteryShort": "Батарея замала для тіні: потрібно {{neededWh}} Вт·год, є {{capacityWh}} Вт·год.",
+      "missingRequirement": "{{partId}} потребує {{requiredPartId}}, а його на борту немає.",
+      "wrongSide": "{{partId}} дивиться «{{side}}» замість «{{expectedSide}}».",
+      "massReserveLow": "Запас маси {{reservePct}} % нижчий за рекомендовані {{recommendedPct}} %.",
+      "propellantMargin": "Палива досить: потрібно {{neededKg}} кг, у баку {{capacityKg}} кг.",
+      "propellantShort": "Палива бракує: потрібно {{neededKg}} кг, у баку {{capacityKg}} кг.",
+      "orbitDecay": "Орбіта зійде за {{lifetimeYears}} р. — раніше, ніж триває місія ({{operationYears}} р.).",
+      "disposal": "Апарат зійде з орбіти за {{disposalYears}} р. (межа {{limitYears}}).",
+      "disposalTooLong": "Апарат лишиться на орбіті {{disposalYears}} р. після місії — довше за межу {{limitYears}} р."
+    },
+    "ground": {
+      "dataBacklog": "Дані накопичуються: збирається {{generatedGbPerDay}} ГБ на добу, передається лише {{downlinkGbPerDay}} ГБ.",
+      "noStation": "Не обрано жодної наземної станції.",
+      "bandMismatch": "Радіо діапазону {{band}} не збігається зі станцією {{stationId}}.",
+      "storageOverflow": "Бортова пам'ять {{storageGb}} ГБ переповнюється: черга росте на {{backlogGbPerDay}} ГБ на добу.",
+      "relay": "Ретранслятор TDRS тримає зв'язок постійно за {{priceK}} к.",
+      "dockingWaitsForContact": "Стикування чекає сеансу зі станцією: затримка {{waitHours}} год."
+    },
+    "user": {
+      "goalReached": "Ціль досягнуто: {{expectedGb}} ГБ із потрібних {{goalGb}} ГБ.",
+      "goalMissed": "Ціль не досягнуто: {{expectedGb}} ГБ із потрібних {{goalGb}} ГБ.",
+      "cargoDelivered": "Вантаж доставлено: {{cargoKg}} кг із {{goalKg}} кг.",
+      "cargoShort": "Вантажу замало: {{cargoKg}} кг із {{goalKg}} кг.",
+      "scienceShareLow": "Наукового вантажу {{sciencePct}} % — менше за потрібні {{scienceMinPct}} %.",
+      "dockingLate": "Стикування на {{dockingDays}}-ту добу — пізніше за межу {{deadlineDays}} діб."
+    }
+  },
+  "chain": {
+    "decision": {
+      "orbit": "Ви обрали орбіту {{altitudeKm}} км із нахилом {{inclinationDeg}}°.",
+      "radio": "Ви обрали радіо на {{rateKbps}} кбіт/с.",
+      "instrument": "Ваші інструменти дають {{dataRateKbps}} кбіт/с.",
+      "battery": "Ви обрали батарею на {{capacityWh}} Вт·год.",
+      "propulsion": "Ви обрали двигун з Isp {{ispS}} с і {{propellantKg}} кг палива.",
+      "launchSite": "Ви стартували з космодрому на широті {{latitudeDeg}}°.",
+      "insertion": "Носій вивів корабель на {{insertionAltitudeKm}} км.",
+      "relay": "Ретранслятор TDRS: {{relay}}.",
+      "relayOn": "Ви оплатили ретранслятор TDRS: зв'язок із кораблем постійно.",
+      "relayOff": "Ви відмовились від ретранслятора TDRS: корабель на зв'язку, лише коли його бачить станція."
+    },
+    "physics": {
+      "orbit": "Один виток триває {{periodMin}} хв на швидкості {{speedKmS}} км/с.",
+      "eclipse": "Частка {{eclipseFraction}} кожного витка проходить у тіні Землі.",
+      "power": "Панелі дають у середньому {{generationW}} Вт, а системи споживають {{consumptionW}} Вт.",
+      "downlink": "Станції бачать апарат {{minutesPerDay}} хв на добу — цього вистачає на {{gbPerDay}} ГБ.",
+      "linkBudget": "На відстані {{distanceKm}} км радіо дає {{rateKbps}} кбіт/с: сигнал слабне з квадратом відстані.",
+      "storage": "Бортова пам'ять {{storageGb}} ГБ: {{lostGb}} ГБ не вмістилися й втрачені.",
+      "drag": "Повітря на цій висоті ({{densityKgM3}} кг/м³) гальмує апарат: він опускається на {{altitudeLossKmPerYear}} км за рік.",
+      "rocketEquation": "Маневри на {{deltaVms}} м/с потребують {{propellantKg}} кг палива.",
+      "hohmann": "Підйом орбіти — два ввімкнення двигуна: {{deltaV1ms}} м/с і {{deltaV2ms}} м/с.",
+      "phasing": "Корабель наздоганяє МКС на {{degPerOrbit}}° за виток: на це йде {{phasingDays}} діб.",
+      "planeChange": "Поворот площини орбіти на {{deltaInclinationDeg}}° коштує {{deltaVms}} м/с.",
+      "earthRotation": "Обертання Землі дає запуску {{bonusMs}} м/с безкоштовно."
+    },
+    "consequence": {
+      "goal": "Передано {{deliveredGb}} ГБ за цілі {{goalGb}} ГБ.",
+      "dataLost": "Втрачено {{lostGb}} ГБ даних.",
+      "reentry": "Апарат увійшов в атмосферу на {{day}}-ту добу.",
+      "disposal": "Він зійде з орбіти через {{disposalYears}} р. після місії (межа {{limitYears}}).",
+      "docking": "Корабель пристикувався через {{dockedAtHours}} год після старту.",
+      "cargoDelivered": "Екіпаж отримав {{cargoKg}} кг вантажу (ціль {{goalKg}} кг)."
+    }
+  },
+  "bottleneckText": {
+    "mass": "Маса: {{usedKg}} кг за межі {{limitKg}} кг.",
+    "power": "Енергія: споживається {{usedW}} Вт за наявних {{limitW}} Вт.",
+    "budget": "Бюджет: витрачено {{usedK}} к за ліміту {{limitK}} к.",
+    "data": "Дані: ціль {{usedGb}} ГБ, передано {{limitGb}} ГБ.",
+    "dataCargo": "Вантаж: ціль {{usedKg}} кг, завантажено {{limitKg}} кг.",
+    "comms": "Зв'язок: треба передавати {{usedGbPerDay}} ГБ на добу, станції приймають {{limitGbPerDay}} ГБ.",
+    "commsDocking": "Стикування: через {{usedHours}} год після старту за межі {{limitHours}} год.",
+    "time": "Час: {{usedMonths}}-й місяць за межі {{limitMonths}}."
+  }
+}

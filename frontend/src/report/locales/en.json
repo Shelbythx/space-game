@@ -1,0 +1,183 @@
+{
+  "title": "Mission report",
+  "success": "Mission succeeded",
+  "failure": "Mission failed",
+  "lead": "Four NASA mission segments: what happened in each and why.",
+  "segmentName": {
+    "launch": "Launch segment",
+    "space": "Space segment",
+    "ground": "Ground segment",
+    "user": "User segment",
+    "mission": "Whole mission"
+  },
+  "segmentHint": {
+    "launch": "Did the launch vehicle lift this mass to this orbit?",
+    "space": "Did the spacecraft have enough power and propellant for the whole mission?",
+    "ground": "Did the ground stations get the data down, or guide the docking?",
+    "user": "How much value reached the scientists or the crew?"
+  },
+  "status": { "ok": "OK", "warn": "Risky", "fail": "Failed" },
+  "kind": { "decision": "Your decision", "physics": "Physics", "consequence": "Result" },
+  "formula": "Formula",
+  "noChain": "No explanation for this segment.",
+  "scores": {
+    "title": "Scores",
+    "missionSuccess": "Mission success",
+    "scienceValue": "Science value",
+    "resourceEfficiency": "Resource efficiency",
+    "decisionQuality": "Decision quality",
+    "outOf": "of 100"
+  },
+  "limits": { "title": "Mission limits" },
+  "bottleneck": {
+    "title": "Bottleneck",
+    "lead": "The resource that limited this mission the most:"
+  },
+  "resource": {
+    "mass": "Mass",
+    "power": "Power",
+    "budget": "Budget",
+    "data": "Data",
+    "comms": "Communications",
+    "time": "Time"
+  },
+  "comparison": {
+    "title": "Similar mission",
+    "real": "Real NASA mission",
+    "modeled": "Reference design modelled by our simulation",
+    "none": "No similar mission in the library yet.",
+    "delta": "Your design compared with it",
+    "source": "Source: {{note}}",
+    "deltaKey": {
+      "altitudeKm": "Altitude",
+      "inclinationDeg": "Inclination",
+      "massKg": "Mass",
+      "dataGb": "Data delivered",
+      "cargoKg": "Cargo",
+      "budgetK": "Budget"
+    },
+    "unit": { "altitudeKm": "km", "inclinationDeg": "°", "massKg": "kg", "dataGb": "GB", "cargoKg": "kg", "budgetK": "k" },
+    "same": "same"
+  },
+  "previous": {
+    "title": "Compared with your previous attempt",
+    "none": "This is your first attempt.",
+    "was": "was {{value}}",
+    "better": "better",
+    "worse": "worse",
+    "same": "same"
+  },
+  "nav": {
+    "title": "Change the project",
+    "lead": "Go back to any stage, change a decision and fly again.",
+    "goal": "Goal and requirements",
+    "concept": "Concept",
+    "design": "Design",
+    "flight": "Flight"
+  },
+  "reference": {
+    "landsat9": "Landsat 9",
+    "aqua": "Aqua",
+    "pace": "PACE",
+    "icesat2": "ICESat-2",
+    "goes16": "GOES-16",
+    "tdrsM": "TDRS-M",
+    "tropics": "TROPICS",
+    "icecube": "IceCube",
+    "dellingr": "Dellingr",
+    "crs29": "SpaceX CRS-29",
+    "ng20": "Northrop Grumman NG-20"
+  },
+  "check": {
+    "mission": {
+      "overBudget": "Over budget: {{usedK}} k spent with a limit of {{limitK}} k.",
+      "withinBudget": "Within budget: {{usedK}} k of {{limitK}} k.",
+      "launchOnTime": "Launched on time: month {{launchMonth}}, deadline month {{deadlineMonth}}.",
+      "launchLate": "Launched late: month {{launchMonth}}, deadline month {{deadlineMonth}}."
+    },
+    "launch": {
+      "capacity": "The launch vehicle lifts the mass: {{massKg}} kg of {{capacityKg}} kg possible.",
+      "overCapacity": "Too heavy for the launch vehicle: {{massKg}} kg, it lifts only {{capacityKg}} kg.",
+      "orbitUnreachable": "This launch vehicle cannot reach the chosen orbit.",
+      "siteInclination": "The launch site at {{latitudeDeg}}° cannot reach {{targetInclinationDeg}}° directly: a plane change costs {{planeChangeDeltaVms}} m/s.",
+      "busTooLarge": "The {{busSize}} bus does not fit: this launch takes up to {{maxBusSize}}."
+    },
+    "space": {
+      "busOverMass": "The bus is overloaded: {{massKg}} kg with a limit of {{busMaxKg}} kg.",
+      "slots": "Not enough room on the bus: {{slotsUsed}} parts for {{slots}} places.",
+      "powerMargin": "Power is enough with a {{marginPct}} % margin.",
+      "powerDeficit": "Power deficit: the margin is {{marginPct}} %.",
+      "batteryShort": "The battery is too small for the shadow: {{neededWh}} Wh needed, {{capacityWh}} Wh available.",
+      "missingRequirement": "{{partId}} needs {{requiredPartId}}, which is not on board.",
+      "wrongSide": "{{partId}} faces {{side}} instead of {{expectedSide}}.",
+      "massReserveLow": "Mass reserve {{reservePct}} % is below the recommended {{recommendedPct}} %.",
+      "propellantMargin": "Propellant is enough: {{neededKg}} kg needed, {{capacityKg}} kg in the tank.",
+      "propellantShort": "Not enough propellant: {{neededKg}} kg needed, {{capacityKg}} kg in the tank.",
+      "orbitDecay": "The orbit decays in {{lifetimeYears}} years, sooner than the {{operationYears}}-year mission.",
+      "disposal": "The spacecraft leaves orbit within {{disposalYears}} years (limit {{limitYears}}).",
+      "disposalTooLong": "The spacecraft stays in orbit {{disposalYears}} years after the mission, more than the {{limitYears}}-year limit."
+    },
+    "ground": {
+      "dataBacklog": "Data piles up: {{generatedGbPerDay}} GB a day collected, only {{downlinkGbPerDay}} GB a day sent down.",
+      "noStation": "No ground station is selected.",
+      "bandMismatch": "The {{band}} radio does not match station {{stationId}}.",
+      "storageOverflow": "On-board storage of {{storageGb}} GB overflows: the backlog grows by {{backlogGbPerDay}} GB a day.",
+      "relay": "TDRS relay keeps contact all the time for {{priceK}} k.",
+      "dockingWaitsForContact": "Docking waits for a ground contact: {{waitHours}} h of delay."
+    },
+    "user": {
+      "goalReached": "Goal reached: {{expectedGb}} GB of the {{goalGb}} GB needed.",
+      "goalMissed": "Goal missed: {{expectedGb}} GB of the {{goalGb}} GB needed.",
+      "cargoDelivered": "Cargo delivered: {{cargoKg}} kg of {{goalKg}} kg.",
+      "cargoShort": "Not enough cargo: {{cargoKg}} kg of {{goalKg}} kg.",
+      "scienceShareLow": "Science cargo is {{sciencePct}} %, below the required {{scienceMinPct}} %.",
+      "dockingLate": "Docked on day {{dockingDays}}, after the {{deadlineDays}}-day deadline."
+    }
+  },
+  "chain": {
+    "decision": {
+      "orbit": "You chose an orbit at {{altitudeKm}} km with a {{inclinationDeg}}° inclination.",
+      "radio": "You chose a radio that sends {{rateKbps}} kbit/s.",
+      "instrument": "Your instruments produce {{dataRateKbps}} kbit/s.",
+      "battery": "You chose a {{capacityWh}} Wh battery.",
+      "propulsion": "You chose propulsion with Isp {{ispS}} s and {{propellantKg}} kg of propellant.",
+      "launchSite": "You launched from a site at {{latitudeDeg}}° latitude.",
+      "insertion": "The launch vehicle left the ship at {{insertionAltitudeKm}} km.",
+      "relay": "TDRS relay: {{relay}}.",
+      "relayOn": "You paid for the TDRS relay: contact with the ship all the time.",
+      "relayOff": "You chose no TDRS relay: the ship talks to the ground only when a station sees it."
+    },
+    "physics": {
+      "orbit": "One orbit takes {{periodMin}} min at {{speedKmS}} km/s.",
+      "eclipse": "A share of {{eclipseFraction}} of every orbit is spent in Earth's shadow.",
+      "power": "The panels give {{generationW}} W on average while the systems use {{consumptionW}} W.",
+      "downlink": "Stations see the spacecraft {{minutesPerDay}} min a day, enough to send {{gbPerDay}} GB.",
+      "linkBudget": "At {{distanceKm}} km the radio manages {{rateKbps}} kbit/s: the signal weakens with the square of distance.",
+      "storage": "{{storageGb}} GB of on-board storage: {{lostGb}} GB did not fit and were lost.",
+      "drag": "Air at this altitude ({{densityKgM3}} kg/m³) slows the spacecraft: it sinks {{altitudeLossKmPerYear}} km a year.",
+      "rocketEquation": "{{deltaVms}} m/s of manoeuvres need {{propellantKg}} kg of propellant.",
+      "hohmann": "Raising the orbit takes two burns: {{deltaV1ms}} m/s and {{deltaV2ms}} m/s.",
+      "phasing": "The ship gains {{degPerOrbit}}° on the ISS every orbit: catching up takes {{phasingDays}} days.",
+      "planeChange": "Turning the orbit plane by {{deltaInclinationDeg}}° costs {{deltaVms}} m/s.",
+      "earthRotation": "Earth's rotation gives the launch a free {{bonusMs}} m/s."
+    },
+    "consequence": {
+      "goal": "{{deliveredGb}} GB delivered for a goal of {{goalGb}} GB.",
+      "dataLost": "{{lostGb}} GB of data were lost.",
+      "reentry": "The spacecraft re-entered the atmosphere on day {{day}}.",
+      "disposal": "It leaves orbit {{disposalYears}} years after the mission (limit {{limitYears}}).",
+      "docking": "The ship docked {{dockedAtHours}} h after launch.",
+      "cargoDelivered": "{{cargoKg}} kg of cargo reached the crew (goal {{goalKg}} kg)."
+    }
+  },
+  "bottleneckText": {
+    "mass": "Mass: {{usedKg}} kg with a limit of {{limitKg}} kg.",
+    "power": "Power: {{usedW}} W used with {{limitW}} W available.",
+    "budget": "Budget: {{usedK}} k spent with a limit of {{limitK}} k.",
+    "data": "Data: the goal is {{usedGb}} GB, {{limitGb}} GB were delivered.",
+    "dataCargo": "Cargo: the goal is {{usedKg}} kg, {{limitKg}} kg were loaded.",
+    "comms": "Communications: {{usedGbPerDay}} GB a day must go down, the stations take {{limitGbPerDay}} GB a day.",
+    "commsDocking": "Docking: {{usedHours}} h after launch with a deadline of {{limitHours}} h.",
+    "time": "Time: month {{usedMonths}} with a limit of {{limitMonths}}."
+  }
+}

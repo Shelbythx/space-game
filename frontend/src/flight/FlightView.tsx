@@ -1,5 +1,7 @@
-import { useEffect, useMemo } from 'react'
+import { useContext, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { playCue } from '../audio/cues'
+import { SettingsContext } from '../settings/context'
 import { EventStrip } from './EventStrip'
 import { FlightMap } from './FlightMap'
 import { Gauge } from './Gauge'
@@ -57,6 +59,18 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
 
   const number = (value: number, digits: number) =>
     new Intl.NumberFormat(i18n.language, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value)
+
+  // An alert sound when the replay reaches an event (task 012); quiet outside the game's
+  // settings (e.g. on the demo page) because there is no SettingsProvider there.
+  const settings = useContext(SettingsContext)?.settings
+  const pastCount = past.length
+  const lastSounded = useRef(0)
+  useEffect(() => {
+    if (pastCount > lastSounded.current && playback.playing && settings?.soundOn) {
+      playCue(lost ? 'failure' : 'event', settings.volume)
+    }
+    lastSounded.current = pastCount
+  }, [pastCount, lost, playback.playing, settings])
 
   const delivered = sampleSeries(timeline.dataDeliveredGb, index)
   const expected = goalGb && lastDay > 0 ? (goalGb * day) / lastDay : 0
