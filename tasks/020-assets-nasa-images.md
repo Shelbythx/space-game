@@ -1,7 +1,7 @@
 # 020 · Асети · Фото NASA
 
 Статус: todo
-Виконавець: Stiluss
+Виконавець: katyashozda (D106)
 Гілка: task/020-assets-nasa-images
 Частина: Асети
 Залежить від: —
