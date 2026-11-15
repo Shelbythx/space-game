@@ -1,0 +1,1 @@
+Anastasia vi prosto spizdili kod

@@ -1,0 +1,90 @@
+[
+ {
+  "gstID": "2015-03-17T06:00:00-GST-001",
+  "startTime": "2015-03-17T06:00Z",
+  "allKpIndex": [
+   {
+    "kpIndex": 6.0,
+    "observedTime": "2015-03-17T09:00Z",
+    "source": "NOAA"
+   },
+   {
+    "kpIndex": 6.0,
+    "observedTime": "2015-03-17T12:00Z",
+    "source": "NOAA"
+   },
+   {
+    "kpIndex": 8.0,
+    "observedTime": "2015-03-17T15:00Z",
+    "source": "NOAA"
+   },
+   {
+    "kpIndex": 8.0,
+    "observedTime": "2015-03-17T18:00Z",
+    "source": "NOAA"
+   },
+   {
+    "kpIndex": 7.0,
+    "observedTime": "2015-03-17T21:00Z",
+    "source": "NOAA"
+   },
+   {
+    "kpIndex": 8.0,
+    "observedTime": "2015-03-18T00:00Z",
+    "source": "NOAA"
+   },
+   {
+    "kpIndex": 6.0,
+    "observedTime": "2015-03-18T03:00Z",
+    "source": "NOAA"
+   },
+   {
+    "kpIndex": 6.0,
+    "observedTime": "2015-03-18T18:00Z",
+    "source": "NOAA"
+   }
+  ],
+  "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/GST/8031/-1"
+ },
+ {
+  "gstID": "2015-03-22T06:00:00-GST-001",
+  "startTime": "2015-03-22T06:00Z",
+  "allKpIndex": [
+   {
+    "kpIndex": 6.0,
+    "observedTime": "2015-03-22T09:00Z",
+    "source": "NOAA"
+   }
+  ],
+  "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/GST/8077/-1"
+ },
+ {
+  "gstID": "2015-04-10T03:00:00-GST-001",
+  "startTime": "2015-04-10T03:00Z",
+  "allKpIndex": [
+   {
+    "kpIndex": 6.0,
+    "observedTime": "2015-04-10T06:00Z",
+    "source": "NOAA"
+   },
+   {
+    "kpIndex": 6.0,
+    "observedTime": "2015-04-10T09:00Z",
+    "source": "NOAA"
+   }
+  ],
+  "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/GST/8201/-1"
+ },
+ {
+  "gstID": "2015-04-16T21:00:00-GST-001",
+  "startTime": "2015-04-16T21:00Z",
+  "allKpIndex": [
+   {
+    "kpIndex": 6.0,
+    "observedTime": "2015-04-17T00:00Z",
+    "source": "NOAA"
+   }
+  ],
+  "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/GST/8246/-1"
+ }
+]
