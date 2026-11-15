@@ -30,6 +30,17 @@ Gala». Це чужа комерційна музика — лише орієн�
 | Tiny5 | Stefie Justprince | Головне меню (D90) | SIL Open Font License 1.1 |
 | IBM Plex Sans, IBM Plex Mono | IBM | Тема креслення (D54) | SIL Open Font License 1.1 |
 
+## Графіка
+
+| Що | Автор | Ліцензія |
+| --- | --- | --- |
+| Креслення апарата й деталей (`frontend/src/blueprint/Drawing.tsx`, SVG) | агент Claude для команди, 15.11.2026 | власна робота, як код проєкту (D70) |
+
+Форми деталей намальовано з огляду на реальні вироби з таблиць NASA «State-of-the-Art of
+Small Spacecraft Technology» 2026 (Pumpkin Dual Articulated Deployable Solar Array, Redwire
+ROSA, Blue Canyon XACT-100, VACCO C-POD та IPS, Busek BIT-3). Зображення NASA і виробників
+не копіювались.
+
 ## Код
 
 Рушій гри «yourself.» (© 2026 Stiluss) можна використовувати в цьому проєкті з дозволу

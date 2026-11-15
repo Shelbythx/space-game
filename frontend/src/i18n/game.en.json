@@ -1,0 +1,196 @@
+{
+  "bp": {
+    "title": "Spacecraft blueprint",
+    "back": "Menu",
+    "stage": { "goal": "Goal", "concept": "Concept", "design": "Design", "flight": "Flight", "report": "Report" },
+    "version": { "label": "Version", "simple": "Simple", "advanced": "Advanced" },
+    "demo": "Demo calculation — the mission server is offline",
+    "demoHint": "Numbers are approximate until the backend (task 004) is connected.",
+    "loading": "Loading the catalog…",
+    "evaluating": "Calculating…",
+    "error": "The calculation failed. Change any part to try again.",
+    "consoles": "Role consoles",
+    "drawing": "Drawing",
+    "feed": "Role comments",
+    "checks": "Checks by NASA segment",
+    "noComments": "No remarks — every role is satisfied.",
+    "presets": "Ready-made sets",
+    "orbitStrip": "One orbit: light, shadow and contacts",
+    "sunlit": "Sunlight",
+    "shadow": "Shadow",
+    "contact": "Contact: {{station}}",
+    "noContact": "no contact on this orbit",
+    "launchButton": "Launch mission",
+    "launchSoon": "Flight comes with task 010.",
+    "calcOpen": "How is this calculated?",
+    "calcTitle": "Calculation sheet: {{resource}}",
+    "calcEmpty": "No calculations for this resource.",
+    "close": "Close",
+    "formula": "Formula",
+    "inputs": "Values",
+    "result": "Result",
+    "source": "Source",
+    "fairing": "Fairing: {{launch}}",
+    "fits": "fits",
+    "doesNotFit": "does not fit",
+    "earth": "Earth",
+    "sun": "Sun",
+    "space": "space",
+    "slotsUsed": "{{used}} / {{slots}} slots",
+    "sideOf": "Side",
+    "reserve": "Mass margin: {{value}}%",
+    "reserveRecommended": "NASA recommends at least {{value}}% at the concept stage (GSFC-STD-1000, Table 1.06-1).",
+    "orbitCustom": "Custom orbit",
+    "altitude": "Altitude, km",
+    "inclination": "Inclination, °",
+    "fixedOrbit": "Rideshare flies only to {{orbit}}.",
+    "requires": "needs {{part}}",
+    "buildMonths": "{{months}} mo to build",
+    "sourceNasa": "NASA",
+    "sourceEstimate": "estimate",
+    "sourceCalculated": "calculated",
+    "owner": "Owner: {{role}}",
+    "on": "on",
+    "off": "off",
+    "instrumentsNone": "no instruments",
+    "stationsNone": "no stations",
+    "bars": {
+      "mass": "{{used}} of {{limit}} kg",
+      "power": "{{use}} of {{gen}} W",
+      "budget": "{{used}} of {{limit}} k",
+      "data": "{{expected}} of {{goal}} GB",
+      "comms": "{{minutes}} min/day · {{contacts}} passes",
+      "time": "launch month {{launch}} of {{deadline}}"
+    }
+  },
+  "role": { "planner": "Planner", "engineer": "Engineer", "scientist": "Scientist", "designer": "Designer" },
+  "resource": { "mass": "Mass", "power": "Power", "budget": "Budget", "data": "Data", "comms": "Comms", "time": "Time", "orbit": "Orbit", "propellant": "Propellant", "rendezvous": "Rendezvous" },
+  "side": { "earth": "to Earth", "space": "to space", "sun": "to the Sun", "inside": "inside" },
+  "busSize": { "small": "small", "medium": "medium", "large": "large" },
+  "tier": { "basic": "basic", "medium": "medium", "best": "best" },
+  "segment": { "mission": "Mission", "launch": "Launch", "space": "Space", "ground": "Ground", "user": "User" },
+  "category": {
+    "bus": "Bus", "solar": "Solar arrays", "battery": "Battery", "radio": "Radio", "computer": "Computer",
+    "adcs": "Attitude control", "propulsion": "Propulsion", "instruments": "Instruments", "stations": "Ground stations",
+    "orbit": "Orbit", "launch": "Launch"
+  },
+  "mission": { "satOrbit": { "title": "Satellite to orbit", "briefing": "Deliver 500 GB of Earth images in 12 months on a 450 k budget, launching within 18 months." } },
+  "orbit": { "leo": "Low orbit 500 km", "sso": "Sun-synchronous 705 km", "meo": "Medium orbit 20 200 km", "geo": "Geostationary 35 786 km" },
+  "launch": { "rideshare": "Rideshare", "small": "Small launcher", "medium": "Medium launcher" },
+  "part": {
+    "busS": "Small bus", "busM": "Medium bus", "busL": "Large bus",
+    "solarBody": "Body-mounted panels", "solarDeploy": "Deployable panels", "solarRoll": "Roll-out array",
+    "batS": "Small battery", "batM": "Medium battery", "batL": "Large battery",
+    "radioUhf": "UHF radio", "radioS": "S-band radio", "radioX": "X-band radio",
+    "cpuBasic": "Simple computer", "cpuPower": "Powerful computer",
+    "adcsBasic": "Basic attitude control", "adcsFine": "Fine attitude control",
+    "propNone": "No engine", "propCold": "Cold gas", "propChem": "Chemical (green monoprop)", "propElec": "Electric (ion)"
+  },
+  "instrument": { "magnetometer": "Magnetometer", "radiometer": "Microwave radiometer", "camera": "Multispectral camera", "radar": "Radar" },
+  "station": { "fairbanks": "Alaska (Fairbanks)", "whiteSands": "White Sands", "guam": "Guam" },
+  "preset": { "thrifty": "Thrifty", "balanced": "Balanced", "science": "Maximum science" },
+  "check": {
+    "mission": {
+      "overBudget": "Budget exceeded: {{usedK}} k of {{limitK}} k",
+      "withinBudget": "Budget: {{usedK}} k of {{limitK}} k",
+      "launchOnTime": "Launch in month {{launchMonth}} — deadline {{deadlineMonth}}",
+      "launchLate": "Launch in month {{launchMonth}} — later than month {{deadlineMonth}}"
+    },
+    "launch": {
+      "capacity": "The launcher lifts {{capacityKg}} kg, the spacecraft is {{massKg}} kg",
+      "overCapacity": "Too heavy: {{massKg}} kg, the launcher lifts {{capacityKg}} kg",
+      "orbitUnreachable": "{{launchId}} cannot reach {{orbitId}}",
+      "siteInclination": "Launch site at {{latitudeDeg}}° needs a plane change of {{planeChangeDeltaVms}} m/s",
+      "busTooLarge": "A {{busSize}} bus does not fit the fairing (max {{maxBusSize}})"
+    },
+    "space": {
+      "busOverMass": "{{massKg}} kg — more than the bus carries ({{busMaxKg}} kg)",
+      "slots": "Not enough slots: {{slotsUsed}} of {{slots}}",
+      "powerMargin": "Power margin {{marginPct}}%",
+      "powerDeficit": "Power deficit: margin {{marginPct}}%",
+      "batteryShort": "Shadow needs {{neededWh}} Wh, battery {{capacityWh}} Wh",
+      "missingRequirement": "{{partId}} needs {{requiredPartId}}",
+      "wrongSide": "{{partId}} faces {{side}}, should face {{expectedSide}}",
+      "massReserveLow": "Mass margin {{reservePct}}% — below {{recommendedPct}}%",
+      "propellantMargin": "Propellant: needs {{neededKg}} kg, tank {{capacityKg}} kg",
+      "propellantShort": "Not enough propellant: needs {{neededKg}} kg, tank {{capacityKg}} kg",
+      "orbitDecay": "Without an engine the orbit lasts {{lifetimeYears}} yr — the mission needs {{operationYears}}",
+      "disposal": "Leaves orbit in {{disposalYears}} yr — within the {{limitYears}}-year NASA rule",
+      "disposalTooLong": "Leaves orbit in {{disposalYears}} yr — longer than the {{limitYears}}-year NASA rule"
+    },
+    "ground": {
+      "dataBacklog": "Collects {{generatedGbPerDay}} GB/day, sends {{downlinkGbPerDay}} GB/day",
+      "noStation": "No ground station",
+      "bandMismatch": "{{stationId}} has no {{band}} band",
+      "storageOverflow": "Memory {{storageGb}} GB fills up: +{{backlogGbPerDay}} GB/day",
+      "relay": "Relay costs {{priceK}} k",
+      "dockingWaitsForContact": "Docking waits {{waitHours}} h for a contact"
+    },
+    "user": {
+      "goalReached": "Goal reached: {{expectedGb}} of {{goalGb}} GB",
+      "goalMissed": "Goal missed: {{expectedGb}} of {{goalGb}} GB",
+      "cargoDelivered": "Cargo delivered: {{cargoKg}} of {{goalKg}} kg",
+      "cargoShort": "Cargo short: {{cargoKg}} of {{goalKg}} kg",
+      "scienceShareLow": "Science cargo {{sciencePct}}% — below {{scienceMinPct}}%",
+      "dockingLate": "Docking on day {{dockingDays}} — deadline {{deadlineDays}}"
+    }
+  },
+  "comment": {
+    "planner": {
+      "overBudget": "We are {{overK}} k over budget.",
+      "launchLate": "We miss the launch deadline by {{lateMonths}} months.",
+      "relayCost": "The relay costs {{priceK}} k.",
+      "launchSiteLatitude": "Launching from {{latitudeDeg}}° costs {{planeChangeDeltaVms}} m/s of plane change."
+    },
+    "engineer": {
+      "powerMarginLow": "Power margin is only {{marginPct}}%.",
+      "batteryShortInEclipse": "In shadow we need {{neededWh}} Wh; the battery holds {{capacityWh}} Wh.",
+      "noPropulsionDecay": "Without an engine the orbit lasts {{lifetimeYears}} yr, the mission {{operationYears}} yr.",
+      "propellantShort": "We need {{neededKg}} kg of propellant, the tank holds {{capacityKg}} kg.",
+      "disposalTooLong": "The spacecraft would stay in orbit {{disposalYears}} yr after the mission.",
+      "electricPropulsionPower": "The ion engine needs {{powerW}} W while firing.",
+      "storageSmall": "Memory is {{storageGb}} GB, the backlog grows by {{backlogGbPerDay}} GB a day."
+    },
+    "designer": {
+      "overMass": "{{massKg}} kg — the bus carries {{limitKg}} kg.",
+      "noSlots": "{{slotsUsed}} parts for {{slots}} slots.",
+      "propellantMass": "Propellant {{propellantKg}} kg against a {{capacityKg}} kg tank.",
+      "busTooLarge": "A {{busSize}} bus does not fit; the fairing takes {{maxBusSize}}.",
+      "wrongSide": "{{partId}} faces {{side}}; it works facing {{expectedSide}}.",
+      "massReserveLow": "Mass margin {{reservePct}}% is below the recommended {{recommendedPct}}%."
+    },
+    "scientist": {
+      "dataBacklog": "We collect {{generatedGbPerDay}} GB a day but send only {{downlinkGbPerDay}}.",
+      "goalMissed": "Only {{expectedGb}} of {{goalGb}} GB will reach the ground.",
+      "scienceCargoLow": "Science is {{sciencePct}}% of the cargo, we need {{scienceMinPct}}%.",
+      "bandMismatch": "A station cannot hear the {{band}} radio."
+    }
+  },
+  "advice": {
+    "planner": { "cheaperLaunchOrParts": "Pick a cheaper launch or simpler parts.", "simplerParts": "Simpler parts are built faster.", "groundOnly": "Try ground stations only.", "lowerLatitudeSite": "Launch from a site closer to the station's inclination." },
+    "engineer": { "biggerPanels": "Take bigger solar arrays.", "biggerBattery": "Take a bigger battery.", "addPropulsion": "Add an engine.", "biggerTankOrHigherIsp": "Take an engine with more propellant or higher Isp.", "biggerStorage": "Take the computer with more memory." },
+    "designer": { "lighterParts": "Lighter parts or a bigger bus.", "biggerBus": "Take a bigger bus.", "lowerInsertion": "Lower the insertion orbit.", "smallerBusOrLaunch": "A smaller bus or a bigger launcher.", "turnPart": "Turn the part to its working side.", "raiseReserve": "Raise the mass margin." },
+    "scientist": { "fasterRadioOrStations": "A faster radio or more stations.", "betterInstrument": "A better instrument or a faster radio.", "moreScienceCargo": "Load more science cargo.", "matchStationBand": "Choose stations with the radio's band." }
+  },
+  "calc": {
+    "mass": { "total": { "title": "Mass with margin", "summary": "{{usedKg}} kg + {{reservePct}}% margin = {{withReserveKg}} kg; the launcher lifts {{capacityKg}} kg" } },
+    "power": {
+      "balance": { "title": "Power balance", "summary": "On average {{averageGenerationW}} W in, {{averageConsumptionW}} W out → margin {{marginPct}}%" },
+      "eclipseBattery": { "title": "Battery for the shadow", "summary": "Shadow is {{eclipsePct}}% of the orbit → the battery must give {{neededWh}} Wh" }
+    },
+    "budget": { "total": { "title": "Budget", "summary": "Parts, instruments, stations and launch: {{usedK}} k of {{limitK}} k" } },
+    "data": {
+      "generated": { "title": "Data collected", "summary": "Instruments collect {{generatedGbPerDay}} GB a day in sunlight" },
+      "downlink": { "title": "Data sent", "summary": "{{rateKbps}} kbps at {{distanceKm}} km → {{downlinkGbPerDay}} GB a day" }
+    },
+    "comms": { "contacts": { "title": "Contacts", "summary": "{{contactsPerDay}} passes a day, {{contactMinutesPerDay}} min of contact" } },
+    "time": { "ready": { "title": "Schedule", "summary": "Longest part {{buildMonths}} mo + integration {{integrationMonths}} mo = ready in month {{readyMonth}}, launch in month {{launchMonth}}" } },
+    "orbit": {
+      "period": { "title": "Orbit period", "summary": "At {{altitudeKm}} km one orbit takes {{periodMin}} min at {{speedKmS}} km/s" },
+      "eclipse": { "title": "Earth's shadow", "summary": "At {{altitudeKm}} km shadow is {{eclipsePct}}% of the orbit" },
+      "lifetime": { "title": "Orbit lifetime", "summary": "At {{altitudeKm}} km the orbit lasts {{lifetimeYears}} yr" },
+      "disposal": { "title": "Disposal", "summary": "Leaves orbit in {{disposalYears}} yr (limit {{limitYears}})" }
+    },
+    "propellant": { "rocketEquation": { "title": "Propellant", "summary": "Δv {{deltaVms}} m/s with Isp {{ispS}} s needs {{neededKg}} kg of propellant" } }
+  }
+}

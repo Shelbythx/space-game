@@ -46,7 +46,7 @@ export function MainMenu() {
         <p className="mm-group" aria-hidden="true">
           {t('menu.scienceMode')}
         </p>
-        <PixelButton onClick={() => openMode('solo')}>{t('menu.solo')}</PixelButton>
+        <PixelButton onClick={() => go('/blueprint')}>{t('menu.solo')}</PixelButton>
         <PixelButton onClick={() => openMode('coop')}>{t('menu.coop')}</PixelButton>
         <p className="mm-group" aria-hidden="true">
           {t('menu.arcadeMode')}

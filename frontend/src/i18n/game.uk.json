@@ -1,0 +1,196 @@
+{
+  "bp": {
+    "title": "Креслення апарата",
+    "back": "Меню",
+    "stage": { "goal": "Ціль", "concept": "Концепт", "design": "Проєкт", "flight": "Політ", "report": "Звіт" },
+    "version": { "label": "Версія", "simple": "Простіша", "advanced": "Складніша" },
+    "demo": "Демо-розрахунок — сервер місії не на зв'язку",
+    "demoHint": "Числа приблизні, доки не підключено бекенд (задача 004).",
+    "loading": "Завантажуємо каталог…",
+    "evaluating": "Рахуємо…",
+    "error": "Розрахунок не вдався. Змініть будь-яку деталь, щоб спробувати ще раз.",
+    "consoles": "Консолі ролей",
+    "drawing": "Креслення",
+    "feed": "Коментарі ролей",
+    "checks": "Перевірки за сегментами NASA",
+    "noComments": "Зауважень немає — усі ролі задоволені.",
+    "presets": "Готові набори",
+    "orbitStrip": "Один виток: світло, тінь і сеанси",
+    "sunlit": "Світло",
+    "shadow": "Тінь",
+    "contact": "Сеанс: {{station}}",
+    "noContact": "на цьому витку сеансу немає",
+    "launchButton": "Старт місії",
+    "launchSoon": "Політ з'явиться в задачі 010.",
+    "calcOpen": "Як це пораховано?",
+    "calcTitle": "Розрахунковий лист: {{resource}}",
+    "calcEmpty": "Для цього ресурсу розрахунків немає.",
+    "close": "Закрити",
+    "formula": "Формула",
+    "inputs": "Числа",
+    "result": "Результат",
+    "source": "Джерело",
+    "fairing": "Обтічник: {{launch}}",
+    "fits": "вміщується",
+    "doesNotFit": "не вміщується",
+    "earth": "Земля",
+    "sun": "Сонце",
+    "space": "космос",
+    "slotsUsed": "{{used}} / {{slots}} місць",
+    "sideOf": "Сторона",
+    "reserve": "Запас маси: {{value}}%",
+    "reserveRecommended": "NASA радить щонайменше {{value}}% на етапі концепту (GSFC-STD-1000, табл. 1.06-1).",
+    "orbitCustom": "Своя орбіта",
+    "altitude": "Висота, км",
+    "inclination": "Нахил, °",
+    "fixedOrbit": "Попутний запуск летить лише на {{orbit}}.",
+    "requires": "потрібна деталь: {{part}}",
+    "buildMonths": "{{months}} міс. на виготовлення",
+    "sourceNasa": "NASA",
+    "sourceEstimate": "оцінка",
+    "sourceCalculated": "розрахунок",
+    "owner": "Власник: {{role}}",
+    "on": "увімк.",
+    "off": "вимк.",
+    "instrumentsNone": "без інструментів",
+    "stationsNone": "без станцій",
+    "bars": {
+      "mass": "{{used}} з {{limit}} кг",
+      "power": "{{use}} з {{gen}} Вт",
+      "budget": "{{used}} з {{limit}} к",
+      "data": "{{expected}} з {{goal}} ГБ",
+      "comms": "{{minutes}} хв/добу · {{contacts}} сеансів",
+      "time": "старт на {{launch}}-му з {{deadline}} міс."
+    }
+  },
+  "role": { "planner": "Планувальник", "engineer": "Інженер", "scientist": "Науковець", "designer": "Дизайнер" },
+  "resource": { "mass": "Маса", "power": "Енергія", "budget": "Бюджет", "data": "Дані", "comms": "Зв'язок", "time": "Час", "orbit": "Орбіта", "propellant": "Паливо", "rendezvous": "Зближення" },
+  "side": { "earth": "до Землі", "space": "у космос", "sun": "до Сонця", "inside": "всередині" },
+  "busSize": { "small": "малий", "medium": "середній", "large": "великий" },
+  "tier": { "basic": "базова", "medium": "середня", "best": "найкраща" },
+  "segment": { "mission": "Місія", "launch": "Запуск", "space": "Космічний", "ground": "Наземний", "user": "Користувацький" },
+  "category": {
+    "bus": "Корпус", "solar": "Сонячні панелі", "battery": "Батарея", "radio": "Радіо", "computer": "Комп'ютер",
+    "adcs": "Орієнтація", "propulsion": "Рушійна установка", "instruments": "Інструменти", "stations": "Наземні станції",
+    "orbit": "Орбіта", "launch": "Запуск"
+  },
+  "mission": { "satOrbit": { "title": "Супутник на орбіту", "briefing": "Передати 500 ГБ знімків Землі за 12 місяців із бюджетом 450 к і стартом не пізніше 18-го місяця." } },
+  "orbit": { "leo": "Низька 500 км", "sso": "Сонячно-синхронна 705 км", "meo": "Середня 20 200 км", "geo": "Геостаціонарна 35 786 км" },
+  "launch": { "rideshare": "Попутний запуск", "small": "Малий носій", "medium": "Середній носій" },
+  "part": {
+    "busS": "Малий корпус", "busM": "Середній корпус", "busL": "Великий корпус",
+    "solarBody": "Панелі на корпусі", "solarDeploy": "Розкладні панелі", "solarRoll": "Рулонна панель",
+    "batS": "Мала батарея", "batM": "Середня батарея", "batL": "Велика батарея",
+    "radioUhf": "UHF-радіо", "radioS": "S-радіо", "radioX": "X-радіо",
+    "cpuBasic": "Простий комп'ютер", "cpuPower": "Потужний комп'ютер",
+    "adcsBasic": "Базова орієнтація", "adcsFine": "Точна орієнтація",
+    "propNone": "Без двигуна", "propCold": "Холодний газ", "propChem": "Хімічний (зелене монопаливо)", "propElec": "Електричний (іонний)"
+  },
+  "instrument": { "magnetometer": "Магнітометр", "radiometer": "Мікрохвильовий радіометр", "camera": "Багатоспектральна камера", "radar": "Радар" },
+  "station": { "fairbanks": "Аляска (Fairbanks)", "whiteSands": "White Sands", "guam": "Гуам" },
+  "preset": { "thrifty": "Ощадливий", "balanced": "Збалансований", "science": "Максимум науки" },
+  "check": {
+    "mission": {
+      "overBudget": "Бюджет перевищено: {{usedK}} к з {{limitK}} к",
+      "withinBudget": "Бюджет: {{usedK}} к з {{limitK}} к",
+      "launchOnTime": "Старт на {{launchMonth}}-му місяці — строк {{deadlineMonth}}",
+      "launchLate": "Старт на {{launchMonth}}-му місяці — пізніше за {{deadlineMonth}}-й"
+    },
+    "launch": {
+      "capacity": "Носій піднімає {{capacityKg}} кг, апарат — {{massKg}} кг",
+      "overCapacity": "Заважко: {{massKg}} кг, носій піднімає {{capacityKg}} кг",
+      "orbitUnreachable": "{{launchId}} не виводить на {{orbitId}}",
+      "siteInclination": "Космодром на {{latitudeDeg}}° — зміна площини {{planeChangeDeltaVms}} м/с",
+      "busTooLarge": "{{busSize}} корпус не вміщується в обтічник (макс. {{maxBusSize}})"
+    },
+    "space": {
+      "busOverMass": "{{massKg}} кг — більше, ніж витримує корпус ({{busMaxKg}} кг)",
+      "slots": "Не вистачає місць: {{slotsUsed}} з {{slots}}",
+      "powerMargin": "Запас енергії {{marginPct}}%",
+      "powerDeficit": "Брак енергії: запас {{marginPct}}%",
+      "batteryShort": "Тінь потребує {{neededWh}} Вт·год, батарея — {{capacityWh}} Вт·год",
+      "missingRequirement": "{{partId}} потребує {{requiredPartId}}",
+      "wrongSide": "{{partId}} дивиться {{side}}, а має {{expectedSide}}",
+      "massReserveLow": "Запас маси {{reservePct}}% — менше за {{recommendedPct}}%",
+      "propellantMargin": "Паливо: треба {{neededKg}} кг, бак {{capacityKg}} кг",
+      "propellantShort": "Бракує палива: треба {{neededKg}} кг, бак {{capacityKg}} кг",
+      "orbitDecay": "Без двигуна орбіта протримається {{lifetimeYears}} р. — місії треба {{operationYears}}",
+      "disposal": "Зійде з орбіти за {{disposalYears}} р. — у межах правила NASA ({{limitYears}} р.)",
+      "disposalTooLong": "Зійде з орбіти за {{disposalYears}} р. — довше за правило NASA ({{limitYears}} р.)"
+    },
+    "ground": {
+      "dataBacklog": "Збирає {{generatedGbPerDay}} ГБ/добу, передає {{downlinkGbPerDay}} ГБ/добу",
+      "noStation": "Немає наземної станції",
+      "bandMismatch": "{{stationId}} не має діапазону {{band}}",
+      "storageOverflow": "Пам'ять {{storageGb}} ГБ переповнюється: +{{backlogGbPerDay}} ГБ/добу",
+      "relay": "Ретранслятор коштує {{priceK}} к",
+      "dockingWaitsForContact": "Стикування чекає сеансу {{waitHours}} год"
+    },
+    "user": {
+      "goalReached": "Ціль досягнуто: {{expectedGb}} з {{goalGb}} ГБ",
+      "goalMissed": "Ціль не досягнуто: {{expectedGb}} з {{goalGb}} ГБ",
+      "cargoDelivered": "Вантаж доставлено: {{cargoKg}} з {{goalKg}} кг",
+      "cargoShort": "Бракує вантажу: {{cargoKg}} з {{goalKg}} кг",
+      "scienceShareLow": "Науковий вантаж {{sciencePct}}% — менше за {{scienceMinPct}}%",
+      "dockingLate": "Стикування на {{dockingDays}}-ту добу — строк {{deadlineDays}}"
+    }
+  },
+  "comment": {
+    "planner": {
+      "overBudget": "Ми виходимо за бюджет на {{overK}} к.",
+      "launchLate": "Не встигаємо на старт: запізнення {{lateMonths}} міс.",
+      "relayCost": "Ретранслятор коштує {{priceK}} к.",
+      "launchSiteLatitude": "Старт із {{latitudeDeg}}° коштує {{planeChangeDeltaVms}} м/с на зміну площини."
+    },
+    "engineer": {
+      "powerMarginLow": "Запас енергії лише {{marginPct}}%.",
+      "batteryShortInEclipse": "У тіні треба {{neededWh}} Вт·год, батарея тримає {{capacityWh}} Вт·год.",
+      "noPropulsionDecay": "Без двигуна орбіта протримається {{lifetimeYears}} р., а місія — {{operationYears}} р.",
+      "propellantShort": "Треба {{neededKg}} кг палива, у баку {{capacityKg}} кг.",
+      "disposalTooLong": "Після місії апарат лишиться на орбіті {{disposalYears}} р.",
+      "electricPropulsionPower": "Іонному двигуну під час роботи треба {{powerW}} Вт.",
+      "storageSmall": "Пам'яті {{storageGb}} ГБ, а черга даних росте на {{backlogGbPerDay}} ГБ за добу."
+    },
+    "designer": {
+      "overMass": "{{massKg}} кг — корпус витримує {{limitKg}} кг.",
+      "noSlots": "{{slotsUsed}} деталей на {{slots}} місць.",
+      "propellantMass": "Паливо {{propellantKg}} кг, а бак — {{capacityKg}} кг.",
+      "busTooLarge": "{{busSize}} корпус не влазить, обтічник бере {{maxBusSize}}.",
+      "wrongSide": "{{partId}} дивиться {{side}}; працює, коли дивиться {{expectedSide}}.",
+      "massReserveLow": "Запас маси {{reservePct}}% — менше за рекомендовані {{recommendedPct}}%."
+    },
+    "scientist": {
+      "dataBacklog": "Збираємо {{generatedGbPerDay}} ГБ на добу, а передаємо лише {{downlinkGbPerDay}}.",
+      "goalMissed": "На Землю дійде лише {{expectedGb}} з {{goalGb}} ГБ.",
+      "scienceCargoLow": "Наука — {{sciencePct}}% вантажу, а треба {{scienceMinPct}}%.",
+      "bandMismatch": "Станція не чує радіо діапазону {{band}}."
+    }
+  },
+  "advice": {
+    "planner": { "cheaperLaunchOrParts": "Оберіть дешевший запуск або простіші деталі.", "simplerParts": "Простіші деталі виготовляють швидше.", "groundOnly": "Спробуйте лише наземні станції.", "lowerLatitudeSite": "Стартуйте з космодрому ближче до нахилу станції." },
+    "engineer": { "biggerPanels": "Візьміть більші сонячні панелі.", "biggerBattery": "Візьміть більшу батарею.", "addPropulsion": "Додайте двигун.", "biggerTankOrHigherIsp": "Візьміть двигун з більшим запасом палива або вищим Isp.", "biggerStorage": "Візьміть комп'ютер із більшою пам'яттю." },
+    "designer": { "lighterParts": "Легші деталі або більший корпус.", "biggerBus": "Візьміть більший корпус.", "lowerInsertion": "Опустіть орбіту виведення.", "smallerBusOrLaunch": "Менший корпус або більший носій.", "turnPart": "Поверніть деталь робочою стороною.", "raiseReserve": "Збільште запас маси." },
+    "scientist": { "fasterRadioOrStations": "Швидше радіо або більше станцій.", "betterInstrument": "Кращий інструмент або швидше радіо.", "moreScienceCargo": "Завантажте більше наукового вантажу.", "matchStationBand": "Оберіть станції з діапазоном вашого радіо." }
+  },
+  "calc": {
+    "mass": { "total": { "title": "Маса із запасом", "summary": "{{usedKg}} кг + {{reservePct}}% запасу = {{withReserveKg}} кг; носій піднімає {{capacityKg}} кг" } },
+    "power": {
+      "balance": { "title": "Енергобаланс", "summary": "У середньому {{averageGenerationW}} Вт надходить, {{averageConsumptionW}} Вт витрачається → запас {{marginPct}}%" },
+      "eclipseBattery": { "title": "Батарея на тінь", "summary": "Тінь — {{eclipsePct}}% витка → батарея має віддати {{neededWh}} Вт·год" }
+    },
+    "budget": { "total": { "title": "Бюджет", "summary": "Деталі, інструменти, станції й запуск: {{usedK}} к з {{limitK}} к" } },
+    "data": {
+      "generated": { "title": "Зібрані дані", "summary": "Інструменти збирають {{generatedGbPerDay}} ГБ на добу на світлі" },
+      "downlink": { "title": "Передані дані", "summary": "{{rateKbps}} кбіт/с на відстані {{distanceKm}} км → {{downlinkGbPerDay}} ГБ на добу" }
+    },
+    "comms": { "contacts": { "title": "Сеанси зв'язку", "summary": "{{contactsPerDay}} сеансів на добу, {{contactMinutesPerDay}} хв зв'язку" } },
+    "time": { "ready": { "title": "Графік", "summary": "Найдовша деталь {{buildMonths}} міс. + інтеграція {{integrationMonths}} міс. = готовність на {{readyMonth}}-му місяці, старт на {{launchMonth}}-му" } },
+    "orbit": {
+      "period": { "title": "Період орбіти", "summary": "На {{altitudeKm}} км виток триває {{periodMin}} хв зі швидкістю {{speedKmS}} км/с" },
+      "eclipse": { "title": "Тінь Землі", "summary": "На {{altitudeKm}} км тінь — {{eclipsePct}}% витка" },
+      "lifetime": { "title": "Час життя орбіти", "summary": "На {{altitudeKm}} км орбіта триматиметься {{lifetimeYears}} р." },
+      "disposal": { "title": "Відведення", "summary": "Зійде з орбіти за {{disposalYears}} р. (межа {{limitYears}})" }
+    },
+    "propellant": { "rocketEquation": { "title": "Паливо", "summary": "Δv {{deltaVms}} м/с при Isp {{ispS}} с потребує {{neededKg}} кг палива" } }
+  }
+}

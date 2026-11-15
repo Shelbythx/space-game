@@ -1,4 +1,5 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
+import { BlueprintPage } from './blueprint/BlueprintPage'
 import { LanguageScreen } from './menu/LanguageScreen'
 import { MainMenu } from './menu/MainMenu'
 import { MenuLayout } from './menu/MenuLayout'
@@ -12,6 +13,8 @@ export default function App() {
     <SettingsProvider>
       <HashRouter>
         <Routes>
+          {/* Temporary entry until task 008 adds mission choice and stages. */}
+          <Route path="blueprint" element={<BlueprintPage />} />
           <Route element={<MenuLayout />}>
             <Route index element={<MainMenu />} />
             <Route path="settings" element={<SettingsScreen />} />
