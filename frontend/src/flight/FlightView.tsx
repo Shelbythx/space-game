@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { playCue } from '../audio/cues'
 import { SettingsContext } from '../settings/context'
+import { useReportText } from '../report/reportText'
 import { EventStrip } from './EventStrip'
 import { FlightMap } from './FlightMap'
 import { Gauge } from './Gauge'
@@ -20,6 +21,11 @@ interface Props {
   goalGb?: number
   /** Called from the "To the report" button once the replay has ended. */
   onFinish?: () => void
+  /** Which series to show as gauges and in what order (missions differ: the CubeSat watches
+   * its altitude, the ISS ship has no science data). Default — all five. */
+  gauges?: SeriesKey[]
+  /** Heading of the screen; default «Flight»; null keeps it for screen readers only. */
+  title?: string | null
 }
 
 const GAUGES: Array<{ key: SeriesKey; unit: 'pct' | 'gb' | 'km' | 'kg'; digits: number }> = [
@@ -41,8 +47,11 @@ function endsMission(event: FlightEvent): boolean {
  * Flight stage (task 010): replays one simulation on a flat map of the Earth. Everything
  * shown — track, shadow, contacts, series, events — comes from the backend (D59).
  */
-export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
+export function FlightView({ simulation, stations, goalGb, onFinish, gauges, title }: Props) {
   const { t, i18n } = useTranslation([FLIGHT_NS, 'translation'])
+  // Event texts are the game's (same wording as the report), with part names and numbers
+  // formatted for the language.
+  const { say } = useReportText()
   const { timeline, groundTrack, contacts, events } = simulation
 
   const lastDay = timeline.days[timeline.days.length - 1] ?? 0
@@ -74,6 +83,8 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
 
   const delivered = sampleSeries(timeline.dataDeliveredGb, index)
   const expected = goalGb && lastDay > 0 ? (goalGb * day) / lastDay : 0
+  // Small goals (the CubeSat's 2 GB) need decimals to show progress.
+  const goalDigits = goalGb !== undefined && goalGb < 10 ? 2 : 0
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -97,9 +108,9 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
   }, [day, lastDay, nextEvent, seek, toggle, setSpeed])
 
   return (
-    <section className="fl" aria-label={t('title')}>
+    <section className="fl" aria-label={title ?? t('title')}>
       <header className="fl-head">
-        <h2 className="fl-head__title">{t('title')}</h2>
+        <h2 className={title === null ? 'bp-sr' : 'fl-head__title'}>{title ?? t('title')}</h2>
         <div className="fl-head__day">{t('day', { day: Math.floor(day), total: lastDay })}</div>
         {(playback.finished || lost) && (
           <div className={`fl-head__status${lost ? ' fl-head__status--lost' : ''}`}>
@@ -165,7 +176,7 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
               <span className="fl-event__type">{t(`eventType.${latest.type}`)}</span>
               <span className="fl-event__day">{t('events.dayLabel', { day: latest.day })}</span>
             </div>
-            <div className="fl-event__text">{t(latest.message.code, latest.message.params)}</div>
+            <div className="fl-event__text">{say(latest.message)}</div>
             <div className="fl-event__source">
               {latest.source.kind === 'donki' && latest.source.observedAt
                 ? t('events.donki', {
@@ -190,19 +201,19 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
             <span className="fl-goal__value">
               {delivered >= goalGb
                 ? t('goal.reached')
-                : t('goal.data', { delivered: number(delivered, 0), goal: number(goalGb, 0) })}
+                : t('goal.data', { delivered: number(delivered, goalDigits), goal: number(goalGb, 0) })}
             </span>
           </div>
           <div className="fl-goal__bar">
             <div className="fl-goal__fill" style={{ width: `${Math.min(100, (delivered / goalGb) * 100)}%` }} />
             <div className="fl-goal__pace" style={{ left: `${Math.min(100, (expected / goalGb) * 100)}%` }} />
           </div>
-          <div className="fl-goal__note">{t('goal.pace', { expected: number(expected, 0) })}</div>
+          <div className="fl-goal__note">{t('goal.pace', { expected: number(expected, goalDigits) })}</div>
         </div>
       )}
 
       <div className="fl-gauges">
-        {GAUGES.map(({ key, unit, digits }) => (
+        {(gauges ? gauges.map((key) => GAUGES.find((g) => g.key === key)!) : GAUGES).map(({ key, unit, digits }) => (
           <Gauge
             key={key}
             label={t(`gauge.${key}`)}
@@ -222,7 +233,7 @@ export function FlightView({ simulation, stations, goalGb, onFinish }: Props) {
             const name =
               contact.stationId === 'tdrs'
                 ? t('stations.tdrs')
-                : t(station?.nameCode ?? contact.stationId, { defaultValue: contact.stationId })
+                : t(station?.nameCode ?? contact.stationId, { ns: 'translation', defaultValue: contact.stationId })
             return (
               <li key={contact.stationId} className={contact.contactsPerDay > 0 ? undefined : 'fl-stations__silent'}>
                 <span className="fl-stations__name">{name}</span>

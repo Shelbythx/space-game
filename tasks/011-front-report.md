@@ -31,7 +31,29 @@
 
 ## Нотатки
 
+- 15.11.2026, інтеграція (`integration/release`, рішення команди): для звіту обрано версію
+  TheAdvental — `ReportView` і простір i18n `report`. Паралельна версія Svyatoslav Maliuga
+  (`task/011-front-report`) прийшла разом із ланцюжком 033; з неї лишається обгортка етапу
+  (`ReportStage.tsx`, `simulation.ts`, `demoReport.ts`), яка має показувати `ReportView`.
+
+### Версія TheAdvental (`task/011-024-theadvental`)
+
 - 15.11.2026 (TheAdvental): компонент `ReportView` (`report`, `previous`, `onGoTo`) у `frontend/src/report/`; тексти — простір i18n `report` (усі `check.*`, `chain.*`, `bottleneck.*` з контракту v2.1, en і uk). Підключення в етап «Звіт» і запит попередньої спроби (`GET /api/attempts`) — у задачі 008.
 - Перевірено на демо-сторінці `/src/report/demo/index.html` з вигаданими даними (місія 1 і МКС, обидві мови). На відповіді живого бекенду не перевірено. Фото схожої місії не показується — фото NASA (020) ще немає.
 - Параметри `bottleneck` бекенд називає по-різному для місій (`usedGb`/`usedKg`, `usedGbPerDay`/`usedHours`) — у контракті цього не описано; звіт обробляє обидва варіанти.
-  **Увага:** Svyatoslav Maliuga окремо зробив цю ж задачу в гілці `origin/task/011-front-report` (ще не влитій у `main`) у тих самих папках. Влити можна лише одну версію — команді треба обрати; друга при злитті дасть конфлікт.
+
+### Версія Svyatoslav Maliuga (`task/011-front-report`)
+
+- 15.11.2026: зроблено в `frontend/src/report/`: `ReportStage.tsx` (сегменти з ланцюжками й
+  формулами, вузьке місце, чотири бали з формулами, ліміти, події з датою й Kp бур DONKI, схожа
+  місія, попередня спроба, кнопки на будь-який етап), `simulation.ts` (одна симуляція на проєкт,
+  спільна з етапом «Політ» 010; seed пам'ятається на місію, тож перезавантаження показує той самий
+  політ і не зберігає спробу вдруге), `demoReport.ts` (без сервера — перевірки за сегментами й
+  вузьке місце за найменшим запасом, з позначкою «Демо-звіт»).
+- Поза зоною: `frontend/src/api/types.ts` (типи `simulate` за контрактом 2.1: `timeline`,
+  `groundTrack`, `contacts`, `rendezvous`, `events[].source`, `report.comparison`),
+  `frontend/src/api/client.ts` (тайм-аут 45 с для `simulate` і `attempts` — перший виклик чекає
+  DONKI), `frontend/src/App.tsx` і `frontend/src/mission/LaterStages.tsx` (заглушку звіту
+  прибрано), переклади `frontend/src/i18n/game.{en,uk}.json`.
+- Спроби: в `AttemptSummary` немає `missionId`, тому фронтенд пам'ятає id спроб кожної місії в
+  `localStorage` (`smdg.attempts.<missionId>`) і порівнює лише з ними.

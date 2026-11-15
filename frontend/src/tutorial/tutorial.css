@@ -1,0 +1,115 @@
+/* Training hints (task 025): a dashed sun-yellow card above the stage, on the blueprint paper. */
+
+.tt-panel {
+  max-width: 1100px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: rgba(255, 209, 102, 0.06);
+  border-top: 2px solid var(--bp-warn);
+  color: var(--bp-ink);
+}
+
+.tt-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+}
+
+.tt-head h3 {
+  margin: 0;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--bp-warn);
+}
+
+.tt-toggle {
+  margin-left: auto;
+  padding: 2px 8px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--bp-ink);
+  background: transparent;
+  border: 1px solid var(--bp-line-dim);
+  cursor: pointer;
+}
+
+.tt-toggle:focus-visible {
+  outline: 2px solid var(--bp-warn);
+  outline-offset: 2px;
+}
+
+.tt-body p {
+  margin: 6px 0 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.tt-body b {
+  font-weight: 600;
+  color: var(--bp-warn);
+}
+
+.tt-now {
+  padding: 6px 8px;
+  background: rgba(15, 36, 64, 0.85);
+}
+
+.tt-terms {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.tt-terms-label {
+  font-size: 13px;
+  line-height: 26px;
+  color: var(--bp-ink-dim);
+}
+
+.tt-term {
+  min-width: 0;
+  max-width: 100%;
+  background: rgba(15, 36, 64, 0.85);
+  border: 1px solid var(--bp-line-dim);
+}
+
+.tt-term summary::-webkit-details-marker {
+  display: none;
+}
+
+.tt-term summary::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' shape-rendering='crispEdges'%3E%3Cpath fill='%235cc8ff' d='M3 1h2v2h2v2H5v2H3V5H1V3h2z'/%3E%3C/svg%3E") center / 8px no-repeat;
+}
+
+.tt-term[open] summary::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' shape-rendering='crispEdges'%3E%3Cpath fill='%235cc8ff' d='M1 3h6v2H1z'/%3E%3C/svg%3E");
+}
+
+.tt-term summary {
+  list-style: none;
+  padding: 2px 8px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--bp-line);
+  cursor: pointer;
+}
+
+.tt-term[open] {
+  flex-basis: 100%;
+}
+
+.tt-term p {
+  margin: 0;
+  padding: 2px 8px 8px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--bp-ink);
+}

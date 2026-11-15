@@ -54,16 +54,69 @@ async function request<T>(path: string, init?: RequestInit & { timeoutMs?: numbe
   return (await response.json()) as T
 }
 
-const post = <T>(path: string, body: unknown) => request<T>(path, { method: 'POST', body: JSON.stringify(body) })
+const post = <T>(path: string, body: unknown, timeoutMs?: number) =>
+  request<T>(path, { method: 'POST', body: JSON.stringify(body), timeoutMs })
+
+// Offline demo when the mission server cannot be reached (the backend exists since tasks
+// 002–006; keeping the demo is an open question in docs/decisions.md). VITE_API_MOCK:
+// "always" — never call the server; "never" — no fallback; default "auto" — use the demo
+// when the server is unreachable. The UI shows a "demo calculation" badge.
+const MOCK_MODE = (import.meta.env.VITE_API_MOCK ?? 'auto') as 'always' | 'never' | 'auto'
+let demo = MOCK_MODE === 'always'
+const demoListeners = new Set<() => void>()
+const setDemo = (value: boolean) => {
+  if (demo === value) return
+  demo = value
+  demoListeners.forEach((l) => l())
+}
+export const demoMode = {
+  get: () => demo,
+  subscribe: (listener: () => void) => {
+    demoListeners.add(listener)
+    return () => demoListeners.delete(listener)
+  },
+}
+
+async function withDemo<T>(real: () => Promise<T>, fake: () => Promise<T>): Promise<T> {
+  if (MOCK_MODE === 'always') return fake()
+  if (demo && MOCK_MODE === 'auto') return fake()
+  try {
+    const result = await real()
+    setDemo(false)
+    return result
+  } catch (error) {
+    if (MOCK_MODE === 'auto' && error instanceof ApiError && (error.status === 0 || error.status === 404)) {
+      setDemo(true)
+      return fake()
+    }
+    throw error
+  }
+}
 
 export const api = {
   health: (timeoutMs?: number) => request<Health>('/api/health', { timeoutMs }),
-  missions: () => request<MissionSummary[]>('/api/missions'),
-  mission: (id: string) => request<Mission>(`/api/missions/${encodeURIComponent(id)}`),
-  evaluate: (design: Design) => post<Evaluation>('/api/evaluate', design),
-  simulate: (body: SimulationRequest) => post<SimulationResult>('/api/simulate', body),
+  missions: () =>
+    withDemo(
+      () => request<MissionSummary[]>('/api/missions', { timeoutMs: 4000 }),
+      async () => (await import('./mock/catalog')).mockMissions,
+    ),
+  mission: (id: string) =>
+    withDemo(
+      () => request<Mission>(`/api/missions/${encodeURIComponent(id)}`, { timeoutMs: 4000 }),
+      async () => (await import('./mock/catalog')).mockMissionById(id),
+    ),
+  evaluate: (design: Design) =>
+    withDemo(
+      () => post<Evaluation>('/api/evaluate', design),
+      async () => {
+        const [{ mockEvaluate }, { mockMissionById }] = await Promise.all([import('./mock/evaluate'), import('./mock/catalog')])
+        return mockEvaluate(design, mockMissionById(design.missionId))
+      },
+    ),
+  // Simulation may wait for NASA DONKI on the first call (task 021), so it gets more time.
+  simulate: (body: SimulationRequest) => post<SimulationResult>('/api/simulate', body, 45000),
   saveAttempt: (body: { playerId: string; design: Design; seed: number }) =>
-    post<AttemptSummary>('/api/attempts', body),
+    post<AttemptSummary>('/api/attempts', body, 45000),
   attempts: (playerId: string) =>
     request<AttemptSummary[]>(`/api/attempts?playerId=${encodeURIComponent(playerId)}`),
   attempt: (id: string) => request<Attempt>(`/api/attempts/${encodeURIComponent(id)}`),

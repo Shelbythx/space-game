@@ -27,8 +27,34 @@
 
 ## Нотатки
 
+- 15.11.2026, інтеграція (`integration/release`, рішення команди): для польоту до МКС обрано
+  версію TheAdvental — `RendezvousView` і `rendezvous.css`. З паралельної версії Svyatoslav
+  Maliuga (`task/024-front-rendezvous`) лишаються вибір МКС у концепті й проєкті
+  (`rendezvous/IssControls.tsx`), демо-каталог МКС і підключення в етапі «Політ»
+  (`mission/LaterStages.tsx`), яке має викликати `RendezvousView` TheAdvental.
+
+### Версія TheAdvental (`task/011-024-theadvental`)
+
 - 15.11.2026 (TheAdvental): компонент `RendezvousView` (`profile` = `simulate.rendezvous`, `deadlineDays`, `onFinish`) у `frontend/src/rendezvous/`: вид згори на дві орбіти, кут фазування, етапи (фазування → перехід Гомана → підхід → стикування), лічильники кута, висоти й палива. Схема не в масштабі; кут, висоту й паливо бере лише з бекенду.
-- Етапи концепту місії 2 (космодром, орбіта виведення, TDRS) — це вибір у концепті, тобто задачі 008/009; тут не робилось.
-- Підключення: у етапі «Політ» для `kind: iss` показувати `RendezvousView` замість `FlightView` (задача 008).
 - Перевірено на демо-сторінці `/src/rendezvous/demo/index.html` з вигаданими даними, обидві мови, ширина телефона. На відповіді живого бекенду не перевірено.
-  **Увага:** Svyatoslav Maliuga окремо зробив цю ж задачу в гілці `origin/task/024-front-rendezvous` (ще не влитій у `main`) у тих самих папках. Влити можна лише одну версію — команді треба обрати; друга при злитті дасть конфлікт.
+
+### Версія Svyatoslav Maliuga (`task/024-front-rendezvous`)
+
+- 15.11.2026: місію «Вантаж на МКС» відкрито в грі на всіх п'яти етапах.
+  - «Ціль»: вантаж, частка науки, строк стикування, бюджет, старт, запас маси.
+  - «Концепт» і «Проєкт»: `rendezvous/IssControls.tsx` — Планувальник обирає космодром,
+    орбіту виведення (150–350 км) і ретранслятор TDRS; Науковець набирає вантаж за категоріями
+    CRS. Однаково в простішій (перемикачі) і складнішій (консоль ролі) версіях. «Концепт» показує
+    Δv Гомана, найдовше фазування й зміну площини з `evaluate.rendezvous`.
+  - Панель ресурсів: замість «Даних» — «Вантаж» (завантажено / ціль, частка науки); зв'язок через
+    TDRS — «без перерв».
+- Демо без сервера: `frontend/src/api/mock/catalog.ts` має копію каталогу `iss-cargo` з
+  бекенду, `api/mock/evaluateIss.ts` — спрощену копію розрахунку `Evaluator.cs` для МКС (лише
+  для демо-режиму, з банером).
+- Поза зоною: `api/types.ts` (поля МКС у `Design`, `goal`, `LaunchSite`, `CargoCategory`,
+  `cargo`, `rendezvous`), `blueprint/useBlueprint.ts` (дії й нормалізація для МКС),
+  `blueprint/SimpleControls.tsx`, `Consoles.tsx`, `ResourcePanel.tsx`, `Cycle.tsx` (перемикач
+  винесено в окремий файл), `mission/GoalStage.tsx`, `ConceptStage.tsx`, `LaterStages.tsx`,
+  `MissionShell.tsx`, `MissionSelect.tsx`, `report/demoReport.ts`, `api/mock/*`, переклади.
+- `flight/FlightView.tsx`: для малих цілей (CubeSat, 2 ГБ) прогрес даних показується з двома
+  знаками після коми.

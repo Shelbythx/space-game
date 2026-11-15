@@ -5,7 +5,7 @@ import { useSfx } from '../settings/sfx'
 import { PixelButton } from './PixelControls'
 import { useMenuKeys } from './useMenuKeys'
 
-type Mode = 'solo' | 'coop' | 'arcade'
+type Mode = 'coop' | 'arcade'
 
 export function MainMenu() {
   const { t } = useTranslation()
@@ -21,7 +21,7 @@ export function MainMenu() {
     return () => window.clearTimeout(id)
   }, [notice])
 
-  // The three modes are built in later tasks; until then they say so.
+  // Co-op and Arcade come after the solo mode (D78, D96); until then they say so.
   const openMode = (mode: Mode) => {
     sfx('deny')
     setNotice(mode)
@@ -46,7 +46,7 @@ export function MainMenu() {
         <p className="mm-group" aria-hidden="true">
           {t('menu.scienceMode')}
         </p>
-        <PixelButton onClick={() => openMode('solo')}>{t('menu.solo')}</PixelButton>
+        <PixelButton onClick={() => go('/missions')}>{t('menu.solo')}</PixelButton>
         <PixelButton onClick={() => openMode('coop')}>{t('menu.coop')}</PixelButton>
         <p className="mm-group" aria-hidden="true">
           {t('menu.arcadeMode')}
@@ -56,6 +56,9 @@ export function MainMenu() {
           <PixelButton onClick={() => go('/settings')}>{t('menu.settings')}</PixelButton>
           <PixelButton onClick={() => go('/language')}>{t('menu.language')}</PixelButton>
         </div>
+        <PixelButton className="mm-footer-link" onClick={() => go('/credits')}>
+          {t('flow.creditsButton')}
+        </PixelButton>
       </nav>
 
       <div className="mm-toast-slot" role="status" aria-live="polite">

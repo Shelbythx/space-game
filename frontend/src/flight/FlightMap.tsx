@@ -86,7 +86,7 @@ export function FlightMap({ groundTrack, stations, contacts, trackPhase, activeE
             {inContact && craft && <line className="fl-station__link" x1={x} y1={y} x2={craftX} y2={craftY} />}
             <rect className="fl-station__dot" x={x - 1.6} y={y - 1.6} width={3.2} height={3.2} />
             <text className="fl-station__name" x={x + 3} y={y - 2.5}>
-              {t(station.nameCode, { defaultValue: station.id })}
+              {t(station.nameCode, { ns: 'translation', defaultValue: station.id })}
             </text>
           </g>
         )

@@ -1,0 +1,865 @@
+{
+  "bp": {
+    "title": "Spacecraft blueprint",
+    "back": "Menu",
+    "stage": {
+      "goal": "Goal",
+      "concept": "Concept",
+      "design": "Design",
+      "flight": "Flight",
+      "report": "Report"
+    },
+    "version": {
+      "label": "Version",
+      "simple": "Simple",
+      "advanced": "Advanced"
+    },
+    "demo": "Demo calculation — the mission server is offline",
+    "demoHint": "Numbers are approximate: the game calculates them in the browser until the mission server is running.",
+    "loading": "Loading the catalog…",
+    "evaluating": "Calculating…",
+    "error": "The calculation failed. Change any part to try again.",
+    "consoles": "Role consoles",
+    "drawing": "Drawing",
+    "feed": "Role comments",
+    "checks": "Checks by NASA segment",
+    "noComments": "No remarks — every role is satisfied.",
+    "presets": "Ready-made sets",
+    "orbitStrip": "One orbit: light, shadow and contacts",
+    "sunlit": "Sunlight",
+    "shadow": "Shadow",
+    "contact": "Contact: {{station}}",
+    "noContact": "no contact on this orbit",
+    "launchButton": "Launch mission",
+    "calcOpen": "How is this calculated?",
+    "calcTitle": "Calculation sheet: {{resource}}",
+    "calcEmpty": "No calculations for this resource.",
+    "close": "Close",
+    "formula": "Formula",
+    "inputs": "Values",
+    "result": "Result",
+    "source": "Source",
+    "fairing": "Fairing: {{launch}}",
+    "fits": "fits",
+    "doesNotFit": "does not fit",
+    "earth": "Earth",
+    "sun": "Sun",
+    "space": "space",
+    "slotsUsed": "{{used}} / {{slots}} slots",
+    "sideOf": "Side",
+    "reserve": "Mass margin: {{value}}%",
+    "reserveRecommended": "NASA recommends at least {{value}}% at the concept stage (GSFC-STD-1000, Table 1.06-1).",
+    "orbitCustom": "Custom orbit",
+    "altitude": "Altitude, km",
+    "inclination": "Inclination, °",
+    "fixedOrbit": "Rideshare flies only to {{orbit}}.",
+    "requires": "needs {{part}}",
+    "buildMonths": "{{months}} mo to build",
+    "sourceNasa": "NASA",
+    "sourceEstimate": "estimate",
+    "sourceCalculated": "calculated",
+    "owner": "Owner: {{role}}",
+    "on": "on",
+    "off": "off",
+    "instrumentsNone": "no instruments",
+    "stationsNone": "no stations",
+    "bars": {
+      "mass": "{{used}} of {{limit}} kg",
+      "power": "{{use}} of {{gen}} W",
+      "budget": "{{used}} of {{limit}} k",
+      "data": "{{expected}} of {{goal}} GB",
+      "comms": "{{minutes}} min/day · {{contacts}} passes",
+      "time": "launch month {{launch}} of {{deadline}}",
+      "cargo": "{{loaded}} of {{goal}} kg · science {{science}}%",
+      "commsRelay": "non-stop via TDRS"
+    }
+  },
+  "role": {
+    "planner": "Planner",
+    "engineer": "Engineer",
+    "scientist": "Scientist",
+    "designer": "Designer"
+  },
+  "resource": {
+    "mass": "Mass",
+    "power": "Power",
+    "budget": "Budget",
+    "data": "Data",
+    "comms": "Comms",
+    "time": "Time",
+    "orbit": "Orbit",
+    "propellant": "Propellant",
+    "rendezvous": "Rendezvous",
+    "cargo": "Cargo"
+  },
+  "side": {
+    "earth": "to Earth",
+    "space": "to space",
+    "sun": "to the Sun",
+    "inside": "inside"
+  },
+  "busSize": {
+    "small": "small",
+    "medium": "medium",
+    "large": "large"
+  },
+  "tier": {
+    "basic": "basic",
+    "medium": "medium",
+    "best": "best"
+  },
+  "segment": {
+    "mission": "Mission",
+    "launch": "Launch",
+    "space": "Space",
+    "ground": "Ground",
+    "user": "User"
+  },
+  "category": {
+    "bus": "Bus",
+    "solar": "Solar arrays",
+    "battery": "Battery",
+    "radio": "Radio",
+    "computer": "Computer",
+    "adcs": "Attitude control",
+    "propulsion": "Propulsion",
+    "instruments": "Instruments",
+    "stations": "Ground stations",
+    "orbit": "Orbit",
+    "launch": "Launch",
+    "cargo": "Cargo"
+  },
+  "mission": {
+    "satOrbit": {
+      "title": "Satellite to orbit",
+      "briefing": "Deliver 500 GB of Earth images in 12 months on a 450 k budget, launching within 18 months."
+    },
+    "cubesatLearn": {
+      "title": "First CubeSat",
+      "briefing": "Training: a small satellite released from the ISS must send 2 GB of measurements in 6 months on a 150 k budget."
+    },
+    "issCargo": {
+      "title": "Cargo to the ISS",
+      "briefing": "Deliver cargo to the International Space Station on time: launch site, insertion orbit, rendezvous and docking."
+    }
+  },
+  "orbit": {
+    "leo": "Low orbit 500 km",
+    "sso": "Sun-synchronous 705 km",
+    "meo": "Medium orbit 20 200 km",
+    "geo": "Geostationary 35 786 km",
+    "issDeploy": "Release from the ISS 415 km",
+    "iss": "ISS orbit 418 km"
+  },
+  "launch": {
+    "rideshare": "Rideshare",
+    "small": "Small launcher",
+    "medium": "Medium launcher",
+    "issDeploy": "Delivery to the ISS",
+    "heavy": "Heavy launcher"
+  },
+  "part": {
+    "busS": "Small bus",
+    "busM": "Medium bus",
+    "busL": "Large bus",
+    "solarBody": "Body-mounted panels",
+    "solarDeploy": "Deployable panels",
+    "solarRoll": "Roll-out array",
+    "batS": "Small battery",
+    "batM": "Medium battery",
+    "batL": "Large battery",
+    "radioUhf": "UHF radio",
+    "radioS": "S-band radio",
+    "radioX": "X-band radio",
+    "cpuBasic": "Simple computer",
+    "cpuPower": "Powerful computer",
+    "adcsBasic": "Basic attitude control",
+    "adcsFine": "Fine attitude control",
+    "propNone": "No engine",
+    "propCold": "Cold gas",
+    "propChem": "Chemical (green monoprop)",
+    "propElec": "Electric (ion)",
+    "shipSmall": "Small cargo ship",
+    "shipPressurized": "Pressurized cargo ship",
+    "propBiprop": "Bipropellant engine",
+    "propBipropXl": "Bipropellant, large tank"
+  },
+  "instrument": {
+    "magnetometer": "Magnetometer",
+    "radiometer": "Microwave radiometer",
+    "camera": "Multispectral camera",
+    "radar": "Radar"
+  },
+  "station": {
+    "fairbanks": "Alaska (Fairbanks)",
+    "whiteSands": "White Sands",
+    "guam": "Guam"
+  },
+  "preset": {
+    "satOrbit": {
+      "radiometerRideshare": "Radiometer on a rideshare",
+      "cameraSmall": "Camera on a small launcher"
+    },
+    "cubesatLearn": {
+      "first": "First CubeSat"
+    },
+    "issCargo": {
+      "capeMedium": "Canaveral, medium launcher"
+    }
+  },
+  "check": {
+    "mission": {
+      "overBudget": "Budget exceeded: {{usedK}} k of {{limitK}} k",
+      "withinBudget": "Budget: {{usedK}} k of {{limitK}} k",
+      "launchOnTime": "Launch in month {{launchMonth}} — deadline {{deadlineMonth}}",
+      "launchLate": "Launch in month {{launchMonth}} — later than month {{deadlineMonth}}"
+    },
+    "launch": {
+      "capacity": "The launcher lifts {{capacityKg}} kg, the spacecraft is {{massKg}} kg",
+      "overCapacity": "Too heavy: {{massKg}} kg, the launcher lifts {{capacityKg}} kg",
+      "orbitUnreachable": "{{launchId}} cannot reach this orbit ({{orbitId}})",
+      "siteInclination": "Launch site at {{latitudeDeg}}° needs a plane change of {{planeChangeDeltaVms}} m/s",
+      "busTooLarge": "The bus is too big for the fairing: {{busSize}}, the fairing takes up to {{maxBusSize}}"
+    },
+    "space": {
+      "busOverMass": "{{massKg}} kg — more than the bus carries ({{busMaxKg}} kg)",
+      "slots": "Not enough slots: {{slotsUsed}} of {{slots}}",
+      "powerMargin": "Power margin {{marginPct}}%",
+      "powerDeficit": "Power deficit: margin {{marginPct}}%",
+      "batteryShort": "The shadow needs {{neededWh}} Wh, the battery holds {{capacityWh}} Wh",
+      "missingRequirement": "{{partId}} needs {{requiredPartId}}",
+      "wrongSide": "{{partId}} faces {{side}} but should face {{expectedSide}}",
+      "massReserveLow": "Mass margin {{reservePct}}% — below {{recommendedPct}}%",
+      "propellantMargin": "Propellant: needs {{neededKg}} kg, tank {{capacityKg}} kg",
+      "propellantShort": "Not enough propellant: needs {{neededKg}} kg, tank {{capacityKg}} kg",
+      "orbitDecay": "Without an engine the orbit lasts {{lifetimeYears}} yr — the mission needs {{operationYears}}",
+      "disposal": "Leaves orbit in {{disposalYears}} yr — within the {{limitYears}}-year NASA rule",
+      "disposalTooLong": "Leaves orbit in {{disposalYears}} yr — longer than the {{limitYears}}-year NASA rule"
+    },
+    "ground": {
+      "dataBacklog": "Collects {{generatedGbPerDay}} GB/day, sends {{downlinkGbPerDay}} GB/day",
+      "noStation": "No ground station",
+      "bandMismatch": "{{stationId}} has no {{band}} band",
+      "storageOverflow": "Memory {{storageGb}} GB fills up: +{{backlogGbPerDay}} GB/day",
+      "relay": "Relay costs {{priceK}} k",
+      "dockingWaitsForContact": "Docking waits {{waitHours}} h for a contact"
+    },
+    "user": {
+      "goalReached": "Goal reached: {{expectedGb}} of {{goalGb}} GB",
+      "goalMissed": "Goal missed: {{expectedGb}} of {{goalGb}} GB",
+      "cargoDelivered": "Cargo delivered: {{cargoKg}} of {{goalKg}} kg",
+      "cargoShort": "Cargo short: {{cargoKg}} of {{goalKg}} kg",
+      "scienceShareLow": "Science cargo {{sciencePct}}% — below {{scienceMinPct}}%",
+      "dockingLate": "Docking on day {{dockingDays}} — deadline {{deadlineDays}}"
+    }
+  },
+  "comment": {
+    "planner": {
+      "overBudget": "We are {{overK}} k over budget.",
+      "launchLate": "We miss the launch deadline by {{lateMonths}} months.",
+      "relayCost": "The relay costs {{priceK}} k.",
+      "launchSiteLatitude": "Launching from {{latitudeDeg}}° costs {{planeChangeDeltaVms}} m/s of plane change."
+    },
+    "engineer": {
+      "powerMarginLow": "Power margin is only {{marginPct}}%.",
+      "batteryShortInEclipse": "In shadow we need {{neededWh}} Wh; the battery holds {{capacityWh}} Wh.",
+      "noPropulsionDecay": "Without an engine the orbit lasts {{lifetimeYears}} yr, the mission {{operationYears}} yr.",
+      "propellantShort": "We need {{neededKg}} kg of propellant, the tank holds {{capacityKg}} kg.",
+      "disposalTooLong": "The spacecraft would stay in orbit {{disposalYears}} yr after the mission.",
+      "electricPropulsionPower": "The ion engine needs {{powerW}} W while firing.",
+      "storageSmall": "Memory is {{storageGb}} GB, the backlog grows by {{backlogGbPerDay}} GB a day."
+    },
+    "designer": {
+      "overMass": "The spacecraft is {{massKg}} kg; the bus carries {{limitKg}} kg.",
+      "noSlots": "{{slotsUsed}} parts but only {{slots}} slots.",
+      "propellantMass": "{{propellantKg}} kg of propellant for a {{capacityKg}} kg tank.",
+      "busTooLarge": "The {{busSize}} bus does not fit; the fairing takes at most {{maxBusSize}}.",
+      "wrongSide": "{{partId}} faces {{side}}; it works facing {{expectedSide}}.",
+      "massReserveLow": "Mass margin {{reservePct}}% is below the recommended {{recommendedPct}}%."
+    },
+    "scientist": {
+      "dataBacklog": "We collect {{generatedGbPerDay}} GB a day but send only {{downlinkGbPerDay}}.",
+      "goalMissed": "Only {{expectedGb}} of {{goalGb}} GB will reach the ground.",
+      "scienceCargoLow": "Science is {{sciencePct}}% of the cargo, we need {{scienceMinPct}}%.",
+      "bandMismatch": "A station cannot hear the {{band}} radio."
+    }
+  },
+  "advice": {
+    "planner": {
+      "cheaperLaunchOrParts": "Pick a cheaper launch or simpler parts.",
+      "simplerParts": "Take simpler parts — they are built faster.",
+      "groundOnly": "Try ground stations only.",
+      "lowerLatitudeSite": "Pick a launch site at a latitude no higher than the station's inclination."
+    },
+    "engineer": {
+      "biggerPanels": "Take bigger solar arrays.",
+      "biggerBattery": "Take a bigger battery.",
+      "addPropulsion": "Add an engine.",
+      "biggerTankOrHigherIsp": "Take an engine with more propellant or higher Isp.",
+      "biggerStorage": "Take the computer with more memory."
+    },
+    "designer": {
+      "lighterParts": "Take lighter parts or a bigger bus.",
+      "biggerBus": "Take a bigger bus.",
+      "lowerInsertion": "Lower the insertion orbit.",
+      "smallerBusOrLaunch": "Take a smaller bus or a bigger launcher.",
+      "turnPart": "Turn the part to its working side.",
+      "raiseReserve": "Raise the mass margin."
+    },
+    "scientist": {
+      "fasterRadioOrStations": "Take a faster radio or add stations.",
+      "betterInstrument": "Take a better instrument or a faster radio.",
+      "moreScienceCargo": "Load more science cargo.",
+      "matchStationBand": "Choose stations that support your radio's band."
+    }
+  },
+  "calc": {
+    "mass": {
+      "total": {
+        "title": "Mass with margin",
+        "summary": "{{usedKg}} kg + {{reservePct}}% margin = {{withReserveKg}} kg; the launcher lifts {{capacityKg}} kg"
+      }
+    },
+    "power": {
+      "balance": {
+        "title": "Power balance",
+        "summary": "On average {{averageGenerationW}} W in, {{averageConsumptionW}} W out → margin {{marginPct}}%"
+      },
+      "eclipseBattery": {
+        "title": "Battery for the shadow",
+        "summary": "Shadow is {{eclipsePct}}% of the orbit → the battery must give {{neededWh}} Wh"
+      }
+    },
+    "budget": {
+      "total": {
+        "title": "Budget",
+        "summary": "Parts, instruments, stations and launch: {{usedK}} k of {{limitK}} k"
+      }
+    },
+    "data": {
+      "generated": {
+        "title": "Data collected",
+        "summary": "Instruments collect {{generatedGbPerDay}} GB a day in sunlight"
+      },
+      "downlink": {
+        "title": "Data sent",
+        "summary": "{{rateKbps}} kbps at {{distanceKm}} km → {{downlinkGbPerDay}} GB a day"
+      }
+    },
+    "comms": {
+      "contacts": {
+        "title": "Contacts",
+        "summary": "{{contactsPerDay}} passes a day, {{contactMinutesPerDay}} min of contact"
+      }
+    },
+    "time": {
+      "ready": {
+        "title": "Schedule",
+        "summary": "Longest part {{buildMonths}} mo + integration {{integrationMonths}} mo = ready in month {{readyMonth}}, launch in month {{launchMonth}}"
+      }
+    },
+    "orbit": {
+      "period": {
+        "title": "Orbit period",
+        "summary": "At {{altitudeKm}} km one orbit takes {{periodMin}} min at {{speedKmS}} km/s"
+      },
+      "eclipse": {
+        "title": "Earth's shadow",
+        "summary": "At {{altitudeKm}} km shadow is {{eclipsePct}}% of the orbit"
+      },
+      "lifetime": {
+        "title": "Orbit lifetime",
+        "summary": "At {{altitudeKm}} km the orbit lasts {{lifetimeYears}} yr"
+      },
+      "disposal": {
+        "title": "Leaving orbit",
+        "summary": "Leaves orbit in {{disposalYears}} yr (limit {{limitYears}})"
+      }
+    },
+    "propellant": {
+      "rocketEquation": {
+        "title": "Propellant",
+        "summary": "Δv {{deltaVms}} m/s with Isp {{ispS}} s needs {{neededKg}} kg of propellant"
+      }
+    },
+    "rendezvous": {
+      "hohmann": {
+        "title": "Hohmann transfer",
+        "summary": "{{fromKm}} → {{toKm}} km takes {{deltaVms}} m/s"
+      },
+      "phasing": {
+        "title": "Phasing",
+        "summary": "Gains {{degPerOrbit}}° per orbit → up to {{phasingDays}} days to catch up"
+      },
+      "planeChange": {
+        "title": "Plane change",
+        "summary": "Turning the plane by {{deltaInclinationDeg}}° takes {{deltaVms}} m/s"
+      }
+    }
+  },
+  "flow": {
+    "missions": "Missions",
+    "process": "NASA mission process",
+    "chooseMission": "Choose a mission",
+    "newGame": "New game",
+    "continue": "Continue",
+    "needsServer": "Needs the mission server — not available in the demo.",
+    "loadFailed": "Could not load the mission. Check the server and reload.",
+    "creditsButton": "NASA sources",
+    "kind": {
+      "tutorial": "Training",
+      "orbit": "Mission 1",
+      "iss": "Mission 2"
+    },
+    "versionHint": {
+      "simple": "Simple: one screen, ready-made sets, roles give advice.",
+      "advanced": "Advanced: a console per role, every number and formula, roles state facts only."
+    },
+    "stageHint": {
+      "goal": "The need, the end product and the limits.",
+      "concept": "Orbit, launcher and ground stations — the Planner's choices.",
+      "design": "Assemble the spacecraft that fits the launcher's fairing.",
+      "flight": "The mission in accelerated time.",
+      "report": "What worked, what failed and why."
+    },
+    "goal": {
+      "title": "Goal and requirements",
+      "why": "NASA starts every mission from the end product and turns it into measurable requirements; every later decision is checked against them.",
+      "product": "End product",
+      "productValue": "{{gb}} GB in {{months}} months",
+      "budget": "Budget",
+      "deadline": "Launch no later than",
+      "deadlineValue": "month {{month}}",
+      "margin": "Mass margin (NASA)",
+      "sources": "Mass margin: GSFC-STD-1000 Gold Rules, Table 1.06-1 (Pre-Phase A).",
+      "rolesTitle": "Who decides what",
+      "conflict": "Resources are shared, so the roles pull in different directions — there is no single perfect design.",
+      "science": "Science in the cargo",
+      "docking": "Dock within",
+      "dockingValue": "{{days}} days"
+    },
+    "roles": {
+      "planner": "Orbit, launcher and ground stations. Answers for budget, comms and schedule.",
+      "scientist": "Instruments. Answers for the data that reaches Earth.",
+      "engineer": "Solar arrays, battery, radio, computer, attitude control and engine. Answers for power.",
+      "designer": "The bus, which side each part faces and the mass margin. Answers for mass and the fit in the fairing."
+    },
+    "concept": {
+      "orbitFacts": "What this orbit means",
+      "altitude": "Altitude",
+      "inclination": "Inclination",
+      "period": "One orbit",
+      "speed": "Speed",
+      "shadow": "Shadow per orbit",
+      "lifetime": "Orbit lasts",
+      "years": "{{years}} yr",
+      "hint": "A higher orbit lasts longer and stations see the spacecraft for longer, but the signal is weaker and launchers lift less mass there.",
+      "issFacts": "The way to the station",
+      "hohmann": "Climb to the ISS (Hohmann)",
+      "phasing": "Catching up, worst case",
+      "planeChange": "Plane change",
+      "days": "{{days}} d",
+      "hintIss": "The ship goes into a low orbit in the station's plane, waits until the ISS is the right angle ahead, then climbs with two engine burns (Hohmann transfer)."
+    },
+    "flight": {
+      "loading": "Simulating the flight on the mission server…",
+      "needsServer": "The flight is simulated by the mission server, and it is offline: in the demo there is no orbit to replay. Start the server (docker compose up in backend/) to watch the flight on the map — or open the demo report."
+    },
+    "task": {
+      "goal": "What the mission must deliver",
+      "concept": "Choose where and how to fly",
+      "design": "Build the spacecraft",
+      "flight": "Watch the mission fly",
+      "report": "Find out why"
+    },
+    "plan": {
+      "title": "Flight plan",
+      "goalData": "{{gb}} GB in {{months}} months",
+      "goalCargo": "{{kg}} kg to the ISS",
+      "insertion": "insertion {{km}} {{unit}}",
+      "relay": "TDRS relay",
+      "stations": "stations: {{count}}",
+      "budget": "budget {{used}} of {{limit}} k",
+      "status": {
+        "done": "done",
+        "now": "current stage",
+        "todo": "ahead"
+      },
+      "fold": "Fold the plan",
+      "unfold": "Unfold the plan",
+      "readyOk": "All checks pass — ready for launch.",
+      "readyWarn": "Risks: {{count}} — the mission may run into trouble.",
+      "readyFail": "Failed checks: {{count}} — fix them before launch."
+    }
+  },
+  "credits": {
+    "title": "Credits",
+    "nasa": "NASA sources",
+    "team": "Team",
+    "music": "Music",
+    "fonts": "Fonts",
+    "ai": "AI",
+    "aiText": "Code and documents were written with Claude (Anthropic) agents under the team’s direction.",
+    "noLogo": "NASA logos and insignia are not used. Every formula has a NASA source; numbers without one are marked as game estimates.",
+    "use": {
+      "constants": "Earth constants: GM, radius, J2, rotation, solar constant",
+      "orbit": "Orbit period and speed, Hohmann transfer, plane change, J2 precession, sun-synchronous orbit, beta angle, shadow",
+      "gmat": "Orbital elements, shadow geometry, drag acceleration, ground track",
+      "glenn": "Drag force; rocket equation and specific impulse",
+      "atmosphere": "Air density by altitude",
+      "debris": "25-year disposal rule, collision probability limit",
+      "margins": "Mass, power and radio-link margins by project phase",
+      "parts": "Solar arrays, batteries, radios, computers, attitude control, engines",
+      "scores": "Mission success, trade studies and decision analysis behind the scores",
+      "stations": "Ground stations and elevation angles",
+      "battery": "Battery depth of discharge",
+      "donki": "Real geomagnetic storms during the flight"
+    }
+  },
+  "chain": {
+    "decision": {
+      "orbit": "You chose an orbit at {{altitudeKm}} km with an inclination of {{inclinationDeg}}°.",
+      "radio": "You chose a radio rated at {{rateKbps}} kbit/s at a distance of 1000 km.",
+      "instrument": "Your instruments produce {{dataRateKbps}} kbit/s of data while they work.",
+      "battery": "You chose a battery of {{capacityWh}} Wh.",
+      "propulsion": "Engine: specific impulse {{ispS}} s, {{propellantKg}} kg of propellant in the tank.",
+      "propulsion_zero": "You flew without an engine — nothing can lift the orbit back or dodge debris.",
+      "launchSite": "You launch from latitude {{latitudeDeg}}°.",
+      "insertion": "The launcher leaves the ship at {{insertionAltitudeKm}} km.",
+      "relay_on": "You rent the NASA TDRS relay satellites for the link.",
+      "relay_off": "No relay — the ship talks only to ground stations."
+    },
+    "physics": {
+      "orbit": "One orbit takes {{periodMin}} min at {{speedKmS}} km/s: the higher the orbit, the slower and longer it is.",
+      "eclipse": "The Earth's shadow covers {{eclipseFraction}}% of every orbit; the panels give nothing there and the battery carries the load.",
+      "power": "On average the panels give {{generationW}} W and the spacecraft uses {{consumptionW}} W.",
+      "downlink": "The stations hear the spacecraft {{minutesPerDay}} min a day — {{gbPerDay}} GB a day reach the Earth.",
+      "linkBudget": "At {{distanceKm}} km the signal fades with the square of the distance, so the radio really sends {{rateKbps}} kbit/s.",
+      "storage": "The on-board memory holds {{storageGb}} GB; {{lostGb}} GB did not fit before the next pass and were overwritten.",
+      "storage_zero": "The on-board memory holds {{storageGb}} GB — enough to keep every byte until the next pass.",
+      "drag": "Thin air at this height (density {{densityKgM3}} kg/m³) brakes the spacecraft: the orbit sinks {{altitudeLossKmPerYear}} km a year.",
+      "rocketEquation": "The mission needs Δv {{deltaVms}} m/s; by the rocket equation that burns {{propellantKg}} kg of propellant.",
+      "hohmann": "Climbing to the station takes two engine burns: {{deltaV1ms}} m/s and {{deltaV2ms}} m/s (Hohmann transfer).",
+      "phasing": "The ship gains {{degPerOrbit}}° on the station every orbit — {{phasingDays}} days of phasing to catch up.",
+      "planeChange": "The orbit plane has to turn by {{deltaInclinationDeg}}°, which costs {{deltaVms}} m/s.",
+      "earthRotation": "The Earth's spin gives {{bonusMs}} m/s for free along the orbit."
+    },
+    "consequence": {
+      "goal": "{{deliveredGb}} GB of data reached the Earth; the goal was {{goalGb}} GB.",
+      "dataLost": "{{lostGb}} GB of data were lost before they reached the Earth.",
+      "reentry": "On day {{day}} the orbit decayed and the spacecraft burned up in the atmosphere.",
+      "disposal": "After the mission the spacecraft leaves orbit in {{disposalYears}} years (the limit is {{limitYears}}).",
+      "docking": "The ship docked with the ISS after {{dockedAtHours}} hours.",
+      "cargoDelivered": "{{cargoKg}} kg of cargo delivered; the goal was {{goalKg}} kg."
+    }
+  },
+  "bottleneck": {
+    "mass": "Mass: {{usedKg}} kg with the margin, the launcher lifts {{limitKg}} kg.",
+    "power": "Power: the spacecraft uses {{usedW}} W of the {{limitW}} W the panels give on average.",
+    "budget": "Budget: {{usedK}} k spent of {{limitK}} k.",
+    "time": "Time: launch in month {{usedMonths}}, the deadline is month {{limitMonths}}.",
+    "data": "Data: the goal is {{usedGb}} GB, {{limitGb}} GB reached the Earth.",
+    "data_cargo": "Cargo: the goal is {{usedKg}} kg, {{limitKg}} kg are on board.",
+    "comms": "Comms: the goal needs {{usedGbPerDay}} GB a day, the stations take {{limitGbPerDay}} GB a day.",
+    "comms_docking": "Docking took {{usedHours}} h of the {{limitHours}} h allowed."
+  },
+  "event": {
+    "solarStorm": "Geomagnetic storm, Kp {{kp}}: {{lostContacts}} station passes lost.",
+    "solarStormComputerReset": "Storm Kp {{kp}} reset the computer: {{lostGb}} GB in memory were lost.",
+    "debrisAvoidance": "Debris warning: an avoidance burn of {{deltaVms}} m/s used {{propellantKg}} kg of propellant.",
+    "debrisLoss": "A piece of space debris hit the spacecraft — without an engine it could not dodge. The spacecraft is lost.",
+    "failure": "Failure: {{partId}} stopped working.",
+    "reentry": "The orbit fell to {{altitudeKm}} km — the spacecraft re-entered the atmosphere.",
+    "spaceWeatherUnavailable": "NASA DONKI space weather was unavailable, so this flight has no storms."
+  },
+  "reference": {
+    "landsat9": "Landsat 9"
+  },
+  "report": {
+    "loading": "Flying the mission in accelerated time…",
+    "error": "The server could not simulate the mission: {{problem}}",
+    "retry": "Try again",
+    "success": "Mission success",
+    "failure": "Mission failed",
+    "lead": "Each NASA segment shows the chain: your decision → physics → result.",
+    "seed": "Flight seed {{seed}}: the same design and seed always give the same flight.",
+    "flyAgain": "Fly again: new seed",
+    "back": "Back to any stage",
+    "limits": "Mission limits",
+    "status": {
+      "ok": "OK",
+      "warn": "Risk",
+      "fail": "Fail"
+    },
+    "kind": {
+      "decision": "Decision",
+      "physics": "Physics",
+      "consequence": "Result"
+    },
+    "bottleneck": {
+      "title": "Bottleneck",
+      "hint": "The resource with the smallest margin m = 1 − used / limit. Fix it first."
+    },
+    "segments": {
+      "title": "Four NASA segments",
+      "hint": "NASA splits a mission into launch, space, ground and user segments; one weak link fails the mission."
+    },
+    "segmentWhat": {
+      "launch": "Launcher and the way to orbit",
+      "space": "The spacecraft in orbit",
+      "ground": "Stations and the radio link",
+      "user": "The product for the people who need it"
+    },
+    "scores": {
+      "title": "Scores",
+      "source": "Margins M: mass 15%, power 25% — NASA GSFC-STD-1000 Gold Rules, Table 1.06-1 (Pre-Phase A); the other margins, weights and penalties are game estimates.",
+      "missionSuccess": {
+        "name": "Mission success",
+        "explain": "Each NASA segment weighs 20 and each mission limit 10; OK counts 1, risk 0.5, fail 0."
+      },
+      "scienceValue": {
+        "name": "Science value",
+        "explain": "Data that reached the Earth, weighted by the value of the instrument (low 0.25 … highest 1.2), against the goal.",
+        "explain_cargo": "Cargo delivered to the ISS, weighted by its value (science 1.2), against the goal."
+      },
+      "resourceEfficiency": {
+        "name": "Resource efficiency",
+        "explain": "For each of six resources m = 1 − used / limit: over the limit gives 0, below the NASA margin is risky, a huge margin is overpaying."
+      },
+      "decisionQuality": {
+        "name": "Decision quality",
+        "explain": "Minus 15 for each role warning left unresolved at launch, minus 30 for each failed check."
+      }
+    },
+    "events": {
+      "title": "Flight events",
+      "none": "A quiet flight: no storms, debris or failures.",
+      "day": "Day {{day}}",
+      "donki": "Real NASA DONKI storm: {{date}}, Kp {{kp}} (id {{id}})",
+      "donkiMissing": "NASA DONKI",
+      "seeded": "Random event from the flight seed",
+      "period": "Space weather: real NASA DONKI geomagnetic storms from {{start}} – {{end}}, replayed on your mission."
+    },
+    "comparison": {
+      "title": "Similar mission",
+      "none": "The library of similar missions is not filled yet, so there is nothing to compare with.",
+      "kind": {
+        "real": "a real NASA mission",
+        "modeled": "a reference design run through our simulation"
+      },
+      "delta": {
+        "altitudeKm": "Altitude",
+        "inclinationDeg": "Inclination",
+        "massKg": "Mass",
+        "dataGb": "Data",
+        "cargoKg": "Cargo",
+        "budgetK": "Budget"
+      },
+      "deltaHint": "Numbers are your design minus the similar mission.",
+      "source": "Source",
+      "unit": {
+        "altitudeKm": "km",
+        "inclinationDeg": "°",
+        "massKg": "kg",
+        "dataGb": "GB",
+        "cargoKg": "kg",
+        "budgetK": "k"
+      }
+    },
+    "attempts": {
+      "title": "Previous attempt",
+      "saving": "Saving the attempt…",
+      "failed": "Attempts could not be saved — the comparison needs the mission server.",
+      "first": "This is your first saved attempt at this mission. Change the design and fly again to compare.",
+      "previous": "Previous attempt: {{when}}.",
+      "wasSuccess": "It was a success.",
+      "wasFailure": "It failed.",
+      "score": "Score",
+      "before": "Before",
+      "now": "Now",
+      "change": "Change",
+      "bottleneckWas": "Its bottleneck was {{resource}}."
+    },
+    "demo": {
+      "tag": "Demo report",
+      "ready": "No failed checks — the design is ready for launch.",
+      "notReady": "Some checks failed — this design would not fly well.",
+      "note": "Without the mission server the flight is not simulated: here are the checks of your design by NASA segment and the resource with the smallest margin.",
+      "noChecks": "No checks in this segment yet.",
+      "serverTitle": "Full report — with the mission server",
+      "needsServer": "Causal chains «decision → physics → result», the four scores with their formulas, flight events with real NASA DONKI storms, the similar mission and the comparison with your previous attempt come from the backend simulation. Start the server (docker compose up in backend/) to see them."
+    }
+  },
+  "unit": {
+    "k": "k",
+    "kg": "kg",
+    "w": "W",
+    "wh": "Wh",
+    "kbps": "kbit/s",
+    "gb": "GB",
+    "km": "km",
+    "kms": "km/s",
+    "min": "min",
+    "s": "s",
+    "slots": "slots",
+    "ms": "m/s"
+  },
+  "tutorial": {
+    "title": "Training",
+    "do": "What to do:",
+    "why": "Why:",
+    "now": "Right now:",
+    "allGood": "No warnings from the roles — try a cheaper or lighter part and see what changes.",
+    "terms": "Terms:",
+    "hide": "Hide hints",
+    "show": "Show hints",
+    "goal": {
+      "title": "Your first CubeSat",
+      "do": "Read the goal: send 2 GB of measurements in 6 months, spend no more than 150 k and launch by month 12. Then go to Concept.",
+      "why": "Every NASA mission starts here: first what is needed, then the hardware. Later every choice is checked against these numbers."
+    },
+    "concept": {
+      "title": "Where it will fly",
+      "do": "The orbit is fixed: astronauts release your CubeSat from the ISS at 415 km. Pick a ground station that can hear your radio.",
+      "why": "At 415 km there is still a little air. It brakes the satellite, so it lives months, not decades — enough for a 6-month mission."
+    },
+    "design": {
+      "title": "Build the satellite",
+      "do": "Start from the ready-made set, then change one part at a time: panels, battery, radio. Watch the six bars at the top and the role comments.",
+      "why": "Every part costs mass, power and money. A green bar has a margin; a red one means a limit is broken."
+    },
+    "flight": {
+      "title": "Watch it fly",
+      "do": "Press play. Watch the orbit altitude and the data delivered against the goal line.",
+      "why": "Without an engine the CubeSat slowly sinks because air drags on it. Data reaches the Earth only while it flies over a station."
+    },
+    "report": {
+      "title": "What happened and why",
+      "do": "Read the bottleneck first, then the chain of the segment that failed. Go back to any stage, change one thing and fly again.",
+      "why": "Engineers learn the same way: every attempt is compared with the previous one."
+    },
+    "term": {
+      "cubesat": {
+        "name": "CubeSat",
+        "text": "A small satellite built from 10 cm cubes (1U). Universities build them, and NASA's CubeSat Launch Initiative gives selected ones a ride to space at no cost."
+      },
+      "iss": {
+        "name": "ISS",
+        "text": "The International Space Station flies at about 420 km. Small satellites go up to it as cargo and are released from it."
+      },
+      "budget": {
+        "name": "Budget, k",
+        "text": "Game credits in thousands: parts, the ride to orbit and ground stations all cost money."
+      },
+      "orbit": {
+        "name": "Orbit",
+        "text": "The path around the Earth. Its height sets the speed: at 415 km one orbit takes about 93 minutes."
+      },
+      "inclination": {
+        "name": "Inclination",
+        "text": "The angle between the orbit and the equator. The ISS orbit is tilted 51.6°, so the satellite flies over most inhabited places."
+      },
+      "shadow": {
+        "name": "Earth's shadow",
+        "text": "Part of every orbit is spent in the shadow of the Earth. The solar panels give nothing there, so the battery must last until sunlight."
+      },
+      "groundStation": {
+        "name": "Ground station",
+        "text": "An antenna on Earth that talks to the satellite while it is in view — a few minutes per pass. Its band must match your radio."
+      },
+      "margin": {
+        "name": "Margin",
+        "text": "Spare capacity kept on purpose. NASA asks for at least 15% extra mass at the concept stage, because designs always grow."
+      },
+      "slots": {
+        "name": "Slots",
+        "text": "Places for parts inside the bus. A small bus has 6."
+      },
+      "uhf": {
+        "name": "UHF radio",
+        "text": "A simple, slow radio (38.4 kbit/s). Enough for a magnetometer; a camera would need a faster band such as S or X."
+      },
+      "drag": {
+        "name": "Atmospheric drag",
+        "text": "Even very thin air slows a satellite down. It loses height, and below about 180 km it burns up."
+      },
+      "groundTrack": {
+        "name": "Ground track",
+        "text": "The line on the map under the satellite. The Earth turns beneath the orbit, so every pass is shifted west."
+      },
+      "contact": {
+        "name": "Contact",
+        "text": "The minutes when a station sees the satellite. Data goes down only then."
+      },
+      "bottleneck": {
+        "name": "Bottleneck",
+        "text": "The resource with the smallest margin. Improving it helps the most."
+      },
+      "segment": {
+        "name": "Segments",
+        "text": "NASA splits a mission into launch, space, ground and user segments. One weak segment fails the whole mission."
+      },
+      "seed": {
+        "name": "Seed",
+        "text": "A number that fixes the random events. The same design and seed give the same flight."
+      }
+    }
+  },
+  "iss": {
+    "site": "Launch site",
+    "insertion": "Insertion orbit",
+    "relay": "TDRS relay",
+    "plannerHint": "A launch site above 51.6° latitude needs a plane change. From a lower insertion orbit the ship catches up with the station faster but needs more Δv to climb. The relay keeps the ship in contact all the time.",
+    "science": "science",
+    "cargoTotal": "Loaded {{loaded}} of {{goal}} kg · science {{science}}% (need at least {{min}}%)",
+    "route": "Route to the station"
+  },
+  "rendezvous": {
+    "title": "Rendezvous with the ISS",
+    "hour": "Hour {{hour}} of {{total}}",
+    "step": {
+      "phasing": "Phasing",
+      "transfer": "Hohmann transfer",
+      "approach": "Approach",
+      "docked": "Docked",
+      "missed": "Did not dock"
+    },
+    "explain": {
+      "phasing": "On the lower orbit the ship flies faster and gains on the station every orbit.",
+      "transfer": "The first burn lifts the far side of the orbit up to the station; the second makes the orbit round there.",
+      "approach": "The last metres: a slow approach and waiting for a contact with the ground.",
+      "docked": "The cargo is on board the station.",
+      "missed": "The ship ran out of propellant or time before docking."
+    },
+    "mapLabel": "Schematic of the ship and ISS orbits, not to scale",
+    "earth": "Earth",
+    "iss": "ISS",
+    "ship": "ship",
+    "dockedAt": "Docked after {{hours}} h ({{days}} days)",
+    "behind": "The ISS is {{deg}}° ahead",
+    "fact": {
+      "initial": "Angle at start",
+      "hohmann": "Hohmann Δv",
+      "planeChange": "Plane change Δv",
+      "deadline": "Deadline"
+    },
+    "gauge": {
+      "phase": "Angle to the ISS",
+      "altitude": "Ship altitude",
+      "propellant": "Propellant"
+    },
+    "atStation": "At the station"
+  },
+  "site": {
+    "capeCanaveral": "Cape Canaveral",
+    "wallops": "Wallops",
+    "kodiak": "Kodiak"
+  },
+  "cargo": {
+    "crewSupplies": "Crew supplies",
+    "science": "Science investigations",
+    "vehicleHardware": "Station hardware",
+    "spacewalk": "Spacewalk equipment",
+    "computer": "Computer resources"
+  }
+}
