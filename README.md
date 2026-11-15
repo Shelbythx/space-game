@@ -1,5 +1,7 @@
 # Space Mission Design Game
 
+**Play in the browser: <https://shelbythx.github.io/space-game/>**
+
 Team entry for the **NASA Space Apps Challenge 2026** (14–15 November 2026), challenge
 [**"Space Mission Design Game"**](https://www.spaceappschallenge.org/2026/challenges/space-mission-design-game/).
 
@@ -94,7 +96,8 @@ The NASA logo and insignia are not used.
 
 ## Run it locally
 
-There is no hosted version yet; the game runs on your machine.
+The hosted version is at <https://shelbythx.github.io/space-game/> (frontend on GitHub
+Pages, backend on Azure App Service with Azure PostgreSQL). To run it on your machine:
 
 **1. Backend** (ASP.NET Core on .NET 10 + PostgreSQL 17), with Docker:
 
@@ -147,7 +150,9 @@ the flight and the full report say that they need the mission server.
 - **Designed, not implemented:** co-op for 2–4 players over a local network, one role per
   player, changes accepted only from the role's owner
   ([`docs/decisions.md`](docs/decisions.md), D96–D97); Arcade mode.
-- The library of similar real missions for the report is still empty.
+- The library of similar missions is ready — 11 real NASA missions with sources and 13
+  reference designs ([`docs/reference-missions.md`](docs/reference-missions.md)); showing the
+  closest one in the report is in progress.
 
 ## Tech
 
@@ -168,7 +173,7 @@ the flight and the full report say that they need the mission server.
 | `frontend/` | The game: menu, mission stages, blueprint, flight, report |
 | `assets/` | Music by the team; origin of every file in [`assets/CREDITS.md`](assets/CREDITS.md) |
 | `docs/` | Vision, decision log, API contract, physics sources, catalogs (mostly in Ukrainian) |
-| `docs/submission/` | Screenshots for the submission |
+| `docs/submission/` | Screenshots, form texts and slide texts for the submission |
 | `tasks/` | Development tasks, one file per task |
 
 ## Use of AI
@@ -187,6 +192,6 @@ License 1.1.
 ## Team
 
 - **Stiluss** ([@Shelbythx](https://github.com/Shelbythx)) — game design, frontend, music.
-- **Khudashchov** — backend.
+- **Khudashchov** — backend, physics, hosting.
 - **TheAdvental** — flight screen.
-- **katyashozda** — API contract.
+- **katyashozda** — API contract, similar-missions library, submission materials.
