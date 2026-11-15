@@ -107,6 +107,11 @@ export function useBlueprint(missionId: string) {
   const [launchedKey, setLaunchedKey] = useState<string | null>(null)
   const demo = useSyncExternalStore(demoMode.subscribe, demoMode.get)
   const requestId = useRef(0)
+  /**
+   * The design as the mission opened (JSON). Autosave starts once the design differs from it:
+   * only opening a mission is not a save, so «Continue» stays off (task 046).
+   */
+  const [openedAs, setOpenedAs] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -115,7 +120,9 @@ export function useBlueprint(missionId: string) {
       .then((m) => {
         if (cancelled) return
         setMission(m)
-        setDesign(normalize(firstDesign(m), m))
+        const first = normalize(firstDesign(m), m)
+        setDesign(first)
+        setOpenedAs(JSON.stringify(first))
         setLaunchedKey(launchedDesign(m.id))
       })
       .catch(() => !cancelled && setFailed(true))
@@ -126,9 +133,9 @@ export function useBlueprint(missionId: string) {
 
   useEffect(() => {
     if (!design || !mission) return
-    saveDesign(design)
     const id = ++requestId.current
     const key = JSON.stringify(design)
+    if (key !== openedAs) saveDesign(design)
     const timer = window.setTimeout(() => {
       setEvaluating(true)
       api
@@ -143,7 +150,7 @@ export function useBlueprint(missionId: string) {
         .finally(() => id === requestId.current && setEvaluating(false))
     }, EVALUATE_DELAY_MS)
     return () => window.clearTimeout(timer)
-  }, [design, mission])
+  }, [design, mission, openedAs])
 
   const update = useCallback(
     (change: (d: Design) => Design) => {
