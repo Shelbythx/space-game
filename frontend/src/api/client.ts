@@ -10,7 +10,9 @@ import type {
   SimulationResult,
 } from './types'
 
-const BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:5080').replace(/\/$/, '')
+const RAW_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5080').trim().replace(/\/+$/, '')
+// A host without a scheme (as in the repository variable) means HTTPS.
+const BASE_URL = /^https?:\/\//.test(RAW_URL) ? RAW_URL : `https://${RAW_URL}`
 
 /** RFC 7807 problem from the backend, or a network failure (status 0). */
 export class ApiError extends Error {
