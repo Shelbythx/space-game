@@ -204,6 +204,22 @@
   color: var(--mm-accent);
 }
 
+/* A disabled button must look disabled (task 046): dimmed, no hover or press. */
+.mm-btn:disabled,
+.mm-btn:disabled:hover,
+.mm-btn:disabled:active {
+  cursor: not-allowed;
+  filter: grayscale(0.85) brightness(0.75);
+  color: var(--mm-ink);
+  border-color: var(--mm-edge);
+  background-color: var(--mm-btn);
+  box-shadow:
+    inset 3px 3px 0 var(--mm-btn-hi),
+    inset -3px -3px 0 var(--mm-btn-lo);
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
 /* ---------- slider ---------- */
 
 .mm-slider {
