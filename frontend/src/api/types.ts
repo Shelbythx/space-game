@@ -32,6 +32,8 @@ export interface Source {
 export interface Health {
   status: 'ok'
   version: string
+  /** AI advisor mode (v2.3, D111). */
+  advisor?: 'claude' | 'demo'
 }
 
 export interface MissionSummary {

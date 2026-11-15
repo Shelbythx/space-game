@@ -136,5 +136,50 @@
     "launched": "The mission has already started.",
     "notLaunched": "The mission has not started yet.",
     "tooMany": "The server has too many rooms right now — try later."
+  },
+  "advisor": {
+    "title": "Mission mentor",
+    "open": "? Mentor",
+    "close": "Close the mentor",
+    "empty": "Ask anything about your mission: why a check fails, what to change first, where a number comes from.",
+    "suggest": {
+      "first": "What should I fix first?",
+      "power": "Why is there not enough power?",
+      "budget": "How can I make the mission cheaper?"
+    },
+    "placeholder": "Ask about your design…",
+    "send": "Ask",
+    "thinking": "The mentor is thinking…",
+    "you": "You",
+    "mentor": "Mentor",
+    "demoBadge": "Demo answer without AI",
+    "aiBadge": "AI · Claude",
+    "explain": "Explain the report",
+    "explainRequest": "Explain this flight report: why did it end this way and what should I change?",
+    "error": "No answer — the server is unreachable. Try again a bit later.",
+    "tooMany": "Too many questions — try again in an hour.",
+    "questionEmpty": "Write a question first.",
+    "questionTooLong": "The question is longer than 500 characters.",
+    "historyTooLong": "The chat is too long — reload the mission to start a new one.",
+    "badLanguage": "Unknown language.",
+    "playerIdRequired": "No player id — reload the page.",
+    "demo": {
+      "intro": "Here is what holds your mission back right now, according to the game's checks:",
+      "allGood": "Every check passes — the design is ready to launch.",
+      "focus": {
+        "power": "Power — what the game's calculation shows:",
+        "mass": "Mass — what the game's calculation shows:",
+        "budget": "Budget — what the game's calculation shows:",
+        "data": "Data — what the game's calculation shows:",
+        "comms": "Communications — what the game's calculation shows:",
+        "time": "Schedule — what the game's calculation shows:",
+        "propellant": "Propellant and disposal — what the game's calculation shows:"
+      },
+      "report": {
+        "success": "The mission reached its goal. The tightest resource and what shaped it:",
+        "failure": "The mission did not reach its goal. The bottleneck and the decisions behind it:",
+        "next": "For the next attempt:"
+      }
+    }
   }
 }
