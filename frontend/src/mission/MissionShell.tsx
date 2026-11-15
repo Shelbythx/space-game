@@ -1,6 +1,8 @@
 import { type ReactNode, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import type { Design, Evaluation, Mission } from '../api/types'
+import { AdvisorChat } from '../advisor/AdvisorChat'
+import { AdvisorProvider } from '../advisor/AdvisorProvider'
 import { type BlueprintState, useBlueprint } from '../blueprint/useBlueprint'
 import { useGameText } from '../blueprint/format'
 import { readStorage, writeStorage } from '../lib/storage'
@@ -105,6 +107,8 @@ export function MissionFrame({ state, coop }: { state: BlueprintState; coop?: Co
 
   return (
     <MissionContext.Provider value={state}>
+      {/* One mentor chat for the whole mission (D111, task 049). */}
+      <AdvisorProvider>
       <div className={['mm-root bp-root fp-root', folded ? 'fp-folded' : ''].join(' ')}>
         <aside className="fp-rail" aria-label={t('flow.plan.title')}>
           <button type="button" className="mm-btn fp-back" onClick={coop ? coop.onBack : () => navigate('/missions')}>
@@ -252,6 +256,8 @@ export function MissionFrame({ state, coop }: { state: BlueprintState; coop?: Co
           )}
         </main>
       </div>
+      <AdvisorChat />
+      </AdvisorProvider>
     </MissionContext.Provider>
   )
 }

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useAdvisor } from '../advisor/useAdvisorState'
 import type { Check, MissionEvent, Report, SimulationResult, Status } from '../api/types'
 import { STAGES, useMission } from '../mission/context'
 import { demoReport } from './demoReport'
@@ -111,6 +112,7 @@ function AttemptStatus({ attempts }: { attempts: AttemptsState }) {
 function FullReport({ result, attempts, flyAgain }: { result: SimulationResult; attempts: AttemptsState; flyAgain: () => void }) {
   const { t } = useReportText()
   const navigate = useNavigate()
+  const advisor = useAdvisor()
   return (
     <>
       <ReportView
@@ -127,6 +129,17 @@ function FullReport({ result, attempts, flyAgain }: { result: SimulationResult; 
             <button type="button" className="mm-btn" onClick={flyAgain}>
               {t('report.flyAgain')}
             </button>
+            {/* The mentor explains this very flight in the mission's chat (D111, task 049). */}
+            {advisor && (
+              <button
+                type="button"
+                className="mm-btn"
+                disabled={advisor.busy}
+                onClick={() => advisor.explainReport(result.seed, t('advisor.explainRequest'))}
+              >
+                {t('advisor.explain')}
+              </button>
+            )}
           </div>
         </div>
       </section>

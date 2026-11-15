@@ -11,6 +11,7 @@ import type {
   SimulationResult,
 } from './types'
 import type { RoomState } from '../coop/types'
+import type { AdvisorAnswer, AdvisorTurn } from '../advisor/types'
 
 const RAW_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5080').trim().replace(/\/+$/, '')
 // A host without a scheme (as in the repository variable) means HTTPS.
@@ -134,6 +135,13 @@ export const api = {
   attempts: (playerId: string) =>
     request<AttemptSummary[]>(`/api/attempts?playerId=${encodeURIComponent(playerId)}`),
   attempt: (id: string) => request<Attempt>(`/api/attempts/${encodeURIComponent(id)}`),
+  // AI advisor (task 049, D111). The server answers with Claude or, without a key, in demo mode.
+  advisor: {
+    ask: (body: { playerId: string; language: string; design: Design; question: string; history: AdvisorTurn[] }) =>
+      post<AdvisorAnswer>('/api/advisor/ask', body, 60000),
+    report: (body: { playerId: string; language: string; design: Design; seed: number }) =>
+      post<AdvisorAnswer>('/api/advisor/report', body, 60000),
+  },
   // Co-op rooms (task 045, D109). No demo fallback: co-op needs the server.
   rooms: {
     create: (body: { playerId: string; name: string | null; design: Design }) => post<RoomState>('/api/rooms', body),
