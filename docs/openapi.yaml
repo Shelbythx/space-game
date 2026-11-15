@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
   title: Space Mission Design Game API
-  version: 0.2.2
+  version: 0.2.3
   description: |
-    Machine-readable form of docs/api.md (D60), contract version 2.2 (task 015; co-op rooms — task 041, D109). If they
+    Machine-readable form of docs/api.md (D60), contract version 2.3 (task 015; co-op rooms — task 041, D109; AI advisor — task 047, D111). If they
     disagree, docs/api.md wins and this file is fixed in the same task. Player-facing texts
     are message codes with params; the frontend translates them. Units are in field names.
   license:
@@ -24,6 +24,8 @@ tags:
     description: Saved attempts of an anonymous player
   - name: rooms
     description: Co-op rooms (v2.2, D109) — up to four players share one design by link
+  - name: advisor
+    description: AI advisor (v2.3, D111) — Claude when a key is set, rule-based demo otherwise
 paths:
   /api/health:
     get:
@@ -144,6 +146,42 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/Attempt' }
         '404': { $ref: '#/components/responses/Problem' }
+  /api/advisor/ask:
+    post:
+      tags: [advisor]
+      summary: Answer a question about the current design
+      operationId: advisorAsk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AdvisorAskRequest' }
+      responses:
+        '200':
+          description: Answer
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AdvisorAnswer' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '429': { $ref: '#/components/responses/Problem' }
+  /api/advisor/report:
+    post:
+      tags: [advisor]
+      summary: Explain the flight report and what to change next
+      operationId: advisorReport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AdvisorReportRequest' }
+      responses:
+        '200':
+          description: Answer
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AdvisorAnswer' }
+        '400': { $ref: '#/components/responses/ValidationProblem' }
+        '429': { $ref: '#/components/responses/Problem' }
   /api/rooms:
     post:
       tags: [rooms]
@@ -341,10 +379,11 @@ components:
 
     Health:
       type: object
-      required: [status, version]
+      required: [status, version, advisor]
       properties:
         status: { type: string, enum: [ok] }
         version: { type: string }
+        advisor: { type: string, enum: [claude, demo], description: AI advisor mode (v2.3) }
 
     MissionSummary:
       type: object
@@ -1086,3 +1125,37 @@ components:
           oneOf: [{ $ref: '#/components/schemas/RoomChange' }, { type: 'null' }]
         launch:
           oneOf: [{ $ref: '#/components/schemas/RoomLaunch' }, { type: 'null' }]
+
+    AdvisorTurn:
+      type: object
+      required: [from, text]
+      properties:
+        from: { type: string, enum: [player, advisor] }
+        text: { type: string, maxLength: 2000 }
+
+    AdvisorAskRequest:
+      type: object
+      required: [playerId, language, design, question]
+      properties:
+        playerId: { type: string, format: uuid }
+        language: { type: string, enum: [en, uk] }
+        design: { $ref: '#/components/schemas/Design' }
+        question: { type: string, minLength: 1, maxLength: 500 }
+        history: { type: array, maxItems: 6, items: { $ref: '#/components/schemas/AdvisorTurn' } }
+
+    AdvisorReportRequest:
+      type: object
+      required: [playerId, language, design, seed]
+      properties:
+        playerId: { type: string, format: uuid }
+        language: { type: string, enum: [en, uk] }
+        design: { $ref: '#/components/schemas/Design' }
+        seed: { type: integer, format: int64 }
+
+    AdvisorAnswer:
+      type: object
+      required: [source, text, messages]
+      properties:
+        source: { type: string, enum: [claude, demo] }
+        text: { type: [string, 'null'], description: claude — plain text answer; demo — null }
+        messages: { type: array, items: { $ref: '#/components/schemas/Message' }, description: demo — message codes; claude — empty }
