@@ -19,6 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Бібліотека схожих місій з docs/reference-missions.md (задача 023) -->
+    <EmbeddedResource Include="References/reference-missions-*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="SpaceGame.Tests" />
   </ItemGroup>
 

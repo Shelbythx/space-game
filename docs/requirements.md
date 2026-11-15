@@ -15,6 +15,11 @@
 
 ## 1. Що треба подати
 
+**Посилання на гру (задача 013, D105):** <https://shelbythx.github.io/space-game/> —
+фронтенд на GitHub Pages; бекенд — Azure App Service
+(<https://spacegame-api-kpi-b0gtcycfh7hjeja6.italynorth-01.azurewebsites.net/api/health>).
+Репозиторій: <https://github.com/Shelbythx/space-game>.
+
 | Вимога | Довіра | Що це означає для нас |
 | --- | --- | --- |
 | Дедлайн — неділя 15.11.2026, 23:59 за місцевим часом | офіційно | Локальна подія може мати раніший |

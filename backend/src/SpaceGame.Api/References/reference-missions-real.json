@@ -1,0 +1,223 @@
+[
+  {
+    "id": "landsat-9",
+    "kind": "real",
+    "nameCode": "reference.landsat9",
+    "gameMissionId": "sat-orbit",
+    "launchYear": 2021,
+    "altitudeKm": 705,
+    "inclinationDeg": 98.2,
+    "massKg": null,
+    "dataGbPerDay": null,
+    "instruments": [
+      "camera"
+    ],
+    "notes": "OLI-2, TIRS-2; > 700 scenes per day",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA Science, Landsat 9: orbit 705 km, 98.2°, OLI-2 and TIRS-2",
+      "url": "https://science.nasa.gov/mission/landsat-9"
+    }
+  },
+  {
+    "id": "aqua",
+    "kind": "real",
+    "nameCode": "reference.aqua",
+    "gameMissionId": "sat-orbit",
+    "launchYear": 2002,
+    "altitudeKm": 705,
+    "inclinationDeg": 98.2,
+    "massKg": 2934,
+    "dataGbPerDay": null,
+    "instruments": [
+      "radiometer",
+      "camera"
+    ],
+    "notes": "AIRS, AMSU-A, HSB, AMSR-E, MODIS, CERES; 4860 W end of life",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA Science, Aqua spacecraft and instruments: 2934 kg at launch, 705 km, 98.2°",
+      "url": "https://science.nasa.gov/mission/aqua/about-aqua-spacecraft-and-instruments"
+    }
+  },
+  {
+    "id": "pace",
+    "kind": "real",
+    "nameCode": "reference.pace",
+    "gameMissionId": "sat-orbit",
+    "launchYear": 2024,
+    "altitudeKm": 676,
+    "inclinationDeg": 98,
+    "massKg": 1700,
+    "dataGbPerDay": null,
+    "instruments": [
+      "radiometer"
+    ],
+    "notes": "Ocean Color Instrument, SPEXone, HARP2; mass converted from 3748 lb fueled",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA Science, PACE blog: 3748 lb fueled, sun-synchronous polar orbit about 420 miles",
+      "url": "https://science.nasa.gov/blogs/pace/2024/02/08/meet-nasas-pace-spacecraft-science-instruments/"
+    }
+  },
+  {
+    "id": "icesat-2",
+    "kind": "real",
+    "nameCode": "reference.icesat2",
+    "gameMissionId": "sat-orbit",
+    "launchYear": 2018,
+    "altitudeKm": 500,
+    "inclinationDeg": 92,
+    "massKg": 1580,
+    "dataGbPerDay": 72.5,
+    "instruments": [],
+    "notes": "ATLAS laser altimeter; >= 580 Gbit recorded per day; X-band 220 Mbit/s",
+    "source": {
+      "kind": "nasa",
+      "note": "ICESat-2 How it works (310 miles, 92°), Fast facts (580 Gbit/day), NSSDCA 2018-070A (1580 kg)",
+      "url": "https://icesat-2.gsfc.nasa.gov/how-it-works"
+    }
+  },
+  {
+    "id": "goes-16",
+    "kind": "real",
+    "nameCode": "reference.goes16",
+    "gameMissionId": "sat-orbit",
+    "launchYear": 2016,
+    "altitudeKm": 35786,
+    "inclinationDeg": 0,
+    "massKg": 2800,
+    "dataGbPerDay": null,
+    "instruments": [
+      "camera"
+    ],
+    "notes": "Advanced Baseline Imager; geostationary",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA: GOES-R ready for launch (Atlas V 541, over 6000 lb); NOAA NESDIS GOES-R launch vehicle page: 2800 kg at launch",
+      "url": "https://www.nasa.gov/image-article/goes-r-weather-satellite-ready-launch/"
+    }
+  },
+  {
+    "id": "tdrs-m",
+    "kind": "real",
+    "nameCode": "reference.tdrsM",
+    "gameMissionId": "iss-cargo",
+    "launchYear": 2017,
+    "altitudeKm": 35786,
+    "inclinationDeg": 0,
+    "massKg": null,
+    "dataGbPerDay": null,
+    "instruments": [],
+    "notes": "Relay satellite: S-band multiple access, S/Ku/Ka single access; example for relay = true",
+    "source": {
+      "kind": "nasa",
+      "note": "NTRS 20170010176, Payload performance of third generation TDRS",
+      "url": "https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20170010176.pdf"
+    }
+  },
+  {
+    "id": "tropics",
+    "kind": "real",
+    "nameCode": "reference.tropics",
+    "gameMissionId": "sat-orbit",
+    "launchYear": 2023,
+    "altitudeKm": 550,
+    "inclinationDeg": 30,
+    "massKg": 5.4,
+    "dataGbPerDay": null,
+    "instruments": [
+      "radiometer"
+    ],
+    "notes": "3U CubeSats with a spinning microwave radiometer; Rocket Lab launch",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA small satellites blog, Mission facts about TROPICS: about 12 lb, about 550 km, about 30°",
+      "url": "https://www.nasa.gov/blogs/smallsatellites/2023/05/07/mission-facts-about-nasas-tropics-2/"
+    }
+  },
+  {
+    "id": "icecube",
+    "kind": "real",
+    "nameCode": "reference.icecube",
+    "gameMissionId": "cubesat-learn",
+    "launchYear": 2017,
+    "altitudeKm": 410,
+    "inclinationDeg": 51.6,
+    "massKg": 4.5,
+    "dataGbPerDay": null,
+    "instruments": [
+      "radiometer"
+    ],
+    "notes": "3U CubeSat, 883 GHz radiometer, deployed from the ISS",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA Technology: 10-pound 3U cubesat, 883 GHz radiometer; NTRS 20210012947: deployed at about 410 km",
+      "url": "https://www.nasa.gov/technology/goddards-icecube-smallsat-ready-for-launch-space-station-deployment/"
+    }
+  },
+  {
+    "id": "dellingr",
+    "kind": "real",
+    "nameCode": "reference.dellingr",
+    "gameMissionId": "cubesat-learn",
+    "launchYear": 2017,
+    "altitudeKm": 400,
+    "inclinationDeg": 51.6,
+    "massKg": null,
+    "dataGbPerDay": null,
+    "instruments": [
+      "magnetometer"
+    ],
+    "notes": "6U CubeSat, two magnetometers and INMS, deployed from the ISS",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA: Dellingr, the little CubeSat that could: 6U, about 250 miles, released from the ISS on 20.11.2017",
+      "url": "https://www.nasa.gov/solar-system/dellingr-the-little-cubesat-that-could/"
+    }
+  },
+  {
+    "id": "crs-29",
+    "kind": "real",
+    "nameCode": "reference.crs29",
+    "gameMissionId": "iss-cargo",
+    "launchYear": 2023,
+    "altitudeKm": null,
+    "inclinationDeg": 51.6,
+    "massKg": null,
+    "cargoKg": 2950,
+    "scienceCargoPct": 34.3,
+    "cargo": {
+      "science": 1012,
+      "crew-supplies": 681,
+      "vehicle-hardware": 491,
+      "spacewalk": 48,
+      "computer": 46,
+      "unpressurized": 569
+    },
+    "notes": "Dragon on Falcon 9 from LC-39A",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA, SpaceX CRS-29 mission overview: cargo manifest",
+      "url": "https://www.nasa.gov/international-space-station/commercial-resupply/spacex-crs-29-mission-overview/"
+    }
+  },
+  {
+    "id": "ng-20",
+    "kind": "real",
+    "nameCode": "reference.ng20",
+    "gameMissionId": "iss-cargo",
+    "launchYear": 2024,
+    "altitudeKm": null,
+    "inclinationDeg": 51.6,
+    "massKg": null,
+    "cargoKg": 3720,
+    "scienceCargoPct": null,
+    "notes": "Cygnus on Falcon 9 from SLC-40; no breakdown by category on the page",
+    "source": {
+      "kind": "nasa",
+      "note": "NASA, Overview for NG-20: more than 8200 lb (3720 kg) of cargo",
+      "url": "https://www.nasa.gov/missions/station/overview-for-nasas-northrop-grumman-20th-commercial-resupply-mission/"
+    }
+  }
+]

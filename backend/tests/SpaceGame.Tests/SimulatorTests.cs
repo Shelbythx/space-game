@@ -151,7 +151,7 @@ public sealed class SimulateEndpointTests(ApiFactory factory) : IClassFixture<Ap
             Assert.True(r.TryGetProperty(key, out _), key);
         var report = r.GetProperty("report");
         Assert.Equal(4, report.GetProperty("segments").GetArrayLength());
-        Assert.Equal(JsonValueKind.Null, report.GetProperty("comparison").ValueKind);
+        Assert.Equal(JsonValueKind.Object, report.GetProperty("comparison").ValueKind); // задача 023
     }
 
     [Fact]
